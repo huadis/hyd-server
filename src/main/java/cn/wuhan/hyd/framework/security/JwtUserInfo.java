@@ -13,5 +13,5 @@ public interface JwtUserInfo {
 
     String getPassword();
 
-    boolean getEnabled();
+    Boolean getEnabled();
 }
