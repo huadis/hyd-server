@@ -308,6 +308,18 @@ CREATE TABLE `hyd_facility` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-设施全貌';
 
+INSERT INTO `hyd_facility`
+(`facilityTypeName`, `facilityNum`, `createdTime`, `updateTime`)
+VALUES
+    ('全民健身路径', '80', NOW(), NOW()),
+    ('体测站', '10', NOW(), NOW()),
+    ('健身步道', '3', NOW(), NOW()),
+    ('健身驿站（广场）', '1', NOW(), NOW()),
+    ('少儿无动力设施', '1', NOW(), NOW()),
+    ('健身房', '1', NOW(), NOW()),
+    ('体育公园', '1', NOW(), NOW());
+
+
 CREATE TABLE `hyd_facility_district` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `districtName` varchar(255) COMMENT '区名称',
@@ -316,6 +328,23 @@ CREATE TABLE `hyd_facility_district` (
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-设施各区分布';
+
+INSERT INTO `hyd_facility_district` (`districtName`, `facilityNum`, `createdTime`, `updateTime`)
+VALUES
+    ('江岸区', '35', NOW(), NOW()),
+    ('江汉区', '85', NOW(), NOW()),
+    ('硚口区', '65', NOW(), NOW()),
+    ('汉阳区', '55', NOW(), NOW()),
+    ('武昌区', '65', NOW(), NOW()),
+    ('青山区', '35', NOW(), NOW()),
+    ('洪山区', '75', NOW(), NOW()),
+    ('东西湖区', '65', NOW(), NOW()),
+    ('武汉开发区（汉南区）', '55', NOW(), NOW()),
+    ('蔡甸区', '80', NOW(), NOW()),
+    ('江夏区', '35', NOW(), NOW()),
+    ('黄陂区', '80', NOW(), NOW()),
+    ('新洲区', '90', NOW(), NOW()),
+    ('东湖新技术开发区', '55', NOW(), NOW());
 
 CREATE TABLE `hyd_stadium_map` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -341,6 +370,21 @@ CREATE TABLE `hyd_facility_year` (
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-健身点位年数据';
 
+INSERT INTO `hyd_facility_year`
+(`quantity`, `yearInspectRate`, `yearInspectYes`, `yearInspectNo`, `yearRepairRate`, `yearRepairYes`, `yearRepairNo`, `createdTime`, `updateTime`)
+VALUES
+    (
+        '28739', -- 健身点位数量
+        '96%',   -- 本年巡检率
+        '28739', -- 本年已巡检
+        '1101',  -- 本年待巡检
+        '91%',   -- 本年维修完成率
+        '249',   -- 本年已维修
+        '19',    -- 本年待维修
+        NOW(),   -- 创建时间，取当前时间
+        NOW()    -- 更新时间，取当前时间
+    );
+
 CREATE TABLE `hyd_facility_district_month` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `districtName` varchar(255) COMMENT '区名称',
@@ -352,6 +396,24 @@ CREATE TABLE `hyd_facility_district_month` (
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-设施各区月数据';
+
+INSERT INTO `hyd_facility_district_month`
+(`districtName`, `monthInspectYes`, `monthInspectNo`, `monthRepairYes`, `monthRepairNo`, `createdTime`, `updateTime`)
+VALUES
+    ('江岸区', '500', '50', '450', '30', NOW(), NOW()),
+    ('江汉区', '520', '40', '480', '25', NOW(), NOW()),
+    ('硚口区', '220', '30', '200', '20', NOW(), NOW()),
+    ('汉阳区', '300', '45', '280', '22', NOW(), NOW()),
+    ('武昌区', '240', '35', '210', '18', NOW(), NOW()),
+    ('青山区', '230', '32', '205', '16', NOW(), NOW()),
+    ('武汉开发区（汉南区 ）', '320', '42', '300', '28', NOW(), NOW()),
+    ('洪山区', '210', '33', '190', '15', NOW(), NOW()),
+    ('东西湖区', '225', '31', '202', '17', NOW(), NOW()),
+    ('蔡甸区', '235', '34', '215', '19', NOW(), NOW()),
+    ('江夏区', '510', '45', '470', '26', NOW(), NOW()),
+    ('黄陂区', '250', '36', '230', '20', NOW(), NOW()),
+    ('东湖新技术开发区', '245', '33', '220', '18', NOW(), NOW()),
+    ('新洲区', '310', '40', '290', '26', NOW(), NOW());
 
 CREATE TABLE `hyd_facility_inspect` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
@@ -367,6 +429,17 @@ CREATE TABLE `hyd_facility_inspect` (
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-巡检动态';
+
+INSERT INTO `hyd_facility_inspect`
+(`code`, `districtName`, `streetName`, `location`, `type`, `inspector`, `status`, `completeTime`, `createdTime`, `updateTime`)
+VALUES
+    ('js12123344', '汉阳区', 'XX街道', 'XX社区新城西门', '派单', '丁一', '已巡检', '2025-07-10 12:45:12', NOW(), NOW()),
+    ('js12123344', '汉阳区', 'XX街道', 'XX社区新城西门', '派单', '丁一', '待巡检', '2025-07-10 12:45:12', NOW(), NOW()),
+    ('js12123344', '汉阳区', 'XX街道', 'XX社区新城西门', '派单', '丁一', '已巡检', '2025-07-10 12:45:12', NOW(), NOW()),
+    ('js12123344', '武昌区', 'XX街道', 'XX社区新城西门', '派单', '丁一', '已巡检', '2025-07-10 12:45:12', NOW(), NOW()),
+    ('js12123344', '硚口区', 'XX街道', 'XX社区新城西门', '派单', '丁一', '已巡检', '2025-07-10 12:45:12', NOW(), NOW()),
+    ('js12123344', '汉阳区', 'XX街道', 'XX社区新城西门', '派单', '丁一', '已巡检', '2025-07-10 12:45:12', NOW(), NOW()),
+    ('js12123344', '江岸区', 'XX街道', 'XX社区新城西门', '派单', '丁一', '已巡检', '2025-07-10 12:45:12', NOW(), NOW());
 
 CREATE TABLE `hyd_coupon_amount` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
