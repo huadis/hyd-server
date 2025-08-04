@@ -1,5 +1,7 @@
 server:
   port: 8000
+  servlet:
+    context-path: /hyd-server
   http2:
     # 启用 HTTP/2 支持，提升传输效率
     enabled: true
@@ -17,17 +19,19 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+      naming:
+        physical-strategy: cn.wuhan.hyd.framework.config.CustomPhysicalNamingStrategy
     open-in-view: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
     druid:
       db-type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.p6spy.engine.spy.P6SpyDriver
-      url: jdbc:p6spy:mysql://localhost:3306/hyd?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
-      username: root
-      password: root
+      url: jdbc:p6spy:mysql://113.44.83.240:3306/hyd?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false
+      username: hyd
+      password: F5TJhWFeaPkEMzCL
       # 初始连接数，建议设置为与最小空闲连接数相同
       initial-size: 20
       # 最小空闲连接数，保持足够的空闲连接以应对请求

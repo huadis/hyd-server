@@ -26,13 +26,13 @@ CREATE TABLE `hyd_sys_user` (
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `hyd_sys_user` (`user_id`, `username`, `nick_name`, `gender`, `phone`, `email`, `avatar_name`, `avatar_path`, `password`, `enabled`, `create_by`, `update_by`, `pwd_reset_time`, `create_time`, `update_time`) VALUES (1, 'admin', '管理员', '男', '18888888888', '201507802@qq.com', 'avatar-20250122102642222.png', '/Users/jie/Documents/work/private/eladmin/~/avatar/avatar-20250122102642222.png', '$2a$10$Egp1/gvFlt7zhlXVfEFw4OfWQCGPw0ClmMcc6FjTnvXNRVf9zdMRa', b'1', NULL, 'admin', '2020-05-03 16:38:31', '2018-08-23 09:11:56', '2025-01-22 10:26:42');
-INSERT INTO `hyd_sys_user` (`user_id`, `username`, `nick_name`, `gender`, `phone`, `email`, `avatar_name`, `avatar_path`, `password`, `enabled`, `create_by`, `update_by`, `pwd_reset_time`, `create_time`, `update_time`) VALUES (2, 'test', '测试', '男', '19999999999', '231@qq.com', NULL, NULL, '$2a$10$4XcyudOYTSz6fue6KFNMHeUQnCX5jbBQypLEnGk1PmekXt5c95JcK', b'1', 'admin', 'admin', NULL, '2020-05-05 11:15:49', '2025-01-21 14:53:04');
+INSERT INTO `hyd_sys_user` (`user_id`, `username`, `nick_name`, `gender`, `phone`, `email`, `avatar_name`, `avatar_path`, `password`, `enabled`, `create_by`, `update_by`, `pwd_reset_time`, `create_time`, `update_time`) VALUES (1, 'admin', '管理员', '男', '18888888888', '201507802@qq.com', 'avatar-20250122102642222.png', '/~/avatar/avatar-20250122102642222.png', '$2a$10$Egp1/gvFlt7zhlXVfEFw4OfWQCGPw0ClmMcc6FjTnvXNRVf9zdMRa', b'1', NULL, 'admin', '2025-05-03 16:38:31', '2025-08-23 09:11:56', '2025-07-22 10:26:42');
+INSERT INTO `hyd_sys_user` (`user_id`, `username`, `nick_name`, `gender`, `phone`, `email`, `avatar_name`, `avatar_path`, `password`, `enabled`, `create_by`, `update_by`, `pwd_reset_time`, `create_time`, `update_time`) VALUES (2, 'test', '测试', '男', '19999999999', '231@qq.com', NULL, NULL, '$2a$10$4XcyudOYTSz6fue6KFNMHeUQnCX5jbBQypLEnGk1PmekXt5c95JcK', b'1', 'admin', 'admin', NULL, '2025-05-05 11:15:49', '2025-07-21 14:53:04');
 COMMIT;
 
 
 CREATE TABLE `hyd_user_channel` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `registerUserNum` varchar(255) COMMENT '注册用户',
     `realNameUserNum` varchar(255) COMMENT '实名用户',
     `receiveCouponUserNum` varchar(255) COMMENT '领券用户',
@@ -41,29 +41,67 @@ CREATE TABLE `hyd_user_channel` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-用户来源渠道';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-用户来源渠道';
+
+INSERT INTO `hyd_user_channel`
+(`id`, `registerUserNum`, `realNameUserNum`, `receiveCouponUserNum`, `useCouponUserNum`, `orderUserNum`, `createdTime`, `updateTime`)
+VALUES
+    (
+        1,
+        '15000', -- 注册用户数，模拟一个较大基数
+        '6532',  -- 实名用户数，与图表示例呼应
+        '1101',  -- 领券用户数，与图表示例呼应
+        '298',   -- 用券用户数，与图表示例呼应
+        '132',   -- 下单用户数，与图表示例呼应
+        NOW(),   -- 创建时间，取当前时间
+        NOW()    -- 更新时间，取当前时间
+    );
 
 CREATE TABLE `hyd_user_register` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `month` varchar(255) COMMENT '月份',
     `userNum` varchar(255) COMMENT '数量',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-每月新增用户';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-每月新增用户';
+
+INSERT INTO `hyd_user_register`
+(`id`, `month`, `userNum`, `createdTime`, `updateTime`)
+VALUES
+-- 1-12月新增用户数据，数值模拟季节性波动
+(1, '1月', '1250', NOW(), NOW()),
+(2, '2月', '1180', NOW(), NOW()),
+(3, '3月', '1520', NOW(), NOW()),  -- 春季活动增长
+(4, '4月', '1680', NOW(), NOW()),
+(5, '5月', '1950', NOW(), NOW()),  -- 五一假期高峰
+(6, '6月', '2100', NOW(), NOW()),  -- 暑期前预热
+(7, '7月', '2800', NOW(), NOW()),  -- 暑期高峰
+(8, '8月', '2650', NOW(), NOW()),  -- 暑期持续
+(9, '9月', '1800', NOW(), NOW()),  -- 开学后回落
+(10, '10月', '2050', NOW(), NOW()), -- 国庆假期增长
+(11, '11月', '1720', NOW(), NOW()),
+(12, '12月', '1600', NOW(), NOW()); -- 年底平稳
 
 CREATE TABLE `hyd_user_sex` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `sex` varchar(255) COMMENT '性别',
     `sexNum` varchar(255) COMMENT '数量',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-男女占比';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-男女占比';
 
+INSERT INTO `hyd_user_sex`
+(`id`, `sex`, `sexNum`, `createdTime`, `updateTime`)
+VALUES
+-- 男性用户数据
+(1, '男', '8560', NOW(), NOW()),
+-- 女性用户数据
+(2, '女', '6440', NOW(), NOW());
 
 CREATE TABLE `hyd_user_age` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `under18Num` varchar(255) COMMENT '18岁以下',
     `bt18and25Num` varchar(255) COMMENT '18-25岁',
     `bt26and30Num` varchar(255) COMMENT '26-30岁',
@@ -75,11 +113,23 @@ CREATE TABLE `hyd_user_age` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-年龄占比';
-
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-年龄占比';
+INSERT INTO `hyd_user_age`
+(`id`, `under18Num`, `bt18and25Num`, `bt26and30Num`, `bt31and35Num`, `bt36and40Num`, `bt41and45Num`, `bt46and50Num`, `over50Num`, `createdTime`, `updateTime`)
+VALUES
+-- 模拟各年龄段用户数量，年轻群体（18-35岁）占比更高
+(1, '800',  -- 18岁以下
+ '2200', -- 18-25岁（主力年轻群体）
+ '1800', -- 26-30岁
+ '1500', -- 31-35岁
+ '1000', -- 36-40岁
+ '700',  -- 41-45岁
+ '500',  -- 46-50岁
+ '300',  -- 50岁以上（占比最低）
+ NOW(), NOW());
 
 CREATE TABLE `hyd_user_repurchase` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `1Num` varchar(255) COMMENT '一次下单',
     `bt2and5Num` varchar(255) COMMENT '2-5次',
     `over5Num` varchar(255) COMMENT '5次以上',
@@ -88,27 +138,54 @@ CREATE TABLE `hyd_user_repurchase` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-复购率';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-复购率';
 
+INSERT INTO `hyd_user_repurchase`
+(`id`, `1Num`, `bt2and5Num`, `over5Num`, `over10Num`, `over50Num`, `createdTime`, `updateTime`)
+VALUES
+-- 模拟复购分布：多数用户仅下单1次，少数高频复购
+(1, '6000',  -- 一次下单（占比最高）
+ '2500',  -- 2-5次（中等复购）
+ '1000',  -- 5次以上（高频复购）
+ '300',   -- 10次以上（核心忠诚用户）
+ '50',    -- 50次以上（超级忠诚用户，占比最低）
+ NOW(), NOW());
 
 CREATE TABLE `hyd_order` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `month` varchar(255) COMMENT '月份',
     `orderNum` varchar(255) COMMENT '订单总数',
     `orderAmount` varchar(255) COMMENT '订单总金额',
     `couponAmount` varchar(255) COMMENT '消费券总金额',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-订单数量';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-订单数量';
+
+INSERT INTO `hyd_order`
+(`id`, `month`, `orderNum`, `orderAmount`, `couponAmount`, `createdTime`, `updateTime`)
+VALUES
+-- 1月数据
+(1, '1月', '2500', '2200', '500', NOW(), NOW()),
+-- 2月数据
+(2, '2月', '2300', '2000', '450', NOW(), NOW()),
+-- 3月数据
+(3, '3月', '2800', '2600', '600', NOW(), NOW()),
+-- 4月数据
+(4, '4月', '2400', '2100', '480', NOW(), NOW()),
+-- 5月数据
+(5, '5月', '2600', '2300', '520', NOW(), NOW()),
+-- 6月数据
+(6, '6月', '2700', '2400', '550', NOW(), NOW());
 
 CREATE TABLE `hyd_order_month` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `month` varchar(255) COMMENT '月份',
     `orderNum` varchar(255) COMMENT '数量',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-订单趋势';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-订单趋势';
 
 CREATE TABLE `hyd_order_sport` (
     `id` bigint(20) NOT NULL COMMENT '主键',
@@ -117,19 +194,47 @@ CREATE TABLE `hyd_order_sport` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-项目消费券订单金额Top5';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-项目消费券订单金额Top5';
+
+INSERT INTO `hyd_order_sport`
+(`id`, `sportName`, `orderAmount`, `createdTime`, `updateTime`)
+VALUES
+-- 乒乓球
+(1, '乒乓球', '30', NOW(), NOW()),
+-- 滑冰
+(2, '滑冰', '35', NOW(), NOW()),
+-- 羽毛球
+(3, '羽毛球', '20', NOW(), NOW()),
+-- 篮球
+(4, '篮球', '70', NOW(), NOW()),
+-- 台球
+(5, '台球', '10', NOW(), NOW());
 
 CREATE TABLE `hyd_order_stadium` (
-    `id` bigint(20) NOT NULL COMMENT '主键id',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `stadiumName` varchar(255) COMMENT '场馆名称',
     `orderAmount` varchar(255) COMMENT '消费券订单金额',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-场馆消费券订单金额Top5';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-场馆消费券订单金额Top5';
+
+INSERT INTO `hyd_order_stadium`
+(`id`, `stadiumName`, `orderAmount`, `createdTime`, `updateTime`)
+VALUES
+-- 汉风超越乒乓球...（名称按图表简化，可补全）
+(1, '汉风超越乒乓球馆', '30', NOW(), NOW()),
+-- 新洲区篮球馆
+(2, '新洲区篮球馆', '35', NOW(), NOW()),
+-- 武汉国际体育
+(3, '武汉国际体育场馆', '20', NOW(), NOW()),
+-- 新量乒乓球
+(4, '新量乒乓球馆', '70', NOW(), NOW()),
+-- 冰龙冰上运动
+(5, '冰龙冰上运动馆', '10', NOW(), NOW());
 
 CREATE TABLE `hyd_stadium` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `onlineStadiumNum` varchar(255) COMMENT '在线场馆数量',
     `couponStadiumNum` varchar(255) COMMENT '消费券场馆数量',
     `socialStadiumNum` varchar(255) COMMENT '社会场馆数量',
@@ -138,10 +243,10 @@ CREATE TABLE `hyd_stadium` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-在线场馆数量';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-在线场馆数量';
 
 CREATE TABLE `hyd_stadium_district` (
-    `id` bigint(20) NOT NULL COMMENT '主键id',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `district` varchar(255) COMMENT '所属区',
     `districtName` varchar(255) COMMENT '所属区名称',
     `couponStadiumNum` varchar(255) COMMENT '定点场馆数量',
@@ -150,48 +255,80 @@ CREATE TABLE `hyd_stadium_district` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-在线场馆各区情况';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-在线场馆各区情况';
+
+INSERT INTO `hyd_stadium_district`
+(`id`, `district`, `districtName`, `couponStadiumNum`, `publicStadiumNum`, `socialStadiumNum`, `createdTime`, `updateTime`)
+VALUES
+-- 江岸区
+(1, '江岸区', '江岸区', '20', '15', '10', NOW(), NOW()),
+-- 江汉区
+(2, '江汉区', '江汉区', '30', '20', '15', NOW(), NOW()),
+-- 硚口区
+(3, '硚口区', '硚口区', '18', '12', '8', NOW(), NOW()),
+-- 汉阳区
+(4, '汉阳区', '汉阳区', '22', '16', '11', NOW(), NOW()),
+-- 武昌区
+(5, '武昌区', '武昌区', '25', '19', '13', NOW(), NOW()),
+-- 青山区
+(6, '青山区', '青山区', '16', '11', '7', NOW(), NOW()),
+-- 洪山区
+(7, '洪山区', '洪山区', '28', '21', '16', NOW(), NOW()),
+-- 东西湖区
+(8, '东西湖区', '东西湖区', '21', '15', '10', NOW(), NOW()),
+-- 武汉开发区（汉南区 ）
+(9, '武汉开发区（汉南区 ）', '武汉开发区（汉南区 ）', '19', '14', '9', NOW(), NOW()),
+-- 蔡甸区
+(10, '蔡甸区', '蔡甸区', '24', '18', '12', NOW(), NOW()),
+-- 江夏区
+(11, '江夏区', '江夏区', '17', '12', '8', NOW(), NOW()),
+-- 黄陂区
+(12, '黄陂区', '黄陂区', '26', '20', '14', NOW(), NOW()),
+-- 新洲区
+(13, '新洲区', '新洲区', '30', '23', '17', NOW(), NOW()),
+-- 东湖新技术开发区
+(14, '东湖新技术开发区', '东湖新技术开发区', '23', '17', '12', NOW(), NOW());
 
 CREATE TABLE `hyd_stadium_sport_coupon` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `sportName` varchar(255) COMMENT '运动项目',
     `sportNum` varchar(255) COMMENT '项目数量',
     `useCountRate` varchar(255) COMMENT '用券占比',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-运动项目分布用券数占比';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-运动项目分布用券数占比';
 
 CREATE TABLE `hyd_facility` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `facilityTypeName` varchar(255) COMMENT '设施类型名称',
     `facilityNum` varchar(255) COMMENT '设施数量',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-设施全貌';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-设施全貌';
 
 CREATE TABLE `hyd_facility_district` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `districtName` varchar(255) COMMENT '区名称',
     `facilityNum` varchar(255) COMMENT '设施数量',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-设施各区分布';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-设施各区分布';
 
 CREATE TABLE `hyd_stadium_map` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `resourceType` varchar(255) COMMENT '资源类型',
     `resourceName` varchar(255) COMMENT '资源名称',
     `resourceNum` varchar(255) COMMENT '资源数量',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-电子地图';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-电子地图';
 
 CREATE TABLE `hyd_facility_year` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `quantity` varchar(255) COMMENT '健身点位数量',
     `yearInspectRate` varchar(255) COMMENT '本年巡检率',
     `yearInspectYes` varchar(255) COMMENT '本年已巡检',
@@ -202,10 +339,10 @@ CREATE TABLE `hyd_facility_year` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-健身点位年数据';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-健身点位年数据';
 
 CREATE TABLE `hyd_facility_district_month` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `districtName` varchar(255) COMMENT '区名称',
     `monthInspectYes` varchar(255) COMMENT '本月已巡检',
     `monthInspectNo` varchar(255) COMMENT '本月待巡检',
@@ -214,10 +351,10 @@ CREATE TABLE `hyd_facility_district_month` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-设施各区月数据';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-设施各区月数据';
 
 CREATE TABLE `hyd_facility_inspect` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `code` varchar(255) COMMENT '设施点编号',
     `districtName` varchar(255) COMMENT '所属区县',
     `streetName` varchar(255) COMMENT '所属街道',
@@ -229,10 +366,10 @@ CREATE TABLE `hyd_facility_inspect` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-巡检动态';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-巡检动态';
 
 CREATE TABLE `hyd_coupon_amount` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `sendAmount` varchar(255) COMMENT '发放金额',
     `receiveCount` varchar(255) COMMENT '领券人次',
     `usedCount` varchar(255) COMMENT '用券人次',
@@ -243,10 +380,10 @@ CREATE TABLE `hyd_coupon_amount` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-消费券总金额';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-消费券总金额';
 
 CREATE TABLE `hyd_stock` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `stockName` varchar(255) COMMENT '券名称',
     `receiveNum` varchar(255) COMMENT '领券数',
     `useNum` varchar(255) COMMENT '用券数',
@@ -257,10 +394,21 @@ CREATE TABLE `hyd_stock` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-消费券领用券';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-消费券领用券';
+
+CREATE TABLE `hyd_coupon_user` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `receiveCouponNum` varchar(255) COMMENT '领券人数',
+    `useCouponNum` varchar(255) COMMENT '用券人数',
+    `maleNum` varchar(255) COMMENT '男性人数',
+    `femaleNum` varchar(255) COMMENT '女性人数',
+    `createdTime` timestamp COMMENT '创建时间',
+    `updateTime` timestamp COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-券用户分析';
 
 CREATE TABLE `hyd_coupon_user_age` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `under25Num` varchar(255) COMMENT '25岁以下',
     `bt26and30Num` varchar(255) COMMENT '26-30岁',
     `bt31and35Num` varchar(255) COMMENT '31-35岁',
@@ -272,13 +420,27 @@ CREATE TABLE `hyd_coupon_user_age` (
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-券用户年龄分布';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-券用户年龄分布';
 
 CREATE TABLE `hyd_coupon_stadium_top` (
-    `id` bigint(20) NOT NULL COMMENT '主键',
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
     `stadiumName` varchar(255) COMMENT '场馆名称',
     `couponAmount` varchar(255) COMMENT '消费券金额',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-消费券场馆预订 top/';
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='驾驶舱-消费券场馆预订 top/';
+
+INSERT INTO `hyd_coupon_stadium_top`
+(`id`, `stadiumName`, `couponAmount`, `createdTime`, `updateTime`)
+VALUES
+-- 汉风超越乒乓球...（名称按图表简化，可补全）
+(1, '汉风超越乒乓球馆', '30', NOW(), NOW()),
+-- 新洲区篮球馆
+(2, '新洲区篮球馆', '35', NOW(), NOW()),
+-- 武汉国际体育
+(3, '武汉国际体育场馆', '20', NOW(), NOW()),
+-- 新量乒乓球
+(4, '新量乒乓球馆', '70', NOW(), NOW()),
+-- 冰龙冰上运动
+(5, '冰龙冰上运动馆', '10', NOW(), NOW());

@@ -30,9 +30,10 @@ public class HydApplication {
         springApplication.addListeners(new ApplicationPidFileWriter());
         ConfigurableApplicationContext context = springApplication.run(args);
         String port = context.getEnvironment().getProperty("server.port");
+        String contextPath = context.getEnvironment().getProperty("server.servlet.context-path");
         log.info("____________________________________________");
-        log.info("Local: http://localhost:{}                 |", port);
-        log.info("Swagger: http://localhost:{}/doc.html      |", port);
+        log.info("Local: http://localhost:{}{}                 |", port, contextPath);
+        log.info("Swagger: http://localhost:{}{}/doc.html      |", port, contextPath);
         log.info("---------------------------------------------");
     }
 
