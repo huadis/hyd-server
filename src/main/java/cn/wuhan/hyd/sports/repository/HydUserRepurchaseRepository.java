@@ -1,12 +1,10 @@
 package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydUserRepurchase;
-import cn.wuhan.hyd.sports.resp.StadiumUserRepurchaseStatResp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,5 +28,5 @@ public interface HydUserRepurchaseRepository extends JpaRepository<HydUserRepurc
             "(`1Num` + `bt2and5Num` + `over5Num` + `over10Num` + `over50Num`) AS totalCount " +
             "FROM hyd_user_repurchase " +
             "ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
-    List<Map<String, Object>> countStadiumUserRepurchaseStat();
+    Map<String, Object> countStadiumUserRepurchaseStat();
 }

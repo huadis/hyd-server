@@ -4,6 +4,8 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydFacilityInspect;
 import cn.wuhan.hyd.sports.repository.HydFacilityInspectRepository;
 import cn.wuhan.hyd.sports.service.IHydFacilityInspectService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,8 +25,13 @@ public class HydFacilityInspectServiceImpl implements IHydFacilityInspectService
     private HydFacilityInspectRepository hydFacilityInspectRepository;
 
     @Override
-    public PageResult<HydFacilityInspect> queryAll(Pageable pageable) {
-        return null;
+    public PageResult<HydFacilityInspect> queryAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<HydFacilityInspect> pageResult = hydFacilityInspectRepository.findAll(pageable);
+        PageResult<HydFacilityInspect> pageResult1 = new PageResult<>();
+        pageResult1.setTotalElements(pageResult.getTotalElements());
+        pageResult1.setContent(pageResult.getContent());
+        return pageResult1;
     }
 
     @Override

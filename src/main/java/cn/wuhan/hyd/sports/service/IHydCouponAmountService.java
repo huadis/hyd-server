@@ -61,4 +61,6 @@ public interface IHydCouponAmountService {
     HydCouponAmount findById(Long id);
 
     int batchSave(List<HydCouponAmount> couponAmounts);
+
+    HydCouponAmount findLatestCouponAmount();
 }

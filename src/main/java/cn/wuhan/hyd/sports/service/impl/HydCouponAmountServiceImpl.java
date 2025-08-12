@@ -81,4 +81,9 @@ public class HydCouponAmountServiceImpl implements IHydCouponAmountService {
         List<HydCouponAmount> savedList = hydCouponAmountRepository.saveAll(couponAmounts);
         return savedList.size();
     }
+
+    @Override
+    public HydCouponAmount findLatestCouponAmount() {
+        return hydCouponAmountRepository.findLatestCouponAmount();
+    }
 }

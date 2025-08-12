@@ -32,5 +32,5 @@ public interface HydUserAgeRepository extends JpaRepository<HydUserAge, Long> {
             "over50Num AS over50Count " +
             "FROM hyd_user_age " +
             "ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
-    List<Map<String, Object>> countStadiumUserAgeStat();
+    Map<String, Object> countStadiumUserAgeStat();
 }

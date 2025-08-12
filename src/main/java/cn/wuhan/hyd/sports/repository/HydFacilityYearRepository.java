@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydFacilityYear;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,4 +12,12 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface HydFacilityYearRepository extends JpaRepository<HydFacilityYear, Long> {
+
+    /**
+     * 统计用户渠道
+     *
+     * @return 包含 实名用户数、领券用户数、用券用户数、下单用户数
+     */
+    @Query(value = "SELECT * FROM hyd_facility_year ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
+    HydFacilityYear findLatestFacilityYear();
 }

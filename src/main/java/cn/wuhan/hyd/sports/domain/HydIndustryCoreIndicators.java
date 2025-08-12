@@ -1,0 +1,110 @@
+package cn.wuhan.hyd.sports.domain;
+
+import cn.wuhan.hyd.framework.annotation.ExcelField;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.Objects;
+
+/**
+ * 功能说明：体育产业-核心指标总表 <br>
+ * 开发人员：@author huadi <br>
+ * 开发时间: 2025年08月03日 <br>
+ */
+@Entity
+@Getter
+@Setter
+@Table(name = "hyd_industry_core_indicators")
+public class HydIndustryCoreIndicators implements Serializable {
+
+    @Id
+    @Column(name = "id")
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "主键ID", hidden = true)
+    private Long id;
+
+    @Column(name = "statisticalYear")
+    @ExcelField(name = "统计年度")
+    @ApiModelProperty(value = "统计年度")
+    private Integer statisticalYear;
+
+    @Column(name = "totalOutputValue")
+    @ExcelField(name = "体育产业总产值（亿）")
+    @ApiModelProperty(value = "体育产业总产值（亿）")
+    private BigDecimal totalOutputValue;
+
+    @Column(name = "addedValue")
+    @ExcelField(name = "产业增加值（亿）")
+    @ApiModelProperty(value = "产业增加值（亿）")
+    private BigDecimal addedValue;
+
+    @Column(name = "marketEntityCount")
+    @ExcelField(name = "体育市场主体总量（家）")
+    @ApiModelProperty(value = "体育市场主体总量（家）")
+    private Integer marketEntityCount;
+
+    @Column(name = "employeeCount")
+    @ExcelField(name = "从业人员数量（万）")
+    @ApiModelProperty(value = "从业人员数量（万）")
+    private BigDecimal employeeCount;
+
+    @Column(name = "perCapitaSportsConsumption")
+    @ExcelField(name = "人均体育消费（元）")
+    @ApiModelProperty(value = "人均体育消费（元）")
+    private Integer perCapitaSportsConsumption;
+
+    @Column(name = "perCapitaSportsArea")
+    @ExcelField(name = "人均体育场地面积（㎡）")
+    @ApiModelProperty(value = "人均体育场地面积（㎡）")
+    private BigDecimal perCapitaSportsArea;
+
+    @Column(name = "majorProjectContract")
+    @ExcelField(name = "重大项目签约（亿）")
+    @ApiModelProperty(value = "重大项目签约（亿）")
+    private BigDecimal majorProjectContract;
+
+    @Column(name = "remark")
+    @ExcelField(name = "备注")
+    @ApiModelProperty(value = "备注")
+    private String remark;
+
+    @Column(name = "createdTime")
+    @ApiModelProperty(value = "创建时间", hidden = true)
+    private Timestamp createdTime;
+
+    @Column(name = "updateTime")
+    @ApiModelProperty(value = "更新时间", hidden = true)
+    private Timestamp updateTime;
+
+    // 保存前自动填充时间
+    @PrePersist
+    public void prePersist() {
+        this.createdTime = new Timestamp(System.currentTimeMillis());
+        this.updateTime = this.createdTime;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updateTime = new Timestamp(System.currentTimeMillis());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HydIndustryCoreIndicators that = (HydIndustryCoreIndicators) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}

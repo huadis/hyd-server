@@ -517,3 +517,148 @@ VALUES
 (4, '新量乒乓球馆', '70', NOW(), NOW()),
 -- 冰龙冰上运动
 (5, '冰龙冰上运动馆', '10', NOW(), NOW());
+
+
+-------------------------------------------- 体育指导员 --------------------------------------------
+CREATE TABLE `hyd_instructor_info` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增唯一标识',
+    `name` varchar(255) NOT NULL COMMENT '姓名',
+    `gender` varchar(10) NOT NULL COMMENT '性别（男/女）',
+    `birthDate` date COMMENT '出生日期，格式如1980-12-12',
+    `serviceProject` varchar(255) COMMENT '服务项目',
+    `level` varchar(255) COMMENT '级别',
+    `certifyTime` date COMMENT '获证时间，格式如2010-10-20',
+    `region` varchar(255) COMMENT '所在地区',
+    `remark` varchar(255) COMMENT '备注',
+    `uploadTime` date COMMENT '上传时间，自动填充',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育指导员-汇总';
+
+CREATE TABLE `hyd_instructor_age_stats` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+    `statisticalYear` int(4) NOT NULL COMMENT '统计年度，如2024',
+    `ageInterval` varchar(50) NOT NULL COMMENT '年龄区间，如20岁以下、20-30岁等',
+    `personCount` int(11) COMMENT '对应年龄区间的人数',
+    `dataSource` varchar(255) COMMENT '数据来源/备注',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育指导员-年龄统计明细表';
+
+CREATE TABLE `hyd_instructor_age_growth` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增唯一标识',
+    `statisticalYear` int(4) NOT NULL COMMENT '统计年度，如2024',
+    `ageInterval` varchar(50) NOT NULL COMMENT '年龄区间，如20岁以下、20-30岁等',
+    `personCount` int(11) COMMENT '对应年龄区间的人数',
+    `growthRate` decimal(5,2) COMMENT '增长率（%），保留两位小数',
+    `dataSource` varchar(255) COMMENT '数据来源/备注信息',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育指导员-人数增长统计明细表';
+
+-------------------------------------------- 体育产业 --------------------------------------------
+CREATE TABLE `hyd_industry_core_indicators` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增唯一标识',
+    `statisticalYear` int(4) NOT NULL COMMENT '统计年度',
+    `totalOutputValue` decimal(10,2) COMMENT '体育产业总产值（亿）',
+    `addedValue` decimal(10,2) COMMENT '产业增加值（亿）',
+    `marketEntityCount` int(11) COMMENT '体育市场主体总量（家）',
+    `employeeCount` decimal(5,1) COMMENT '从业人员数量（万）',
+    `perCapitaSportsConsumption` int(11) COMMENT '人均体育消费（元）',
+    `perCapitaSportsArea` decimal(5,2) COMMENT '人均体育场地面积（㎡）',
+    `majorProjectContract` decimal(10,2) COMMENT '重大项目签约（亿）',
+    `remark` varchar(255) COMMENT '备注',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育产业-核心指标总表';
+
+CREATE TABLE `hyd_industry_scale_trend` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+    `statisticalYear` int(4) NOT NULL COMMENT '统计年度',
+    `totalOutputValue` decimal(10, 2) COMMENT '总产值（亿元）',
+    `growthRate` decimal(5, 2) COMMENT '增长率（%）',
+    `dataSource` varchar(255) COMMENT '数据来源/备注',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育产业-总规模（年度趋势）表';
+
+CREATE TABLE `hyd_industry_entity_count_ratio` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+    `statisticalYear` int(4) NOT NULL COMMENT '统计年度',
+    `entityType` varchar(255) NOT NULL COMMENT '市场主体类型（如体育管理活动 / 竞赛表演等）',
+    `proportion` decimal(5, 2) COMMENT '占比（%）',
+    `dataSource` varchar(255) COMMENT '数据来源/备注',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育产业-市场主体数量（分类占比）表';
+
+CREATE TABLE `hyd_industry_growth_value_trend` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+    `statisticalYear` int(4) NOT NULL COMMENT '统计年度',
+    `totalOutputValue` decimal(10, 2) COMMENT '总产值（亿元）',
+    `growthRate` decimal(5, 2) COMMENT '增长率（%）',
+    `dataSource` varchar(255) COMMENT '数据来源/备注',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育产业-总增速和增加值（年度趋势）表';
+
+CREATE TABLE `hyd_industry_training_participation_rate` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+    `statisticalYear` int(4) NOT NULL COMMENT '统计年度',
+    `entityType` varchar(255) NOT NULL COMMENT '培训项目（帆船、皮筏艇 / 羽毛球等）',
+    `growthRate` decimal(5, 2) COMMENT '参与率（%）',
+    `dataSource` varchar(255) COMMENT '数据来源/备注',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育产业-居民体育培训项目参与率表';
+
+CREATE TABLE `hyd_industry_goods_purchase_rate` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+    `statisticalYear` int(4) NOT NULL COMMENT '统计年度',
+    `entityType` varchar(255) NOT NULL COMMENT '体育用品类型（运动鞋 / 运动服饰等）',
+    `growthRate` decimal(5, 2) COMMENT '购买率（%）',
+    `dataSource` varchar(255) COMMENT '数据来源/备注',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育产业-居民体育用品购买率表';
+
+CREATE TABLE `hyd_industry_employee_count` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+    `statisticalYear` int(4) NOT NULL COMMENT '统计年度',
+    `entityType` varchar(255) NOT NULL COMMENT '从业类型（体育管理活动 / 竞赛表演等）',
+    `personCount` int(11) COMMENT '人数（人）',
+    `dataSource` varchar(255) COMMENT '数据来源/备注',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育产业-从业人员数量（分类统计）表';
+
+-------------------------------------------- 大众赛事 --------------------------------------------
+
+CREATE TABLE `hyd_public_events` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `sequence` bigint(20) NOT NULL COMMENT '序号',
+    `district` varchar(255) COMMENT '区属，如江夏区',
+    `eventName` varchar(255) COMMENT '赛事名称',
+    `sportItem` varchar(255) COMMENT '运动项目',
+    `hostUnit` varchar(255) COMMENT '主办单位',
+    `organizerUnit` varchar(255) COMMENT '承办单位',
+    `eventYear` varchar(255) COMMENT '赛事年份',
+    `eventMonth` varchar(255) COMMENT '赛事月份',
+    `eventDate` date COMMENT '赛事日期',
+    `eventLocation` varchar(255) COMMENT '赛事活动地点',
+    `participantCount` int(11) COMMENT '参赛规模（人数）',
+    `eventLevel` varchar(255) COMMENT '赛事级别（国际级、国家级、省级、市级、区级、街道级、社区级）',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='大众赛事-体育赛事信息表';

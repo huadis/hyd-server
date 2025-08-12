@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
 
 /**
  * 功能说明： 体育基础设施-设施全貌 服务实现 <br>
@@ -80,5 +80,40 @@ public class HydFacilityServiceImpl implements IHydFacilityService {
         // 批量保存
         List<HydFacility> savedList = hydFacilityRepository.saveAll(facilities);
         return savedList.size();
+    }
+
+    @Override
+    public List<Map<String, Object>> facility() {
+        List<HydFacility> hydFacilities = queryAll();
+        int total = hydFacilities.stream()
+                .map(HydFacility::getFacilityNum)
+                .map(obj -> obj == null ? "0" : obj) // 处理null值
+                .filter(str -> str.matches("\\d+"))       // 只保留数字字符串
+                .mapToInt(val -> {
+                    try {
+                        return Integer.parseInt(val);
+                    } catch (NumberFormatException e) {
+                        return 0;
+                    }
+                }).sum();
+        List<Map<String, Object>> result = new ArrayList<>();
+        hydFacilities.forEach(entity -> {
+            String facilityNum = entity.getFacilityNum();
+            String facilityTypeName = entity.getFacilityTypeName();
+            String v = facilityNum == null ? "0" : facilityNum;
+            double tmpV = 0;
+            try {
+                tmpV = Double.parseDouble(v);
+            } catch (NumberFormatException e) {
+                tmpV = 0;
+            }
+            double percentage = tmpV / total * 100;
+            Map<String, Object> tmp = new HashMap<>();
+            tmp.put("key", facilityTypeName);
+            tmp.put("count", tmpV);
+            tmp.put("percent", percentage);
+            result.add(tmp);
+        });
+        return result;
     }
 }

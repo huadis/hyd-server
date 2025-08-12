@@ -37,6 +37,7 @@ public class User extends BaseEntity implements Serializable {
     private String username;
 
     @NotBlank
+    @Column(name = "nick_name")
     @ApiModelProperty(value = "用户昵称")
     private String nickName;
 
@@ -52,9 +53,11 @@ public class User extends BaseEntity implements Serializable {
     @ApiModelProperty(value = "用户性别")
     private String gender;
 
+    @Column(name = "avatar_name")
     @ApiModelProperty(value = "头像真实名称", hidden = true)
     private String avatarName;
 
+    @Column(name = "avatar_path")
     @ApiModelProperty(value = "头像存储的路径", hidden = true)
     private String avatarPath;
 

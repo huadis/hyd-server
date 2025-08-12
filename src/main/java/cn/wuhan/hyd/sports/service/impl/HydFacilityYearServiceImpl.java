@@ -81,4 +81,9 @@ public class HydFacilityYearServiceImpl implements IHydFacilityYearService {
         List<HydFacilityYear> savedList = hydFacilityYearRepository.saveAll(facilityYears);
         return savedList.size();
     }
+
+    @Override
+    public HydFacilityYear findLatestFacilityYear() {
+        return hydFacilityYearRepository.findLatestFacilityYear();
+    }
 }

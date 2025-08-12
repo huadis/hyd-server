@@ -16,10 +16,11 @@ public interface IHydFacilityInspectService {
     /**
      * 分页查询
      *
-     * @param pageable 分页参数
+     * @param page 页数
+     * @param size 每页条数
      * @return 实体对象列表
      */
-    PageResult<HydFacilityInspect> queryAll(Pageable pageable);
+    PageResult<HydFacilityInspect> queryAll(int page, int size);
 
     /**
      * 查询全部

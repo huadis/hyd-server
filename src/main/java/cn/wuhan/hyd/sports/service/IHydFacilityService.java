@@ -6,6 +6,7 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明： 驾驶舱-设施全貌 <br>
@@ -62,4 +63,6 @@ public interface IHydFacilityService {
     HydFacility findById(Long id);
 
     int batchSave(List<HydFacility> facilities);
+
+    List<Map<String, Object>> facility();
 }

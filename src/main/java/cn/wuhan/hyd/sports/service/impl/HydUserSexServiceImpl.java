@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.service.impl;
 
+import cn.hutool.core.map.MapUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydUserSex;
 import cn.wuhan.hyd.sports.repository.HydUserSexRepository;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +65,23 @@ public class HydUserSexServiceImpl implements IHydUserSexService {
 
     @Override
     public List<Map<String, Object>> countStadiumUserSexStat() {
-        return hydUserSexRepository.countStadiumUserSexStat();
+        List<Map<String, Object>> userSexStat = hydUserSexRepository.countStadiumUserSexStat();
+        // 计算总人数
+        int total = userSexStat.stream()
+                .mapToInt(map -> Integer.parseInt(MapUtil.getStr(map, "genderCount")))
+                .sum();
+        List<Map<String, Object>> result = new ArrayList<>();
+        // 计算并输出占比
+        userSexStat.forEach(map -> {
+            int count = Integer.parseInt(MapUtil.getStr(map, "genderCount"));
+            double percentage = (double) count / total * 100;
+            Map<String, Object> tmp = new HashMap<>();
+            tmp.put("gender", MapUtil.getStr(map, "gender"));
+            tmp.put("genderCount", count);
+            tmp.put("genderPercent", percentage);
+            result.add(tmp);
+        });
+        return result;
     }
 
     /**

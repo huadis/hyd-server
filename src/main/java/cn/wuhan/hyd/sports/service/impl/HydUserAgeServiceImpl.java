@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +64,35 @@ public class HydUserAgeServiceImpl implements IHydUserAgeService {
 
     @Override
     public List<Map<String, Object>> countStadiumUserAgeStat() {
-        return hydUserAgeRepository.countStadiumUserAgeStat();
+        Map<String, Object> ageData = hydUserAgeRepository.countStadiumUserAgeStat();
+        // 计算总人数（安全处理）
+        int total = ageData.values().stream()
+                .map(obj -> obj == null ? "0" : obj.toString()) // 处理null值
+                .filter(str -> str.matches("\\d+"))       // 只保留数字字符串
+                .mapToInt(val -> {
+                    try {
+                        return Integer.parseInt(val);
+                    } catch (NumberFormatException e) {
+                        return 0;
+                    }
+                }).sum();
+        List<Map<String, Object>> result = new ArrayList<>();
+        ageData.forEach((key, value) -> {
+            String v = value == null ? "0" : value.toString();
+            double tmpV = 0;
+            try {
+                tmpV = Double.parseDouble(v);
+            } catch (NumberFormatException e) {
+                tmpV = 0;
+            }
+            double percentage = tmpV / total * 100;
+            Map<String, Object> tmp = new HashMap<>();
+            tmp.put("key", key);
+            tmp.put("count", tmpV);
+            tmp.put("percent", percentage);
+            result.add(tmp);
+        });
+        return result;
     }
 
     /**

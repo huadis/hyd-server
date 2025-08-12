@@ -2,15 +2,23 @@ package cn.wuhan.hyd.sports.controller;
 
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
-import cn.wuhan.hyd.sports.service.IHydFacilityYearService;
+import cn.wuhan.hyd.framework.utils.PageResult;
+import cn.wuhan.hyd.sports.domain.HydFacilityDistrict;
+import cn.wuhan.hyd.sports.domain.HydFacilityDistrictMonth;
+import cn.wuhan.hyd.sports.domain.HydFacilityInspect;
+import cn.wuhan.hyd.sports.domain.HydFacilityYear;
+import cn.wuhan.hyd.sports.service.*;
+import cn.wuhan.hyd.sports.service.impl.HydFacilityDistrictMonthServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,39 +33,49 @@ public class HydFacilityController {
 
     @Resource
     private IHydFacilityYearService hydFacilityYearService;
+    @Resource
+    private IHydFacilityService hydFacilityService;
+    @Resource
+    private IHydFacilityInspectService hydFacilityInspectService;
+    @Resource
+    private IHydFacilityDistrictService hydFacilityDistrictService;
+    @Autowired
+    private IHydFacilityDistrictMonthService hydFacilityDistrictMonthService;
 
     @ApiOperation("健身点位")
-    @AnonymousGetMapping("/overview")
-    public Response<Map<String, Object>> overview(@ApiParam(value = "年份") @RequestParam String year) {
+    @AnonymousGetMapping("/fitnessOverview")
+    public Response<HydFacilityYear> FitnessOverview(@ApiParam(value = "年份") @RequestParam String year) {
         // HydFacilityYear
-        return null;
+        return Response.ok(hydFacilityYearService.findLatestFacilityYear());
     }
 
     @ApiOperation("体育设施全貌")
-    @AnonymousGetMapping("/facility")
-    public Response<Map<String, Object>> facility(@ApiParam(value = "年份") @RequestParam String year) {
+    @AnonymousGetMapping("/facilityOverview")
+    public Response<List<Map<String, Object>>> facilityOverview(@ApiParam(value = "年份") @RequestParam String year) {
         // HydFacility
-        return null;
+        return Response.ok(hydFacilityService.facility());
     }
 
     @ApiOperation("各区分布")
-    @AnonymousGetMapping("/districtMonth")
-    public Response<Map<String, Object>> district(@ApiParam(value = "年份") @RequestParam String year) {
+    @AnonymousGetMapping("/districtDistribution")
+    public Response<List<HydFacilityDistrict>> districtDistribution(@ApiParam(value = "年份") @RequestParam String year) {
         // HydFacilityDistrictMonth
-        return null;
+        return Response.ok(hydFacilityDistrictService.queryAll());
     }
 
     @ApiOperation("巡检维修动态")
-    @AnonymousGetMapping("/districtStat")
-    public Response<Map<String, Object>> xxx(@ApiParam(value = "年份") @RequestParam String year) {
+    @AnonymousGetMapping("/inspect")
+    public Response<PageResult<HydFacilityInspect>> inspect(@ApiParam(value = "年份") @RequestParam String year, @RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "10") int size) {
         // HydFacilityInspect
-        return null;
+        return Response.ok(hydFacilityInspectService.queryAll(page, size));
     }
 
     @ApiOperation("本年度巡检维修详细数据")
-    @AnonymousGetMapping("/districtStat")
-    public Response<Map<String, Object>> yyy(@ApiParam(value = "年份") @RequestParam String year) {
+    @AnonymousGetMapping("/inspectMaintenance")
+    public Response<List<HydFacilityDistrictMonth>> inspectMaintenance(@ApiParam(value = "年份") @RequestParam String year) {
         // HydFacilityDistrict
-        return null;
+        // HydFacilityDistrictMonth
+        return Response.ok(hydFacilityDistrictMonthService.queryAll());
     }
 }

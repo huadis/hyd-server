@@ -61,4 +61,6 @@ public interface IHydFacilityYearService {
     HydFacilityYear findById(Long id);
 
     int batchSave(List<HydFacilityYear> facilityYears);
+
+    HydFacilityYear findLatestFacilityYear();
 }

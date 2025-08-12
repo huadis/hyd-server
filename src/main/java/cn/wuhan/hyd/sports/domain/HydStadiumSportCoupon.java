@@ -48,6 +48,18 @@ public class HydStadiumSportCoupon implements Serializable {
     @ApiModelProperty(value = "更新时间", hidden = true)
     private Timestamp updateTime;
 
+    // 保存前自动填充时间
+    @PrePersist
+    public void prePersist() {
+        this.createdTime = new Timestamp(System.currentTimeMillis());
+        this.updateTime = this.createdTime;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updateTime = new Timestamp(System.currentTimeMillis());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
