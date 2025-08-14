@@ -24,7 +24,7 @@ public interface HydInstructorAgeGrowthRepository extends JpaRepository<HydInstr
             "    personCount," +
             "    growthRate " +
             "FROM " +
-            "    hyd_instructor_age_growth " +
+            "    hyd_excel_instructor_age_growth " +
             "ORDER BY " +
             "    FIELD(ageInterval, '20岁以下', '20-30岁', '31-40岁', '41-50岁', '51-60岁', '61-70岁', '71-80岁', '80岁以上');", nativeQuery = true)
     List<Map<String, Object>> ageGrowthStat();

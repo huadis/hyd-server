@@ -2,27 +2,26 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydOrder;
-import cn.wuhan.hyd.sports.repository.HydOrderRepository;
+import cn.wuhan.hyd.sports.repository.HydOrderRepo;
 import cn.wuhan.hyd.sports.service.IHydOrderService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 功能说明： 场馆预定-订单数量 服务实现 <br>
+ * 功能说明： 订单表业务实现 <br>
  * 开发人员：@author huadi <br>
- * 开发时间: 2025年08月03日 <br>
+ * 开发时间: 2025年08月15日 <br>
  */
 @Service
+@RequiredArgsConstructor
 public class HydOrderServiceImpl implements IHydOrderService {
 
-    @Resource
-    private HydOrderRepository hydOrderRepository;
+    private final HydOrderRepo hydOrderRepo;
 
     @Override
     public PageResult<HydOrder> queryAll(Pageable pageable) {
@@ -31,65 +30,45 @@ public class HydOrderServiceImpl implements IHydOrderService {
 
     @Override
     public List<HydOrder> queryAll() {
-        return hydOrderRepository.findAll();
+        return hydOrderRepo.findAll();
     }
 
     @Override
-    @Transactional
+    public HydOrder findById(String id) {
+        return hydOrderRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("订单不存在，ID：" + id));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public HydOrder save(HydOrder hydOrder) {
-        return hydOrderRepository.save(hydOrder);
+        return hydOrderRepo.save(hydOrder);
     }
 
     @Override
-    @Transactional
-    public void deleteById(Long id) {
-        hydOrderRepository.deleteById(id);
+    @Transactional(rollbackFor = Exception.class)
+    public int batchSave(List<HydOrder> hydOrders) {
+        List<HydOrder> saved = hydOrderRepo.saveAll(hydOrders);
+        return saved.size();
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteById(String id) {
+        hydOrderRepo.deleteById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public HydOrder update(HydOrder hydOrder) {
-        if (hydOrder.getId() == null) {
-            throw new IllegalArgumentException("更新操作必须提供ID");
-        }
-        return hydOrderRepository.save(hydOrder);
-    }
-
-    @Override
-    public HydOrder findById(Long id) {
-        return hydOrderRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("未找到ID为" + id + "的记录"));
+        // 校验订单是否存在
+        findById(hydOrder.getId());
+        return hydOrderRepo.save(hydOrder);
     }
 
     @Override
     public Map<String, Object> orderStat() {
-        Map<String, Object> result = new HashMap<>();
-        result.put("sumOrderNum", hydOrderRepository.sumOrderNum());
-        result.put("sumOrderAmount", hydOrderRepository.sumOrderAmount());
-        result.put("monthOrderStat", hydOrderRepository.orderStat());
-        return result;
-    }
-
-    /**
-     * 批量保存 订单数量
-     *
-     * @param orders 订单数量 列表
-     * @return 保存成功的记录数
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public int batchSave(List<HydOrder> orders) {
-        // 验证参数
-        if (orders == null || orders.isEmpty()) {
-            throw new IllegalArgumentException("导入的数据列表不能为空");
-        }
-
-        // 限制批量导入的最大数量，防止过大数据量导致内存溢出
-        if (orders.size() > 1000) {
-            throw new IllegalArgumentException("单次导入最大支持1000条数据");
-        }
-
-        // 批量保存
-        List<HydOrder> savedList = hydOrderRepository.saveAll(orders);
-        return savedList.size();
+        // 若需实现订单统计逻辑，可在此补充（如基于JPA查询或原生SQL统计订单金额、数量等）
+        throw new UnsupportedOperationException("订单统计功能待实现");
     }
 }

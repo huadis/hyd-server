@@ -19,37 +19,37 @@ public interface HydPublicEventsRepository extends JpaRepository<HydPublicEvents
     /**
      * 总赛事场次
      */
-    @Query(value = "SELECT COUNT(id) AS count FROM hyd_public_events", nativeQuery = true)
+    @Query(value = "SELECT COUNT(id) AS count FROM hyd_excel_public_events", nativeQuery = true)
     Long countAll();
 
     /**
      * 总参与人数
      */
-    @Query(value = "SELECT SUM(participantCount) AS totalParticipantCount FROM hyd_public_events", nativeQuery = true)
+    @Query(value = "SELECT SUM(participantCount) AS totalParticipantCount FROM hyd_excel_public_events", nativeQuery = true)
     Long totalParticipantCount();
 
     /**
      * 国际赛事场次
      */
-    @Query(value = "SELECT COUNT(id) AS internationalEventCount FROM hyd_public_events WHERE eventLevel = '国际级'", nativeQuery = true)
+    @Query(value = "SELECT COUNT(id) AS internationalEventCount FROM hyd_excel_public_events WHERE eventLevel = '国际级'", nativeQuery = true)
     Long internationalEventCount();
 
     /**
      * 国家级赛事场次
      */
-    @Query(value = "SELECT COUNT(id) AS nationalEventCount FROM hyd_public_events WHERE eventLevel = '国家级'", nativeQuery = true)
+    @Query(value = "SELECT COUNT(id) AS nationalEventCount FROM hyd_excel_public_events WHERE eventLevel = '国家级'", nativeQuery = true)
     Long nationalEventCount();
 
     /**
      * 武汉品牌赛事
      */
-    @Query(value = "SELECT COUNT(id) AS wuhanBrandEventCount FROM hyd_public_events WHERE eventName LIKE '%武汉品牌%'", nativeQuery = true)
+    @Query(value = "SELECT COUNT(id) AS wuhanBrandEventCount FROM hyd_excel_public_events WHERE eventName LIKE '%武汉品牌%'", nativeQuery = true)
     Long wuhanBrandEventCount();
 
     /**
      * 全民健身赛事
      */
-    @Query(value = "SELECT COUNT(id) AS nationalFitnessEventCount FROM hyd_public_events WHERE eventLevel = '区级'", nativeQuery = true)
+    @Query(value = "SELECT COUNT(id) AS nationalFitnessEventCount FROM hyd_excel_public_events WHERE eventLevel = '区级'", nativeQuery = true)
     Long nationalFitnessEventCount();
 
     /**
@@ -60,7 +60,7 @@ public interface HydPublicEventsRepository extends JpaRepository<HydPublicEvents
             "MONTHNAME(eventDate) AS monthName, " +
             "COUNT(id) AS eventCount " +
             " FROM " +
-            "hyd_public_events GROUP BY MONTH(eventDate) ORDER BY MONTH(eventDate)", nativeQuery = true)
+            "hyd_excel_public_events GROUP BY MONTH(eventDate) ORDER BY MONTH(eventDate)", nativeQuery = true)
     List<Map<String, Object>> latestMonthStat();
 
     /**
@@ -70,7 +70,7 @@ public interface HydPublicEventsRepository extends JpaRepository<HydPublicEvents
             "sportItem, " +
             "COUNT(id) AS count " +
             " FROM " +
-            "hyd_public_events GROUP BY sportItem ORDER BY count DESC limit 5", nativeQuery = true)
+            "hyd_excel_public_events GROUP BY sportItem ORDER BY count DESC limit 5", nativeQuery = true)
     List<Map<String, Object>> sportItemTop5();
 
 

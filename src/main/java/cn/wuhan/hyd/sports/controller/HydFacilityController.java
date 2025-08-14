@@ -3,10 +3,10 @@ package cn.wuhan.hyd.sports.controller;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydFacilityDistrict;
-import cn.wuhan.hyd.sports.domain.HydFacilityDistrictMonth;
-import cn.wuhan.hyd.sports.domain.HydFacilityInspect;
-import cn.wuhan.hyd.sports.domain.HydFacilityYear;
+import cn.wuhan.hyd.sports.domain.HydResultFacilityDistrict;
+import cn.wuhan.hyd.sports.domain.HydResultFacilityDistrictMonth;
+import cn.wuhan.hyd.sports.domain.HydResultFacilityInspect;
+import cn.wuhan.hyd.sports.domain.HydResultFacilityYear;
 import cn.wuhan.hyd.sports.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,19 +31,19 @@ import java.util.Map;
 public class HydFacilityController {
 
     @Resource
-    private IHydFacilityYearService hydFacilityYearService;
+    private IHydResultFacilityYearService hydFacilityYearService;
     @Resource
-    private IHydFacilityService hydFacilityService;
+    private IHydResultFacilityService hydFacilityService;
     @Resource
-    private IHydFacilityInspectService hydFacilityInspectService;
+    private IHydResultFacilityInspectService hydFacilityInspectService;
     @Resource
-    private IHydFacilityDistrictService hydFacilityDistrictService;
+    private IHydResultFacilityDistrictService hydFacilityDistrictService;
     @Autowired
-    private IHydFacilityDistrictMonthService hydFacilityDistrictMonthService;
+    private IHydResultFacilityDistrictMonthService hydFacilityDistrictMonthService;
 
     @ApiOperation("健身点位")
     @AnonymousGetMapping("/fitnessOverview")
-    public Response<HydFacilityYear> FitnessOverview(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<HydResultFacilityYear> FitnessOverview(@ApiParam(value = "年份") @RequestParam String year) {
         // HydFacilityYear
         return Response.ok(hydFacilityYearService.findLatestFacilityYear());
     }
@@ -57,22 +57,22 @@ public class HydFacilityController {
 
     @ApiOperation("各区分布")
     @AnonymousGetMapping("/districtDistribution")
-    public Response<List<HydFacilityDistrict>> districtDistribution(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<HydResultFacilityDistrict>> districtDistribution(@ApiParam(value = "年份") @RequestParam String year) {
         // HydFacilityDistrictMonth
         return Response.ok(hydFacilityDistrictService.queryAll());
     }
 
     @ApiOperation("巡检维修动态")
     @AnonymousGetMapping("/inspect")
-    public Response<PageResult<HydFacilityInspect>> inspect(@ApiParam(value = "年份") @RequestParam String year, @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "10") int size) {
+    public Response<PageResult<HydResultFacilityInspect>> inspect(@ApiParam(value = "年份") @RequestParam String year, @RequestParam(defaultValue = "0") int page,
+                                                                  @RequestParam(defaultValue = "10") int size) {
         // HydFacilityInspect
         return Response.ok(hydFacilityInspectService.queryAll(page, size));
     }
 
     @ApiOperation("本年度巡检维修详细数据")
     @AnonymousGetMapping("/inspectMaintenance")
-    public Response<List<HydFacilityDistrictMonth>> inspectMaintenance(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<HydResultFacilityDistrictMonth>> inspectMaintenance(@ApiParam(value = "年份") @RequestParam String year) {
         // HydFacilityDistrict
         // HydFacilityDistrictMonth
         return Response.ok(hydFacilityDistrictMonthService.queryAll());

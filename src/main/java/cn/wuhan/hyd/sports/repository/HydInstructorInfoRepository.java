@@ -24,7 +24,7 @@ public interface HydInstructorInfoRepository extends JpaRepository<HydInstructor
             "COUNT(id) AS personCount, " +
             "ROUND(COUNT(id) / (SELECT COUNT(id) FROM hyd_instructor_info) * 100, 2) AS proportion " +
             " FROM " +
-            "hyd_instructor_info GROUP BY serviceProject " +
+            "hyd_excel_instructor_info GROUP BY serviceProject " +
             "ORDER BY personCount DESC LIMIT 15", nativeQuery = true)
     List<Map<String, Object>> serviceProjectTop15();
 
@@ -36,7 +36,7 @@ public interface HydInstructorInfoRepository extends JpaRepository<HydInstructor
             "COUNT(id) AS personCount, " +
             "CONCAT(ROUND(COUNT(id) / (SELECT COUNT(id) FROM hyd_instructor_info) * 100, 2), '%') AS proportion " +
             " FROM " +
-            "hyd_instructor_info GROUP BY gender ", nativeQuery = true)
+            "hyd_excel_instructor_info GROUP BY gender ", nativeQuery = true)
     List<Map<String, Object>> genderStat();
 
     /**
@@ -47,7 +47,7 @@ public interface HydInstructorInfoRepository extends JpaRepository<HydInstructor
             "COUNT(id) AS personCount, " +
             "CONCAT(ROUND(COUNT(id) / (SELECT COUNT(id) FROM hyd_instructor_info) * 100, 2), '%') AS proportion " +
             " FROM " +
-            "hyd_instructor_info GROUP BY level ", nativeQuery = true)
+            "hyd_excel_instructor_info GROUP BY level ", nativeQuery = true)
     List<Map<String, Object>> levelStat();
 
     /**
@@ -57,7 +57,7 @@ public interface HydInstructorInfoRepository extends JpaRepository<HydInstructor
             "region, " +
             "COUNT(id) AS instructorCount " +
             " FROM " +
-            "hyd_instructor_info GROUP BY region ORDER BY instructorCount DESC", nativeQuery = true)
+            "hyd_excel_instructor_info GROUP BY region ORDER BY instructorCount DESC", nativeQuery = true)
     List<Map<String, Object>> regionInstructorStat();
 
 }

@@ -2,8 +2,8 @@ package cn.wuhan.hyd.sports.controller;
 
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
-import cn.wuhan.hyd.sports.domain.HydCouponAmount;
-import cn.wuhan.hyd.sports.service.IHydCouponAmountService;
+import cn.wuhan.hyd.sports.domain.HydResultCouponAmount;
+import cn.wuhan.hyd.sports.service.IHydResultCouponAmountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -24,11 +24,11 @@ import javax.annotation.Resource;
 public class HydCouponController {
 
     @Resource
-    private IHydCouponAmountService hydCouponAmountService;
+    private IHydResultCouponAmountService hydCouponAmountService;
 
     @ApiOperation("概览")
     @AnonymousGetMapping("/overview")
-    public Response<HydCouponAmount> overview(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<HydResultCouponAmount> overview(@ApiParam(value = "年份") @RequestParam String year) {
         // HydCouponAmount
         return Response.ok(hydCouponAmountService.findLatestCouponAmount());
     }

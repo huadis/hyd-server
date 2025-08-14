@@ -24,55 +24,55 @@ import java.util.List;
 public class ImportController {
 
     @Resource
-    private IHydCouponAmountService hydCouponAmountService;
+    private IHydResultCouponAmountService hydCouponAmountService;
     @Resource
-    private IHydCouponStadiumTopService hydCouponStadiumTopService;
+    private IHydResultCouponStadiumTopService hydCouponStadiumTopService;
     @Resource
-    private IHydCouponUserAgeService hydCouponUserAgeService;
+    private IHydResultCouponUserAgeService hydCouponUserAgeService;
     @Resource
-    private IHydCouponUserService hydCouponUserService;
+    private IHydResultCouponUserService hydCouponUserService;
     @Resource
-    private IHydFacilityDistrictMonthService hydFacilityDistrictMonthService;
+    private IHydResultFacilityDistrictMonthService hydFacilityDistrictMonthService;
     @Resource
-    private IHydFacilityDistrictService hydFacilityDistrictService;
+    private IHydResultFacilityDistrictService hydFacilityDistrictService;
     @Resource
-    private IHydFacilityInspectService hydFacilityInspectService;
+    private IHydResultFacilityInspectService hydFacilityInspectService;
     @Resource
-    private IHydFacilityService hydFacilityService;
+    private IHydResultFacilityService hydFacilityService;
     @Resource
-    private IHydFacilityYearService hydFacilityYearService;
+    private IHydResultFacilityYearService hydFacilityYearService;
     @Resource
-    private IHydOrderMonthService hydOrderMonthService;
+    private IHydResultOrderMonthService hydOrderMonthService;
     @Resource
-    private IHydOrderService hydOrderService;
+    private IHydResultOrderService hydOrderService;
     @Resource
-    private IHydOrderSportService hydOrderSportService;
+    private IHydResultOrderSportService hydOrderSportService;
     @Resource
-    private IHydOrderStadiumService hydOrderStadiumService;
+    private IHydResultOrderStadiumService hydOrderStadiumService;
     @Resource
-    private IHydStadiumDistrictService hydStadiumDistrictService;
+    private IHydResultStadiumDistrictService hydStadiumDistrictService;
     @Resource
-    private IHydStadiumMapService hydStadiumMapService;
+    private IHydResultStadiumMapService hydStadiumMapService;
     @Resource
-    private IHydStadiumService hydStadiumService;
+    private IHydResultStadiumService hydStadiumService;
     @Resource
-    private IHydStadiumSportCouponService hydStadiumSportCouponService;
+    private IHydResultStadiumSportCouponService hydStadiumSportCouponService;
     @Resource
-    private IHydStockService hydStockService;
+    private IHydResultStockService hydStockService;
     @Resource
-    private IHydUserAgeService hydUserAgeService;
+    private IHydResultUserAgeService hydUserAgeService;
     @Resource
-    private IHydUserChannelService hydUserChannelService;
+    private IHydResultUserChannelService hydUserChannelService;
     @Resource
-    private IHydUserRegisterService hydUserRegisterService;
+    private IHydResultUserRegisterService hydUserRegisterService;
     @Resource
-    private IHydUserRepurchaseService hydUserRepurchaseService;
+    private IHydResultUserRepurchaseService hydUserRepurchaseService;
     @Resource
-    private IHydUserSexService hydUserSexService;
+    private IHydResultUserSexService hydUserSexService;
 
     @ApiOperation("消费券总金额-批量导入")
     @AnonymousPostMapping("/couponAmount")
-    public Response<Boolean> couponAmountImport(@RequestBody List<HydCouponAmount> couponAmounts) {
+    public Response<Boolean> couponAmountImport(@RequestBody List<HydResultCouponAmount> couponAmounts) {
         try {
             return Response.ok(hydCouponAmountService.batchSave(couponAmounts) > 0);
         } catch (IllegalArgumentException e) {
@@ -84,7 +84,7 @@ public class ImportController {
 
     @ApiOperation("消费券场馆预订Top-批量导入")
     @AnonymousPostMapping("/couponStadiumTop")
-    public Response<Boolean> couponStadiumTopImport(@RequestBody List<HydCouponStadiumTop> couponStadiumTops) {
+    public Response<Boolean> couponStadiumTopImport(@RequestBody List<HydResultCouponStadiumTop> couponStadiumTops) {
         try {
             return Response.ok(hydCouponStadiumTopService.batchSave(couponStadiumTops) > 0);
         } catch (IllegalArgumentException e) {
@@ -96,7 +96,7 @@ public class ImportController {
 
     @ApiOperation("券用户年龄分布-批量导入")
     @AnonymousPostMapping("/couponUserAge")
-    public Response<Boolean> couponUserAgeImport(@RequestBody List<HydCouponUserAge> couponUserAges) {
+    public Response<Boolean> couponUserAgeImport(@RequestBody List<HydResultCouponUserAge> couponUserAges) {
         try {
             return Response.ok(hydCouponUserAgeService.batchSave(couponUserAges) > 0);
         } catch (IllegalArgumentException e) {
@@ -108,7 +108,7 @@ public class ImportController {
 
     @ApiOperation("券用户分析-批量导入")
     @AnonymousPostMapping("/couponUser")
-    public Response<Boolean> couponUserImport(@RequestBody List<HydCouponUser> couponUsers) {
+    public Response<Boolean> couponUserImport(@RequestBody List<HydResultCouponUser> couponUsers) {
         try {
             return Response.ok(hydCouponUserService.batchSave(couponUsers) > 0);
         } catch (IllegalArgumentException e) {
@@ -120,7 +120,7 @@ public class ImportController {
 
     @ApiOperation("设施各区月数据-批量导入")
     @AnonymousPostMapping("/facilityDistrictMonth")
-    public Response<Boolean> facilityDistrictMonthImport(@RequestBody List<HydFacilityDistrictMonth> facilityDistrictMonths) {
+    public Response<Boolean> facilityDistrictMonthImport(@RequestBody List<HydResultFacilityDistrictMonth> facilityDistrictMonths) {
         try {
             return Response.ok(hydFacilityDistrictMonthService.batchSave(facilityDistrictMonths) > 0);
         } catch (IllegalArgumentException e) {
@@ -132,7 +132,7 @@ public class ImportController {
 
     @ApiOperation("设施各区分布-批量导入")
     @AnonymousPostMapping("/facilityDistrict")
-    public Response<Boolean> facilityDistrictImport(@RequestBody List<HydFacilityDistrict> facilityDistricts) {
+    public Response<Boolean> facilityDistrictImport(@RequestBody List<HydResultFacilityDistrict> facilityDistricts) {
         try {
             return Response.ok(hydFacilityDistrictService.batchSave(facilityDistricts) > 0);
         } catch (IllegalArgumentException e) {
@@ -144,7 +144,7 @@ public class ImportController {
 
     @ApiOperation("巡检动态-批量导入")
     @AnonymousPostMapping("/facilityInspect")
-    public Response<Boolean> facilityInspectImport(@RequestBody List<HydFacilityInspect> facilityInspects) {
+    public Response<Boolean> facilityInspectImport(@RequestBody List<HydResultFacilityInspect> facilityInspects) {
         try {
             return Response.ok(hydFacilityInspectService.batchSave(facilityInspects) > 0);
         } catch (IllegalArgumentException e) {
@@ -156,7 +156,7 @@ public class ImportController {
 
     @ApiOperation("设施全貌-批量导入")
     @AnonymousPostMapping("/facility")
-    public Response<Boolean> facilityImport(@RequestBody List<HydFacility> facilities) {
+    public Response<Boolean> facilityImport(@RequestBody List<HydResultFacility> facilities) {
         try {
             return Response.ok(hydFacilityService.batchSave(facilities) > 0);
         } catch (IllegalArgumentException e) {
@@ -168,7 +168,7 @@ public class ImportController {
 
     @ApiOperation("健身点位年数据-批量导入")
     @AnonymousPostMapping("/facilityYear")
-    public Response<Boolean> facilityYearImport(@RequestBody List<HydFacilityYear> facilityYears) {
+    public Response<Boolean> facilityYearImport(@RequestBody List<HydResultFacilityYear> facilityYears) {
         try {
             return Response.ok(hydFacilityYearService.batchSave(facilityYears) > 0);
         } catch (IllegalArgumentException e) {
@@ -180,7 +180,7 @@ public class ImportController {
 
     @ApiOperation("订单趋势-批量导入")
     @AnonymousPostMapping("/orderMonth")
-    public Response<Boolean> orderMonthImport(@RequestBody List<HydOrderMonth> orderMonths) {
+    public Response<Boolean> orderMonthImport(@RequestBody List<HydResultOrderMonth> orderMonths) {
         try {
             return Response.ok(hydOrderMonthService.batchSave(orderMonths) > 0);
         } catch (IllegalArgumentException e) {
@@ -192,7 +192,7 @@ public class ImportController {
 
     @ApiOperation("订单数量-批量导入")
     @AnonymousPostMapping("/order")
-    public Response<Boolean> orderImport(@RequestBody List<HydOrder> orders) {
+    public Response<Boolean> orderImport(@RequestBody List<HydResultOrder> orders) {
         try {
             return Response.ok(hydOrderService.batchSave(orders) > 0);
         } catch (IllegalArgumentException e) {
@@ -204,7 +204,7 @@ public class ImportController {
 
     @ApiOperation("项目消费券订单金额Top5-批量导入")
     @AnonymousPostMapping("/orderSport")
-    public Response<Boolean> orderSportImport(@RequestBody List<HydOrderSport> orderSports) {
+    public Response<Boolean> orderSportImport(@RequestBody List<HydResultOrderSport> orderSports) {
         try {
             return Response.ok(hydOrderSportService.batchSave(orderSports) > 0);
         } catch (IllegalArgumentException e) {
@@ -216,7 +216,7 @@ public class ImportController {
 
     @ApiOperation("场馆消费券订单金额Top5-批量导入")
     @AnonymousPostMapping("/orderStadium")
-    public Response<Boolean> orderStadiumImport(@RequestBody List<HydOrderStadium> orderStadiums) {
+    public Response<Boolean> orderStadiumImport(@RequestBody List<HydResultOrderStadium> orderStadiums) {
         try {
             return Response.ok(hydOrderStadiumService.batchSave(orderStadiums) > 0);
         } catch (IllegalArgumentException e) {
@@ -228,7 +228,7 @@ public class ImportController {
 
     @ApiOperation("在线场馆各区情况-批量导入")
     @AnonymousPostMapping("/stadiumDistrict")
-    public Response<Boolean> stadiumDistrictImport(@RequestBody List<HydStadiumDistrict> stadiumDistricts) {
+    public Response<Boolean> stadiumDistrictImport(@RequestBody List<HydResultStadiumDistrict> stadiumDistricts) {
         try {
             return Response.ok(hydStadiumDistrictService.batchSave(stadiumDistricts) > 0);
         } catch (IllegalArgumentException e) {
@@ -240,7 +240,7 @@ public class ImportController {
 
     @ApiOperation("电子地图-批量导入")
     @AnonymousPostMapping("/stadiumMap")
-    public Response<Boolean> stadiumMapImport(@RequestBody List<HydStadiumMap> stadiumMaps) {
+    public Response<Boolean> stadiumMapImport(@RequestBody List<HydResultStadiumMap> stadiumMaps) {
         try {
             return Response.ok(hydStadiumMapService.batchSave(stadiumMaps) > 0);
         } catch (IllegalArgumentException e) {
@@ -252,7 +252,7 @@ public class ImportController {
 
     @ApiOperation("在线场馆数量-批量导入")
     @AnonymousPostMapping("/stadium")
-    public Response<Boolean> stadiumImport(@RequestBody List<HydStadium> stadiums) {
+    public Response<Boolean> stadiumImport(@RequestBody List<HydResultStadium> stadiums) {
         try {
             return Response.ok(hydStadiumService.batchSave(stadiums) > 0);
         } catch (IllegalArgumentException e) {
@@ -264,7 +264,7 @@ public class ImportController {
 
     @ApiOperation("运动项目分布用券数占比-批量导入")
     @AnonymousPostMapping("/stadiumSportCoupon")
-    public Response<Boolean> stadiumSportCouponImport(@RequestBody List<HydStadiumSportCoupon> stadiumSportCoupons) {
+    public Response<Boolean> stadiumSportCouponImport(@RequestBody List<HydResultStadiumSportCoupon> stadiumSportCoupons) {
         try {
             return Response.ok(hydStadiumSportCouponService.batchSave(stadiumSportCoupons) > 0);
         } catch (IllegalArgumentException e) {
@@ -276,7 +276,7 @@ public class ImportController {
 
     @ApiOperation("消费券领用券-批量导入")
     @AnonymousPostMapping("/stock")
-    public Response<Boolean> stockImport(@RequestBody List<HydStock> stocks) {
+    public Response<Boolean> stockImport(@RequestBody List<HydResultStock> stocks) {
         try {
             return Response.ok(hydStockService.batchSave(stocks) > 0);
         } catch (IllegalArgumentException e) {
@@ -288,7 +288,7 @@ public class ImportController {
 
     @ApiOperation("年龄占比-批量导入")
     @AnonymousPostMapping("/userAge")
-    public Response<Boolean> userAgeImport(@RequestBody List<HydUserAge> userAges) {
+    public Response<Boolean> userAgeImport(@RequestBody List<HydResultUserAge> userAges) {
         try {
             return Response.ok(hydUserAgeService.batchSave(userAges) > 0);
         } catch (IllegalArgumentException e) {
@@ -300,7 +300,7 @@ public class ImportController {
 
     @ApiOperation("用户来源渠道-批量导入")
     @AnonymousPostMapping("/userChannel")
-    public Response<Boolean> userChannelImport(@RequestBody List<HydUserChannel> userChannels) {
+    public Response<Boolean> userChannelImport(@RequestBody List<HydResultUserChannel> userChannels) {
         try {
             return Response.ok(hydUserChannelService.batchSave(userChannels) > 0);
         } catch (IllegalArgumentException e) {
@@ -312,7 +312,7 @@ public class ImportController {
 
     @ApiOperation("每月新增用户-批量导入")
     @AnonymousPostMapping("/userRegister")
-    public Response<Boolean> userRegisterImport(@RequestBody List<HydUserRegister> userRegisters) {
+    public Response<Boolean> userRegisterImport(@RequestBody List<HydResultUserRegister> userRegisters) {
         try {
             return Response.ok(hydUserRegisterService.batchSave(userRegisters) > 0);
         } catch (IllegalArgumentException e) {
@@ -324,7 +324,7 @@ public class ImportController {
 
     @ApiOperation("复购率-批量导入")
     @AnonymousPostMapping("/userRepurchase")
-    public Response<Boolean> userRepurchaseImport(@RequestBody List<HydUserRepurchase> userRepurchases) {
+    public Response<Boolean> userRepurchaseImport(@RequestBody List<HydResultUserRepurchase> userRepurchases) {
         try {
             return Response.ok(hydUserRepurchaseService.batchSave(userRepurchases) > 0);
         } catch (IllegalArgumentException e) {
@@ -336,7 +336,7 @@ public class ImportController {
 
     @ApiOperation("男女占比-批量导入")
     @AnonymousPostMapping("/userSex")
-    public Response<Boolean> userSexImport(@RequestBody List<HydUserSex> userSexes) {
+    public Response<Boolean> userSexImport(@RequestBody List<HydResultUserSex> userSexes) {
         try {
             return Response.ok(hydUserSexService.batchSave(userSexes) > 0);
         } catch (IllegalArgumentException e) {

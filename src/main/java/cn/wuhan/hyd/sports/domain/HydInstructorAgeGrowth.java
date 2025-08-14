@@ -19,7 +19,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "hyd_instructor_age_growth")
+@Table(name = "hyd_excel_instructor_age_growth")
 public class HydInstructorAgeGrowth implements Serializable {
 
     @Id

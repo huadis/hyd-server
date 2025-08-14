@@ -20,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "hyd_industry_entity_count_ratio")
+@Table(name = "hyd_excel_industry_entity_count_ratio")
 public class HydIndustryEntityCountRatio implements Serializable {
 
     @Id

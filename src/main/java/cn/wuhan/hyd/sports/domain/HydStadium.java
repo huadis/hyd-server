@@ -3,84 +3,129 @@ package cn.wuhan.hyd.sports.domain;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.Date;
+
 /**
- * 功能说明：场馆预定-在线场馆数量 <br>
+ * 功能说明：培训场馆表实体类 <br>
  * 开发人员：@author huadi <br>
- * 开发时间: 2025年08月03日 <br>
+ * 开发时间: 2025年08月15日 <br>
  */
 @Entity
+@Table(name = "hyd_stadium")
 @Getter
 @Setter
-@Table(name = "hyd_stadium")
 public class HydStadium implements Serializable {
 
     @Id
     @Column(name = "id")
-    @NotNull
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(value = "主键ID", hidden = true)
-    private Long id;
+    @ApiModelProperty(value = "主键id")
+    private String id;
 
-    @Column(name = "onlineStadiumNum")
-    @ApiModelProperty(value = "在线场馆数量")
-    private String onlineStadiumNum;
+    @Column(name = "tenantId")
+    @ApiModelProperty(value = "组织id")
+    private String tenantId;
 
-    @Column(name = "couponStadiumNum")
-    @ApiModelProperty(value = "消费券场馆数量")
-    private String couponStadiumNum;
+    @Column(name = "stadiumName")
+    @ApiModelProperty(value = "名称")
+    private String stadiumName;
 
-    @Column(name = "socialStadiumNum")
-    @ApiModelProperty(value = "社会场馆数量")
-    private String socialStadiumNum;
+    @Column(name = "shortName")
+    @ApiModelProperty(value = "简称")
+    private String shortName;
 
-    @Column(name = "publicStadiumNum")
-    @ApiModelProperty(value = "公共场馆数量")
-    private String publicStadiumNum;
+    @Column(name = "province")
+    @ApiModelProperty(value = "省编码")
+    private String province;
 
-    @Column(name = "useCouponStadiumNum")
-    @ApiModelProperty(value = "累计用券场馆数量")
-    private String useCouponStadiumNum;
+    @Column(name = "city")
+    @ApiModelProperty(value = "市编码")
+    private String city;
 
-    @Column(name = "createdTime")
+    @Column(name = "district")
+    @ApiModelProperty(value = "区编码")
+    private String district;
+
+    @Column(name = "provinceName")
+    @ApiModelProperty(value = "省名称")
+    private String provinceName;
+
+    @Column(name = "cityName")
+    @ApiModelProperty(value = "市名称")
+    private String cityName;
+
+    @Column(name = "districtName")
+    @ApiModelProperty(value = "区名称")
+    private String districtName;
+
+    @Column(name = "street")
+    @ApiModelProperty(value = "街道")
+    private String street;
+
+    @Column(name = "address")
+    @ApiModelProperty(value = "地址")
+    private String address;
+
+    @Column(name = "location")
+    @ApiModelProperty(value = "经纬度")
+    private String location;
+
+    @Column(name = "area")
+    @ApiModelProperty(value = "面积")
+    private String area;
+
+    @Column(name = "holdNum")
+    @ApiModelProperty(value = "可容纳人数")
+    private Integer holdNum;
+
+    @Column(name = "contactName")
+    @ApiModelProperty(value = "联系人")
+    private String contactName;
+
+    @Column(name = "telephone")
+    @ApiModelProperty(value = "联系电话")
+    private String telephone;
+
+    @Column(name = "online")
+    @ApiModelProperty(value = "是否上线（0-未上线，1-上线）")
+    private Integer online;
+
+    @Column(name = "investmentNature")
+    @ApiModelProperty(value = "场馆性质（0-社会的，1-公共的）")
+    private Integer investmentNature;
+
+    @Column(name = "disabled")
+    @ApiModelProperty(value = "状态（0-启用，1-停用）")
+    private Integer disabled;
+
+    @CreatedDate
+    @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
-    private Timestamp createdTime;
+    private Date createdTime;
 
-    @Column(name = "updateTime")
+    @LastModifiedDate
+    @Column(name = "updatedTime")
     @ApiModelProperty(value = "更新时间", hidden = true)
-    private Timestamp updateTime;
-
-    // 保存前自动填充时间
-    @PrePersist
-    public void prePersist() {
-        this.createdTime = new Timestamp(System.currentTimeMillis());
-        this.updateTime = this.createdTime;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        this.updateTime = new Timestamp(System.currentTimeMillis());
-    }
+    private Date updatedTime;
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         HydStadium that = (HydStadium) o;
-        return Objects.equals(id, that.id);
+        return id != null && id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getClass().hashCode();
     }
 }

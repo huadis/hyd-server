@@ -20,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "hyd_instructor_info")
+@Table(name = "hyd_excel_instructor_info")
 public class HydInstructorInfo implements Serializable {
 
     @Id

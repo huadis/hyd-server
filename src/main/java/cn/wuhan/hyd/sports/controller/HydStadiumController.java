@@ -26,23 +26,23 @@ import java.util.Map;
 public class HydStadiumController {
 
     @Resource
-    private IHydStadiumDistrictService hydStadiumDistrictService;
+    private IHydResultStadiumDistrictService hydStadiumDistrictService;
     @Resource
-    private IHydCouponStadiumTopService hydCouponStadiumTopService;
+    private IHydResultCouponStadiumTopService hydCouponStadiumTopService;
     @Resource
-    private IHydOrderSportService hydOrderSportService;
+    private IHydResultOrderSportService hydOrderSportService;
     @Resource
-    private IHydOrderService hydOrderService;
+    private IHydResultOrderService hydOrderService;
     @Resource
-    private IHydUserChannelService hydUserChannelService;
+    private IHydResultUserChannelService hydUserChannelService;
     @Resource
-    private IHydUserAgeService hydUserAgeService;
+    private IHydResultUserAgeService hydUserAgeService;
     @Resource
-    private IHydUserSexService hydUserSexService;
+    private IHydResultUserSexService hydUserSexService;
     @Resource
-    private IHydUserRepurchaseService hydUserRepurchaseService;
+    private IHydResultUserRepurchaseService hydUserRepurchaseService;
     @Resource
-    private IHydUserRegisterService hydUserRegisterService;
+    private IHydResultUserRegisterService hydUserRegisterService;
 
     /**
      * 各区场馆数量统计数据

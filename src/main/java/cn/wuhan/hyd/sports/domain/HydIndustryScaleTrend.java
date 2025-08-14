@@ -20,7 +20,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "hyd_industry_scale_trend")
+@Table(name = "hyd_excel_industry_scale_trend")
 public class HydIndustryScaleTrend implements Serializable {
 
     @Id
