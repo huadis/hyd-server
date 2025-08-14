@@ -8,7 +8,6 @@ import cn.wuhan.hyd.sports.domain.HydFacilityDistrictMonth;
 import cn.wuhan.hyd.sports.domain.HydFacilityInspect;
 import cn.wuhan.hyd.sports.domain.HydFacilityYear;
 import cn.wuhan.hyd.sports.service.*;
-import cn.wuhan.hyd.sports.service.impl.HydFacilityDistrictMonthServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

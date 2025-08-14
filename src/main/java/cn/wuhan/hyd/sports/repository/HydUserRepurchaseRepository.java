@@ -20,12 +20,11 @@ public interface HydUserRepurchaseRepository extends JpaRepository<HydUserRepurc
      * @return 包含
      */
     @Query(value = "SELECT " +
-            "`1Num` AS onceCount, " +
-            "bt2and5Num AS bt2and5Count, " +
-            "over5Num AS over5Count, " +
-            "over10Num AS over10Count, " +
-            "over50Num AS over50Count, " +
-            "(`1Num` + `bt2and5Num` + `over5Num` + `over10Num` + `over50Num`) AS totalCount " +
+            "`1Num` AS '1次', " +
+            "bt2and5Num AS '2-5次', " +
+            "over5Num AS '5次-10次', " +
+            "over10Num AS '10次-50次', " +
+            "over50Num AS '50次以上' " +
             "FROM hyd_user_repurchase " +
             "ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
     Map<String, Object> countStadiumUserRepurchaseStat();

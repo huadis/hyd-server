@@ -1,12 +1,10 @@
 package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydUserAge;
-import cn.wuhan.hyd.sports.resp.StadiumUserAgeStatResp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,18 +16,16 @@ import java.util.Map;
 public interface HydUserAgeRepository extends JpaRepository<HydUserAge, Long> {
     /**
      * 统计用户渠道
-     *
-     * @return 包含 实名用户数、领券用户数、用券用户数、下单用户数
      */
     @Query(value = "SELECT " +
-            "under18Num AS under18Count, " +
-            "bt18and25Num AS bt18and25Count, " +
-            "bt26and30Num AS bt26and30Count, " +
-            "bt31and35Num AS bt31and35Count, " +
-            "bt36and40Num AS bt36and40Count, " +
-            "bt41and45Num AS bt41and45Count, " +
-            "bt46and50Num AS bt46and50Count, " +
-            "over50Num AS over50Count " +
+            "under18Num AS '18岁以下', " +
+            "bt18and25Num AS '19岁-25岁', " +
+            "bt26and30Num AS '26岁-30岁', " +
+            "bt31and35Num AS '31岁-35岁', " +
+            "bt36and40Num AS '36岁-40岁', " +
+            "bt41and45Num AS '41岁-45岁', " +
+            "bt46and50Num AS '46岁-50岁', " +
+            "over50Num AS '50岁以上' " +
             "FROM hyd_user_age " +
             "ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
     Map<String, Object> countStadiumUserAgeStat();

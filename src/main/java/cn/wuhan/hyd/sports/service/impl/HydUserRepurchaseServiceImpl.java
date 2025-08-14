@@ -4,15 +4,13 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydUserRepurchase;
 import cn.wuhan.hyd.sports.repository.HydUserRepurchaseRepository;
 import cn.wuhan.hyd.sports.service.IHydUserRepurchaseService;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 功能说明： 场馆预定-复购率 <br>
@@ -91,6 +89,22 @@ public class HydUserRepurchaseServiceImpl implements IHydUserRepurchaseService {
             tmp.put("count", tmpV);
             tmp.put("percent", percentage);
             result.add(tmp);
+        });
+        // 排序
+        result.sort((o1, o2) -> {
+            // 定义年龄段的正确顺序
+            List<String> order = Arrays.asList(
+                    "1次",
+                    "2-5次",
+                    "5次-10次",
+                    "10次-50次",
+                    "50次以上"
+            );
+            // 根据在顺序列表中的索引进行比较
+            return Integer.compare(
+                    order.indexOf(MapUtils.getString(o1, "key")),
+                    order.indexOf(MapUtils.getString(o2, "key"))
+            );
         });
         return result;
     }

@@ -1,18 +1,17 @@
 package cn.wuhan.hyd.sports.service.impl;
 
+import cn.wuhan.hyd.framework.utils.MapUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydUserAge;
 import cn.wuhan.hyd.sports.repository.HydUserAgeRepository;
 import cn.wuhan.hyd.sports.service.IHydUserAgeService;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 功能说明： 场馆预定-年龄占比 服务实现 <br>
@@ -91,6 +90,25 @@ public class HydUserAgeServiceImpl implements IHydUserAgeService {
             tmp.put("count", tmpV);
             tmp.put("percent", percentage);
             result.add(tmp);
+        });
+        // 排序
+        result.sort((o1, o2) -> {
+            // 定义年龄段的正确顺序
+            List<String> order = Arrays.asList(
+                    "18岁以下",
+                    "19岁-25岁",
+                    "26岁-30岁",
+                    "31岁-35岁",
+                    "36岁-40岁",
+                    "41岁-45岁",
+                    "46岁-50岁",
+                    "50岁以上"
+            );
+            // 根据在顺序列表中的索引进行比较
+            return Integer.compare(
+                    order.indexOf(MapUtils.getString(o1, "key")),
+                    order.indexOf(MapUtils.getString(o2, "key"))
+            );
         });
         return result;
     }

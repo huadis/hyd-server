@@ -60,7 +60,19 @@ public class ExcelUtils {
                                         java.sql.Date sqlDate = new java.sql.Date(date.getTime());
                                         rowData.put(headers.get(cellIndex), sqlDate);
                                     } else {
-                                        rowData.put(headers.get(cellIndex), cell.getNumericCellValue());
+                                        double value = cell.getNumericCellValue();
+                                        // 尝试转换为日期（即使不是显式日期格式）
+                                        if (value >= 25569) { // 1970-01-01 对应的Excel数字是25569，过滤无效日期
+                                            try {
+                                                Date date = DateUtil.getJavaDate(value);
+                                                java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+                                                rowData.put(headers.get(cellIndex), sqlDate);
+                                            } catch (Exception e) {
+                                                rowData.put(headers.get(cellIndex), value);
+                                            }
+                                        } else {
+                                            rowData.put(headers.get(cellIndex), value);
+                                        }
                                     }
                                     break;
                                 case BOOLEAN:

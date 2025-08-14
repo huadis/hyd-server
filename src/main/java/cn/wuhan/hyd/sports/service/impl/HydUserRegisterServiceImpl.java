@@ -5,13 +5,13 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydUserRegister;
 import cn.wuhan.hyd.sports.repository.HydUserRegisterRepository;
 import cn.wuhan.hyd.sports.service.IHydUserRegisterService;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 功能说明： 场馆预定-每月新增用户 服务实现 <br>
@@ -63,7 +63,30 @@ public class HydUserRegisterServiceImpl implements IHydUserRegisterService {
 
     @Override
     public List<Map<String, Object>> countStadiumUserGrowthStat() {
-        return hydUserRegisterRepository.countStadiumUserGrowthStat();
+        List<Map<String, Object>> list = hydUserRegisterRepository.countStadiumUserGrowthStat();
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Map<String, Object> tmpMap : list) {
+            Map<String, Object> map = new HashMap<>(tmpMap);
+            String monthName = MapUtils.getString(map, "monthName");
+            if (!monthName.endsWith("月")) {
+                map.put("monthName", monthName + "月");
+            }
+            result.add(map);
+        }
+        // 排序
+        result.sort((o1, o2) -> {
+            // 定义年龄段的正确顺序
+            List<String> order = Arrays.asList(
+                    "1月", "2月", "3月", "4月", "5月", "6月",
+                    "7月", "8月", "9月", "10月", "11月", "12月"
+            );
+            // 根据在顺序列表中的索引进行比较
+            return Integer.compare(
+                    order.indexOf(MapUtils.getString(o1, "monthName")),
+                    order.indexOf(MapUtils.getString(o2, "monthName"))
+            );
+        });
+        return result;
     }
 
     /**

@@ -27,6 +27,10 @@ public class HydFacilityDistrict implements Serializable {
     @ApiModelProperty(value = "主键ID", hidden = true)
     private Long id;
 
+    @Column(name = "facilityTypeName")
+    @ApiModelProperty(value = "设施类型名称")
+    private String facilityTypeName;
+
     @Column(name = "districtName")
     @ApiModelProperty(value = "区名称")
     private String districtName;
