@@ -2,7 +2,11 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydExcelIndustryGoodsPurchaseRate;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明： 体育产业-居民体育用品购买率表 <br>
@@ -11,4 +15,15 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface HydExcelIndustryGoodsPurchaseRateRepo extends JpaRepository<HydExcelIndustryGoodsPurchaseRate, Long> {
+
+    @Query(value = "SELECT \n" +
+            "    entityType \n" +
+            "    growthRate \n" +
+            "FROM \n" +
+            "    hyd_excel_industry_goods_purchase_rate\n" +
+            "WHERE \n" +
+            "    statisticalYear = 2025\n" +
+            "ORDER BY \n" +
+            "    growthRate DESC;", nativeQuery = true)
+    List<Map<String,Object>> stat();
 }

@@ -2,7 +2,11 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydExcelIndustryEmployeeCount;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明： 体育产业-从业人员数量（分类统计）表 <br>
@@ -11,4 +15,15 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface HydExcelIndustryEmployeeCountRepo extends JpaRepository<HydExcelIndustryEmployeeCount, Long> {
+
+    @Query(value = "SELECT \n" +
+            "    entityType \n" +
+            "    personCount \n" +
+            "FROM \n" +
+            "    hyd_excel_industry_employee_count\n" +
+            "WHERE \n" +
+            "    statisticalYear = 2025\n" +
+            "ORDER BY \n" +
+            "    personCount DESC;", nativeQuery = true)
+    List<Map<String,Object>> stat();
 }

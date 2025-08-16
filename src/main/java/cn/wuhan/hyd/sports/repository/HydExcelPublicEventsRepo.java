@@ -74,4 +74,43 @@ public interface HydExcelPublicEventsRepo extends JpaRepository<HydExcelPublicEv
     List<Map<String, Object>> sportItemTop5();
 
 
+    /**
+     * 参赛人数人档
+     */
+    @Query(value = "SELECT\n" +
+            "    CASE \n" +
+            "        WHEN participantCount < 100 THEN '<100人'\n" +
+            "        WHEN participantCount BETWEEN 100 AND 300 THEN '100-300人'\n" +
+            "        WHEN participantCount BETWEEN 301 AND 1000 THEN '301-1000人'\n" +
+            "        WHEN participantCount > 1000 THEN '>1000人'\n" +
+            "        ELSE '其他' \n" +
+            "    END AS participant_level,\n" +
+            "    COUNT(*) AS count\n" +
+            "FROM\n" +
+            "    hyd_excel_public_events\n" +
+            "GROUP BY\n" +
+            "    CASE \n" +
+            "        WHEN participantCount < 100 THEN '<100人'\n" +
+            "        WHEN participantCount BETWEEN 100 AND 300 THEN '100-300人'\n" +
+            "        WHEN participantCount BETWEEN 301 AND 1000 THEN '301-1000人'\n" +
+            "        WHEN participantCount > 1000 THEN '>1000人'\n" +
+            "        ELSE '其他' \n" +
+            "    END\n" +
+            "ORDER BY\n" +
+            "    FIELD(participant_level, '<100人', '100-300人', '301-1000人', '>1000人');", nativeQuery = true)
+    List<Map<String, Object>> participantCountStat();
+
+
+    @Query(value = "SELECT \n" +
+            "    eventName ,\n" +
+            "    eventDate \n" +
+            "FROM \n" +
+            "    hyd_excel_public_events\n" +
+            "WHERE \n" +
+            "    TO_CHAR(eventDate, 'MM') = TO_CHAR(SYSDATE, 'MM')\n" +
+            "    AND TO_CHAR(eventDate, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')\n" +
+            "ORDER BY \n" +
+            "    eventDate;", nativeQuery = true)
+    List<Map<String, Object>> currentMouthEvents();
+
 }

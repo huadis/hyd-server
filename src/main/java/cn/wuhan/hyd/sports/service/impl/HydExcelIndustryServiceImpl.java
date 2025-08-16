@@ -399,4 +399,74 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
         industryEmployeeCountRepo.saveAll(employeeCounts);
         return true;
     }
+
+    /**
+     * 总览
+     *
+     * @return
+     */
+    @Override
+    public HydExcelIndustryCoreIndicators overview() {
+        return industryCoreIndicatorsRepo.overview();
+    }
+
+    /**
+     * 体育产业总规模
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> industryScaleTrendStat() {
+        return industryScaleTrendRepo.stat();
+    }
+
+    /**
+     * 体育产业市场主体数量
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> industryEntityCountRatioStat() {
+        return industryEntityCountRatioRepo.stat();
+    }
+
+    /**
+     * 体育产业总增速和增加值
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> industryGrowthValueTrendStat() {
+        return industryGrowthValueTrendRepo.stat();
+    }
+
+    /**
+     * 居民体育用品购买率
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> industryGoodsPurchaseRateStat() {
+        return industryGoodsPurchaseRateRepo.stat();
+    }
+
+    /**
+     * 体育产业从业人员数量
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> industryEmployeeCountStat() {
+        return industryEmployeeCountRepo.stat();
+    }
+
+    /**
+     * 居民体育培训项目参与率
+     *
+     * @return
+     */
+    @Override
+    public List<Map<String, Object>> industryTrainingParticipationRateStat() {
+        return industryTrainingParticipationRateRepo.stat();
+    }
 }

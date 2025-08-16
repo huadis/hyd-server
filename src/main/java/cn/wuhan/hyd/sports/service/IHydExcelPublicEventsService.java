@@ -72,4 +72,8 @@ public interface IHydExcelPublicEventsService {
 
     List<Map<String, Object>> sportItemTop5();
 
+    List<Map<String, Object>> participantCountStat();
+
+    List<Map<String, Object>> currentMouthEvents();
+
 }

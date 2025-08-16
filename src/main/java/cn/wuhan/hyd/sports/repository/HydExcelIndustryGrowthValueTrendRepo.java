@@ -2,7 +2,11 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydExcelIndustryGrowthValueTrend;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明： 体育产业-总增速和增加值（年度趋势）表 <br>
@@ -11,4 +15,16 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface HydExcelIndustryGrowthValueTrendRepo extends JpaRepository<HydExcelIndustryGrowthValueTrend, Long> {
+
+    @Query(value = "SELECT \n" +
+            "    statisticalYear ,\n" +
+            "    totalOutputValue ,\n" +
+            "    growthRate \n" +
+            "FROM \n" +
+            "    hyd_excel_industry_growth_value_trend\n" +
+            "WHERE \n" +
+            "    statisticalYear BETWEEN 2018 AND 2024\n" +
+            "ORDER BY \n" +
+            "    statisticalYear\n", nativeQuery = true)
+    List<Map<String,Object>> stat();
 }

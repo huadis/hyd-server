@@ -344,4 +344,53 @@ public interface IHydExcelIndustryService {
 
 
     boolean importExcel(Map<String, List<Map<String, Object>>> sheetMapData);
+
+    /**
+     * 总览
+     *
+     * @return
+     */
+    HydExcelIndustryCoreIndicators overview();
+
+    /**
+     * 体育产业总规模
+     *
+     * @return
+     */
+    List<Map<String, Object>> industryScaleTrendStat();
+
+    /**
+     * 体育产业市场主体数量
+     *
+     * @return
+     */
+    List<Map<String, Object>> industryEntityCountRatioStat();
+
+    /**
+     * 体育产业总增速和增加值
+     *
+     * @return
+     */
+    List<Map<String, Object>> industryGrowthValueTrendStat();
+
+    /**
+     * 居民体育用品购买率
+     *
+     * @return
+     */
+    List<Map<String, Object>> industryGoodsPurchaseRateStat();
+
+    /**
+     * 体育产业从业人员数量
+     *
+     * @return
+     */
+    List<Map<String, Object>> industryEmployeeCountStat();
+
+    /**
+     * 居民体育培训项目参与率
+     *
+     * @return
+     */
+    List<Map<String, Object>> industryTrainingParticipationRateStat();
 }

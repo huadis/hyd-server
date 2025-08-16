@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydExcelIndustryCoreIndicators;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -11,4 +12,14 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface HydExcelIndustryCoreIndicatorsRepo extends JpaRepository<HydExcelIndustryCoreIndicators, Long> {
+
+    /**
+     * 总览
+     */
+    @Query(value = "SELECT " +
+            " * " +
+            "FROM " +
+            "    hyd_excel_industry_core_indicators " +
+            "ORDER BY createdTime limit 1", nativeQuery = true)
+    HydExcelIndustryCoreIndicators overview();
 }

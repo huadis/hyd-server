@@ -133,4 +133,21 @@ public class HydPublicEventController {
         return Response.ok(hydPublicEventsService.sportItemTop5());
     }
 
+    /**
+     * 参赛人数人档
+     */
+    @ApiOperation("参赛人数人档")
+    @AnonymousGetMapping("/participantCountStat")
+    public Response<List<Map<String, Object>>> participantCountStat(@ApiParam(value = "年份") @RequestParam String year) {
+        return Response.ok(hydPublicEventsService.participantCountStat());
+    }
+
+    /**
+     * 本月赛事
+     */
+    @ApiOperation("本月赛事")
+    @AnonymousGetMapping("/currentMouthEvents")
+    public Response<List<Map<String, Object>>> currentMouthEvents(@ApiParam(value = "年份") @RequestParam String year) {
+        return Response.ok(hydPublicEventsService.currentMouthEvents());
+    }
 }

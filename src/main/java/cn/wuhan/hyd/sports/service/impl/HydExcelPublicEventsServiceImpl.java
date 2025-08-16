@@ -12,10 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 功能说明：  <br>
@@ -105,6 +102,16 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     @Override
     public List<Map<String, Object>> sportItemTop5() {
         return hydExcelPublicEventsRepo.sportItemTop5();
+    }
+
+    @Override
+    public List<Map<String, Object>> participantCountStat() {
+        return hydExcelPublicEventsRepo.participantCountStat();
+    }
+
+    @Override
+    public List<Map<String, Object>> currentMouthEvents() {
+        return hydExcelPublicEventsRepo.currentMouthEvents();
     }
 
 }

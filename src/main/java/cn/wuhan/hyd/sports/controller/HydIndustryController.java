@@ -357,4 +357,67 @@ public class HydIndustryController {
     public Response<HydExcelIndustryTrainingParticipationRate> industryTrainingParticipationRateUpdate(@RequestBody HydExcelIndustryTrainingParticipationRate industryTrainingParticipationRate) {
         return Response.ok(hydIndustryService.updateIndustryTrainingParticipationRate(industryTrainingParticipationRate));
     }
+
+    /**
+     * 总览
+     */
+    @ApiOperation("总览")
+    @AnonymousGetMapping("/overview")
+    public Response<HydExcelIndustryCoreIndicators> overview(@ApiParam(value = "年份") @RequestParam String year) {
+        return Response.ok(hydIndustryService.overview());
+    }
+
+    /**
+     * 体育产业总规模
+     */
+    @ApiOperation("体育产业总规模")
+    @AnonymousGetMapping("/industryScaleTrendStat")
+    public Response<List<Map<String, Object>>> industryScaleTrendStat(@ApiParam(value = "年份") @RequestParam String year) {
+        return Response.ok(hydIndustryService.industryScaleTrendStat());
+    }
+
+    /**
+     * 体育产业市场主体数量
+     */
+    @ApiOperation("体育产业市场主体数量")
+    @AnonymousGetMapping("/industryEntityCountRatioStat")
+    public Response<List<Map<String, Object>>> industryEntityCountRatioStat(@ApiParam(value = "年份") @RequestParam String year) {
+        return Response.ok(hydIndustryService.industryEntityCountRatioStat());
+    }
+
+    /**
+     * 体育产业总增速和增加值
+     */
+    @ApiOperation("体育产业总增速和增加值")
+    @AnonymousGetMapping("/industryGrowthValueTrendStat")
+    public Response<List<Map<String, Object>>> industryGrowthValueTrendStat(@ApiParam(value = "年份") @RequestParam String year) {
+        return Response.ok(hydIndustryService.industryGrowthValueTrendStat());
+    }
+
+    /**
+     * 居民体育用品购买率
+     */
+    @ApiOperation("居民体育用品购买率")
+    @AnonymousGetMapping("/industryGoodsPurchaseRateStat")
+    public Response<List<Map<String, Object>>> industryGoodsPurchaseRateStat(@ApiParam(value = "年份") @RequestParam String year) {
+        return Response.ok(hydIndustryService.industryGoodsPurchaseRateStat());
+    }
+
+    /**
+     * 体育产业从业人员数量
+     */
+    @ApiOperation("体育产业从业人员数量")
+    @AnonymousGetMapping("/HydExcelIndustryEmployeeCountStat")
+    public Response<List<Map<String, Object>>> HydExcelIndustryEmployeeCountStat(@ApiParam(value = "年份") @RequestParam String year) {
+        return Response.ok(hydIndustryService.industryEmployeeCountStat());
+    }
+
+    /**
+     * 居民体育培训项目参与率
+     */
+    @ApiOperation("居民体育培训项目参与率")
+    @AnonymousGetMapping("/industryTrainingParticipationRateStat")
+    public Response<List<Map<String, Object>>> industryTrainingParticipationRateStat(@ApiParam(value = "年份") @RequestParam String year) {
+        return Response.ok(hydIndustryService.industryTrainingParticipationRateStat());
+    }
 }
