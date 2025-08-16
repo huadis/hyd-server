@@ -2,18 +2,28 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.hutool.core.map.MapUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
+import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.HydResultUserSex;
-import cn.wuhan.hyd.sports.repository.HydResultUserSexRepository;
+import cn.wuhan.hyd.sports.domain.HydResultUserSexHistory;
+import cn.wuhan.hyd.sports.repository.HydResultUserSexHistoryRepo;
+import cn.wuhan.hyd.sports.repository.HydResultUserSexRepo;
 import cn.wuhan.hyd.sports.service.IHydResultUserSexService;
+import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 功能说明： 场馆预定-男女占比 服务实现 <br>
@@ -23,49 +33,60 @@ import java.util.Map;
 @Service
 public class HydResultUserSexServiceImpl implements IHydResultUserSexService {
 
+    private final Logger logger = LoggerFactory.getLogger(IHydResultUserSexService.class);
+
     @Resource
-    private HydResultUserSexRepository hydResultUserSexRepository;
+    private HydResultUserSexRepo userSexRepo;
+    @Resource
+    private HydResultUserSexHistoryRepo userSexHistoryRepo;
 
     @Override
-    public PageResult<HydResultUserSex> queryAll(Pageable pageable) {
-        return null;
+    public PageResult<HydResultUserSex> queryAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<HydResultUserSex> pageResult = userSexRepo.findAll(pageable);
+        PageResult<HydResultUserSex> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return result;
     }
 
     @Override
     public List<HydResultUserSex> queryAll() {
-        return hydResultUserSexRepository.findAll();
+        return userSexRepo.findAll();
     }
 
     @Override
     @Transactional
     public HydResultUserSex save(HydResultUserSex hydResultUserSex) {
-        return hydResultUserSexRepository.save(hydResultUserSex);
+        return userSexRepo.save(hydResultUserSex);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        hydResultUserSexRepository.deleteById(id);
+        userSexRepo.deleteById(id);
     }
 
     @Override
     @Transactional
-    public HydResultUserSex update(HydResultUserSex hydResultUserSex) {
-        if (hydResultUserSex.getId() == null) {
+    public HydResultUserSex update(HydResultUserSex userSex) {
+        if (userSex.getId() == null) {
             throw new IllegalArgumentException("更新操作必须提供ID");
         }
-        return hydResultUserSexRepository.save(hydResultUserSex);
+        // 先校验数据是否存在
+        findById(userSex.getId());
+        return userSexRepo.save(userSex);
     }
 
     @Override
     public HydResultUserSex findById(Long id) {
-        return hydResultUserSexRepository.findById(id)
+        return userSexRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("未找到ID为" + id + "的记录"));
     }
 
     @Override
     public List<Map<String, Object>> countStadiumUserSexStat() {
-        List<Map<String, Object>> userSexStat = hydResultUserSexRepository.countStadiumUserSexStat();
+        List<Map<String, Object>> userSexStat = userSexRepo.countStadiumUserSexStat();
         // 计算总人数
         int total = userSexStat.stream()
                 .mapToInt(map -> Integer.parseInt(MapUtil.getStr(map, "genderCount")))
@@ -90,6 +111,7 @@ public class HydResultUserSexServiceImpl implements IHydResultUserSexService {
      * @param userSexes 男女占比 列表
      * @return 保存成功的记录数
      */
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public int batchSave(List<HydResultUserSex> userSexes) {
         // 验证参数
@@ -101,9 +123,98 @@ public class HydResultUserSexServiceImpl implements IHydResultUserSexService {
         if (userSexes.size() > 1000) {
             throw new IllegalArgumentException("单次导入最大支持1000条数据");
         }
+        String batchNo = UUIDUtil.getBatchNo();
+        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
+        List<HydResultUserSexHistory> historyList = convertToHistoryList(userSexes, batchNo);
+        try {
+            // 4. 清空查询表：日志记录操作意图，便于问题追溯
+            logger.info("【批量保存】开始清空HydResultUserSex表，批次号：{}", batchNo);
+            userSexRepo.deleteAll();
 
-        // 批量保存
-        List<HydResultUserSex> savedList = hydResultUserSexRepository.saveAll(userSexes);
+            // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
+            int querySaveCount = saveAndLog(
+                    userSexes,
+                    userSexRepo::saveAll,
+                    "HydResultUserSex",
+                    batchNo
+            );
+
+            // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
+            int historySaveCount = saveAndLog(
+                    historyList,
+                    userSexHistoryRepo::saveAll,
+                    "HydResultUserSexHistory",
+                    batchNo
+            );
+
+            // 7. 校验保存结果：确保双表保存数量一致，避免数据不一致
+            if (querySaveCount != historySaveCount || querySaveCount != userSexes.size()) {
+                throw new RuntimeException(
+                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
+                                batchNo, userSexes.size(), querySaveCount, historySaveCount)
+                );
+            }
+
+            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
+            return querySaveCount; // 返回实际保存数量，而非固定100，更具业务意义
+
+        } catch (Exception e) {
+            // 8. 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
+            logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：",
+                    batchNo, userSexes.size(), e);
+            throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
+        }
+    }
+
+    /**
+     * 转换为历史表实体列表：统一处理属性拷贝，异常封装为RuntimeException
+     */
+    private List<HydResultUserSexHistory> convertToHistoryList(
+            List<HydResultUserSex> sourceList,
+            String batchNo) {
+        try {
+            return sourceList.stream()
+                    .map(source -> {
+                        HydResultUserSexHistory history = new HydResultUserSexHistory();
+                        try {
+                            BeanUtils.copyProperties(history, source);
+                            return history;
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            throw new RuntimeException(
+                                    String.format("【批量保存】数据转换失败，原数据ID：%s（若有），异常信息：%s",
+                                            source.getId(), e.getMessage()), e);
+                        }
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("【批量保存】数据转换为历史表实体失败，批次号：{}，异常信息：", batchNo, e);
+            throw e;
+        }
+    }
+
+    /**
+     * 通用保存并日志记录方法：复用时间统计逻辑，减少代码冗余
+     *
+     * @param dataList     待保存数据列表
+     * @param saveFunction 保存操作的函数式接口（Repository的saveAll方法）
+     * @param tableName    表名（用于日志）
+     * @param batchNo      批次号
+     * @param <T>          数据类型
+     * @return 实际保存的数量
+     */
+    private <T> int saveAndLog(
+            List<T> dataList,
+            java.util.function.Function<List<T>, List<T>> saveFunction,
+            String tableName,
+            String batchNo) {
+        long startTime = System.currentTimeMillis();
+        List<T> savedList = saveFunction.apply(dataList);
+        long costTime = System.currentTimeMillis() - startTime;
+
+        // 日志包含批次号、表名、数据量、耗时，便于问题定位和性能分析
+        logger.info("【批量保存】{}表保存完成，批次号：{}，保存数量：{}，耗时：{} ms",
+                tableName, batchNo, savedList.size(), costTime);
+
         return savedList.size();
     }
 }

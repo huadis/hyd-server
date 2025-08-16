@@ -89,8 +89,17 @@ public class SwaggerConfig {
 
     private SecurityContext getContextByPath() {
         Set<String> urls = AnonTagUtils.getAllAnonymousUrl(applicationContext);
-        urls = urls.stream().filter(url -> !url.equals("/")).collect(Collectors.toSet());
-        String regExp = "^(?!" + apiPath + String.join("|" + apiPath, urls) + ").*$";
+        urls = urls.stream()
+                .filter(url -> !url.equals("/"))
+                .map(url -> url.replaceAll("\\{([^}]+)}", "\\\\{$1\\\\}"))
+                .collect(Collectors.toSet());
+        // 生成正则表达式（排除匿名URL）
+        String regExp;
+        if (urls.isEmpty()) {
+            regExp = "^" + apiPath + ".*$"; // 无匿名URL时匹配所有API路径
+        } else {
+            regExp = "^(?!" + apiPath + String.join("|" + apiPath, urls) + ").*$";
+        }
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
                 .operationSelector(o -> o.requestMappingPattern()

@@ -2,7 +2,6 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultFacilityDistrictMonth;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -16,10 +15,11 @@ public interface IHydResultFacilityDistrictMonthService {
     /**
      * 分页查询
      *
-     * @param pageable 分页参数
+     * @param page 页数
+     * @param size 每页条数
      * @return 实体对象列表
      */
-    PageResult<HydResultFacilityDistrictMonth> queryAll(Pageable pageable);
+    PageResult<HydResultFacilityDistrictMonth> queryAll(int page, int size);
 
     /**
      * 查询全部

@@ -1,9 +1,9 @@
 package cn.wuhan.hyd.system.service;
 
+import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.system.domain.User;
 import cn.wuhan.hyd.system.dto.UserDto;
 import cn.wuhan.hyd.system.dto.UserQueryReq;
-import cn.wuhan.hyd.framework.utils.PageResult;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 

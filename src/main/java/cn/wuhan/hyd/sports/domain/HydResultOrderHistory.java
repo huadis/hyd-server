@@ -44,7 +44,7 @@ public class HydResultOrderHistory implements Serializable {
     @ApiModelProperty(value = "消费券总金额")
     private String couponAmount;
 
-    @Column(name = "createdTime")
+    @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;
 
@@ -52,16 +52,22 @@ public class HydResultOrderHistory implements Serializable {
     @ApiModelProperty(value = "更新时间", hidden = true)
     private Timestamp updateTime;
 
+    @Column(name = "importTime")
+    @ApiModelProperty(value = "导入时间", hidden = true)
+    private Timestamp importTime;
+
     // 保存前自动填充时间
     @PrePersist
     public void prePersist() {
         this.createdTime = new Timestamp(System.currentTimeMillis());
+        this.importTime = new Timestamp(System.currentTimeMillis());
         this.updateTime = this.createdTime;
     }
 
     @PreUpdate
     public void preUpdate() {
         this.updateTime = new Timestamp(System.currentTimeMillis());
+        this.importTime = new Timestamp(System.currentTimeMillis());
     }
 
     @Override

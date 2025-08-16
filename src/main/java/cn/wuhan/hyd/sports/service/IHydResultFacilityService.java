@@ -1,9 +1,7 @@
 package cn.wuhan.hyd.sports.service;
 
-import cn.wuhan.hyd.sports.domain.HydResultFacility;
-
 import cn.wuhan.hyd.framework.utils.PageResult;
-import org.springframework.data.domain.Pageable;
+import cn.wuhan.hyd.sports.domain.HydResultFacility;
 
 import java.util.List;
 import java.util.Map;
@@ -18,10 +16,11 @@ public interface IHydResultFacilityService {
     /**
      * 分页查询
      *
-     * @param pageable 分页参数
+     * @param page 页数
+     * @param size 每页条数
      * @return 实体对象列表
      */
-    PageResult<HydResultFacility> queryAll(Pageable pageable);
+    PageResult<HydResultFacility> queryAll(int page, int size);
 
     /**
      * 查询全部
