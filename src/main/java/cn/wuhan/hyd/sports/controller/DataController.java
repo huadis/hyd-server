@@ -1073,9 +1073,9 @@ public class DataController {
     }
 
 
-    // ----------------------------------- 校外培训机构附件表 -----------------------------------
+    // ----------------------------------- 原始表-校外培训机构附件 -----------------------------------
 
-    @ApiOperation("校外培训机构附件表-分页查询")
+    @ApiOperation("原始表-校外培训机构附件-分页查询")
     @AnonymousGetMapping("/laStadiumFile/list")
     public Response<PageResult<HydOriginLaStadiumFile>> laStadiumFileList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -1083,21 +1083,21 @@ public class DataController {
         return Response.ok(laStadiumFileService.queryAll(page, size));
     }
 
-    @ApiOperation("校外培训机构附件表-根据ID查询详情")
+    @ApiOperation("原始表-校外培训机构附件-根据ID查询详情")
     @AnonymousGetMapping("/laStadiumFile/detail/{id}")
     public Response<HydOriginLaStadiumFile> laStadiumFileUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Integer id) {
         return Response.ok(laStadiumFileService.findById(id));
     }
 
-    @ApiOperation("校外培训机构附件表-增加")
+    @ApiOperation("原始表-校外培训机构附件-增加")
     @AnonymousPostMapping("/laStadiumFile/add")
     public ResponseEntity<HydOriginLaStadiumFile> laStadiumFileAdd(
             @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginLaStadiumFile laStadiumFile) {
         return ResponseEntity.ok(laStadiumFileService.save(laStadiumFile));
     }
 
-    @ApiOperation("校外培训机构附件表-删除")
+    @ApiOperation("原始表-校外培训机构附件-删除")
     @AnonymousDeleteMapping("/laStadiumFile/delete/{id}")
     public Response<Boolean> laStadiumFileDelete(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Integer id) {
@@ -1109,15 +1109,15 @@ public class DataController {
         }
     }
 
-    @ApiOperation("校外培训机构附件表-更新")
+    @ApiOperation("原始表-校外培训机构附件-更新")
     @AnonymousPostMapping("/laStadiumFile/update")
     public Response<HydOriginLaStadiumFile> laStadiumFileUpdate(@RequestBody HydOriginLaStadiumFile laStadiumFile) {
         return Response.ok(laStadiumFileService.update(laStadiumFile));
     }
 
-    // ----------------------------------- 校外培训机构 -----------------------------------
+    // ----------------------------------- 原始表-校外培训机构 -----------------------------------
 
-    @ApiOperation("校外培训机构-分页查询")
+    @ApiOperation("原始表-校外培训机构-分页查询")
     @AnonymousGetMapping("/laStadium/list")
     public Response<PageResult<HydOriginLaStadium>> laStadiumList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -1125,21 +1125,21 @@ public class DataController {
         return Response.ok(laStadiumService.queryAll(page, size));
     }
 
-    @ApiOperation("校外培训机构-根据ID查询详情")
+    @ApiOperation("原始表-校外培训机构-根据ID查询详情")
     @AnonymousGetMapping("/laStadium/detail/{id}")
     public Response<HydOriginLaStadium> laStadiumUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Integer id) {
         return Response.ok(laStadiumService.findById(id));
     }
 
-    @ApiOperation("校外培训机构-增加")
+    @ApiOperation("原始表-校外培训机构-增加")
     @AnonymousPostMapping("/laStadium/add")
     public ResponseEntity<HydOriginLaStadium> laStadiumAdd(
             @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginLaStadium laStadium) {
         return ResponseEntity.ok(laStadiumService.save(laStadium));
     }
 
-    @ApiOperation("校外培训机构-删除")
+    @ApiOperation("原始表-校外培训机构-删除")
     @AnonymousDeleteMapping("/laStadium/delete/{id}")
     public Response<Boolean> laStadiumDelete(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Integer id) {
@@ -1151,15 +1151,15 @@ public class DataController {
         }
     }
 
-    @ApiOperation("校外培训机构-更新")
+    @ApiOperation("原始表-校外培训机构-更新")
     @AnonymousPostMapping("/laStadium/update")
     public Response<HydOriginLaStadium> laStadiumUpdate(@RequestBody HydOriginLaStadium laStadium) {
         return Response.ok(laStadiumService.update(laStadium));
     }
 
-    // ----------------------------------- 订单表 -----------------------------------
+    // ----------------------------------- 原始表-校外培训订单 -----------------------------------
 
-    @ApiOperation("订单表-分页查询")
+    @ApiOperation("原始表-校外培训订单-分页查询")
     @AnonymousGetMapping("/originOrder/list")
     public Response<PageResult<HydOriginOrder>> originOrderList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -1167,21 +1167,21 @@ public class DataController {
         return Response.ok(orderService.queryAll(page, size));
     }
 
-    @ApiOperation("订单表-根据ID查询详情")
+    @ApiOperation("原始表-校外培训订单-根据ID查询详情")
     @AnonymousGetMapping("/originOrder/detail/{id}")
     public Response<HydOriginOrder> originOrderUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
         return Response.ok(orderService.findById(id));
     }
 
-    @ApiOperation("订单表-增加")
+    @ApiOperation("原始表-校外培训订单-增加")
     @AnonymousPostMapping("/originOrder/add")
     public ResponseEntity<HydOriginOrder> originOrderAdd(
             @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginOrder originOrder) {
         return ResponseEntity.ok(orderService.save(originOrder));
     }
 
-    @ApiOperation("订单表-删除")
+    @ApiOperation("原始表-校外培训订单-删除")
     @AnonymousDeleteMapping("/originOrder/delete/{id}")
     public Response<Boolean> originOrderDelete(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
@@ -1193,16 +1193,16 @@ public class DataController {
         }
     }
 
-    @ApiOperation("订单表-更新")
+    @ApiOperation("原始表-校外培训订单-更新")
     @AnonymousPostMapping("/originOrder/update")
     public Response<HydOriginOrder> originOrderUpdate(@RequestBody HydOriginOrder originOrder) {
         return Response.ok(orderService.update(originOrder));
     }
 
 
-    // ----------------------------------- 场馆培训项目表 -----------------------------------
+    // ----------------------------------- 原始表-场馆培训项目 -----------------------------------
 
-    @ApiOperation("场馆培训项目表-分页查询")
+    @ApiOperation("原始表-场馆培训项目-分页查询")
     @AnonymousGetMapping("/stadiumItem/list")
     public Response<PageResult<HydOriginStadiumItem>> stadiumItemList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -1210,21 +1210,21 @@ public class DataController {
         return Response.ok(stadiumItemService.queryAll(page, size));
     }
 
-    @ApiOperation("场馆培训项目表-根据ID查询详情")
+    @ApiOperation("原始表-场馆培训项目-根据ID查询详情")
     @AnonymousGetMapping("/stadiumItem/detail/{id}")
     public Response<HydOriginStadiumItem> stadiumItemUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
         return Response.ok(stadiumItemService.findById(id));
     }
 
-    @ApiOperation("场馆培训项目表-增加")
+    @ApiOperation("原始表-场馆培训项目-增加")
     @AnonymousPostMapping("/stadiumItem/add")
     public ResponseEntity<HydOriginStadiumItem> stadiumItemAdd(
             @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginStadiumItem stadiumItem) {
         return ResponseEntity.ok(stadiumItemService.save(stadiumItem));
     }
 
-    @ApiOperation("场馆培训项目表-删除")
+    @ApiOperation("原始表-场馆培训项目-删除")
     @AnonymousDeleteMapping("/stadiumItem/delete/{id}")
     public Response<Boolean> stadiumItemDelete(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
@@ -1236,16 +1236,16 @@ public class DataController {
         }
     }
 
-    @ApiOperation("场馆培训项目表-更新")
+    @ApiOperation("原始表-场馆培训项目-更新")
     @AnonymousPostMapping("/stadiumItem/update")
     public Response<HydOriginStadiumItem> stadiumItemUpdate(@RequestBody HydOriginStadiumItem stadiumItem) {
         return Response.ok(stadiumItemService.update(stadiumItem));
     }
 
 
-    // ----------------------------------- 培训场馆表实体类 -----------------------------------
+    // ----------------------------------- 原始表-培训场馆 -----------------------------------
 
-    @ApiOperation("培训场馆表实体类-分页查询")
+    @ApiOperation("原始表-培训场馆-分页查询")
     @AnonymousGetMapping("/originStadium/list")
     public Response<PageResult<HydOriginStadium>> originStadiumList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -1253,21 +1253,21 @@ public class DataController {
         return Response.ok(stadiumService.queryAll(page, size));
     }
 
-    @ApiOperation("培训场馆表实体类-根据ID查询详情")
+    @ApiOperation("原始表-培训场馆-根据ID查询详情")
     @AnonymousGetMapping("/originStadium/detail/{id}")
     public Response<HydOriginStadium> originStadiumUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
         return Response.ok(stadiumService.findById(id));
     }
 
-    @ApiOperation("培训场馆表实体类-增加")
+    @ApiOperation("原始表-培训场馆-增加")
     @AnonymousPostMapping("/originStadium/add")
     public ResponseEntity<HydOriginStadium> originStadiumAdd(
             @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginStadium originStadium) {
         return ResponseEntity.ok(stadiumService.save(originStadium));
     }
 
-    @ApiOperation("培训场馆表实体类-删除")
+    @ApiOperation("原始表-培训场馆-删除")
     @AnonymousDeleteMapping("/originStadium/delete/{id}")
     public Response<Boolean> originStadiumDelete(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
@@ -1279,16 +1279,16 @@ public class DataController {
         }
     }
 
-    @ApiOperation("培训场馆表实体类-更新")
+    @ApiOperation("原始表-培训场馆-更新")
     @AnonymousPostMapping("/originStadium/update")
     public Response<HydOriginStadium> originStadiumUpdate(@RequestBody HydOriginStadium originStadium) {
         return Response.ok(stadiumService.update(originStadium));
     }
 
 
-    // ----------------------------------- 组织机构表实体类 -----------------------------------
+    // ----------------------------------- 原始表-组织机构 -----------------------------------
 
-    @ApiOperation("组织机构表实体类-分页查询")
+    @ApiOperation("原始表-组织机构-分页查询")
     @AnonymousGetMapping("/tenant/list")
     public Response<PageResult<HydOriginTenant>> tenantList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -1296,21 +1296,21 @@ public class DataController {
         return Response.ok(tenantService.queryAll(page, size));
     }
 
-    @ApiOperation("组织机构表实体类-根据ID查询详情")
+    @ApiOperation("原始表-组织机构-根据ID查询详情")
     @AnonymousGetMapping("/tenant/detail/{id}")
     public Response<HydOriginTenant> tenantUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
         return Response.ok(tenantService.findById(id));
     }
 
-    @ApiOperation("组织机构表实体类-增加")
+    @ApiOperation("原始表-组织机构-增加")
     @AnonymousPostMapping("/tenant/add")
     public ResponseEntity<HydOriginTenant> tenantAdd(
             @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginTenant tenant) {
         return ResponseEntity.ok(tenantService.save(tenant));
     }
 
-    @ApiOperation("组织机构表实体类-删除")
+    @ApiOperation("原始表-组织机构-删除")
     @AnonymousDeleteMapping("/tenant/delete/{id}")
     public Response<Boolean> tenantDelete(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
@@ -1322,15 +1322,15 @@ public class DataController {
         }
     }
 
-    @ApiOperation("组织机构表实体类-更新")
+    @ApiOperation("原始表-组织机构-更新")
     @AnonymousPostMapping("/tenant/update")
     public Response<HydOriginTenant> tenantUpdate(@RequestBody HydOriginTenant tenant) {
         return Response.ok(tenantService.update(tenant));
     }
 
-    // ----------------------------------- 培训活动支持的项目表 -----------------------------------
+    // ----------------------------------- 原始表-培训活动支持的项目 -----------------------------------
 
-    @ApiOperation("培训活动支持的项目表-分页查询")
+    @ApiOperation("原始表-培训活动支持的项目-分页查询")
     @AnonymousGetMapping("/trainingActivityItem/list")
     public Response<PageResult<HydOriginTrainingActivityItem>> trainingActivityItemList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -1338,21 +1338,21 @@ public class DataController {
         return Response.ok(trainingActivityItemService.queryAll(page, size));
     }
 
-    @ApiOperation("培训活动支持的项目表-根据ID查询详情")
+    @ApiOperation("原始表-培训活动支持的项目-根据ID查询详情")
     @AnonymousGetMapping("/trainingActivityItem/detail/{id}")
     public Response<HydOriginTrainingActivityItem> trainingActivityItemUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
         return Response.ok(trainingActivityItemService.findById(id));
     }
 
-    @ApiOperation("培训活动支持的项目表-增加")
+    @ApiOperation("原始表-培训活动支持的项目-增加")
     @AnonymousPostMapping("/trainingActivityItem/add")
     public ResponseEntity<HydOriginTrainingActivityItem> trainingActivityItemAdd(
             @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginTrainingActivityItem trainingActivityItem) {
         return ResponseEntity.ok(trainingActivityItemService.save(trainingActivityItem));
     }
 
-    @ApiOperation("培训活动支持的项目表-删除")
+    @ApiOperation("原始表-培训活动支持的项目-删除")
     @AnonymousDeleteMapping("/trainingActivityItem/delete/{id}")
     public Response<Boolean> trainingActivityItemDelete(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
@@ -1364,15 +1364,15 @@ public class DataController {
         }
     }
 
-    @ApiOperation("培训活动支持的项目表-更新")
+    @ApiOperation("原始表-培训活动支持的项目-更新")
     @AnonymousPostMapping("/trainingActivityItem/update")
     public Response<HydOriginTrainingActivityItem> trainingActivityItemUpdate(@RequestBody HydOriginTrainingActivityItem trainingActivityItem) {
         return Response.ok(trainingActivityItemService.update(trainingActivityItem));
     }
 
-    // ----------------------------------- 培训活动场馆支持的项目表 -----------------------------------
+    // ----------------------------------- 原始表-培训活动场馆支持的项目 -----------------------------------
 
-    @ApiOperation("培训活动场馆支持的项目表-分页查询")
+    @ApiOperation("原始表-培训活动场馆支持的项目-分页查询")
     @AnonymousGetMapping("/trainingActivityItemStadium/list")
     public Response<PageResult<HydOriginTrainingActivityItemStadium>> trainingActivityItemStadiumList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -1380,21 +1380,21 @@ public class DataController {
         return Response.ok(trainingActivityItemStadiumService.queryAll(page, size));
     }
 
-    @ApiOperation("培训活动场馆支持的项目表-根据ID查询详情")
+    @ApiOperation("原始表-培训活动场馆支持的项目-根据ID查询详情")
     @AnonymousGetMapping("/trainingActivityItemStadium/detail/{id}")
     public Response<HydOriginTrainingActivityItemStadium> trainingActivityItemStadiumUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
         return Response.ok(trainingActivityItemStadiumService.findById(id));
     }
 
-    @ApiOperation("培训活动场馆支持的项目表-增加")
+    @ApiOperation("原始表-培训活动场馆支持的项目-增加")
     @AnonymousPostMapping("/trainingActivityItemStadium/add")
     public ResponseEntity<HydOriginTrainingActivityItemStadium> trainingActivityItemStadiumAdd(
             @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginTrainingActivityItemStadium trainingActivityItemStadium) {
         return ResponseEntity.ok(trainingActivityItemStadiumService.save(trainingActivityItemStadium));
     }
 
-    @ApiOperation("培训活动场馆支持的项目表-删除")
+    @ApiOperation("原始表-培训活动场馆支持的项目-删除")
     @AnonymousDeleteMapping("/trainingActivityItemStadium/delete/{id}")
     public Response<Boolean> trainingActivityItemStadiumDelete(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
@@ -1406,16 +1406,16 @@ public class DataController {
         }
     }
 
-    @ApiOperation("培训活动场馆支持的项目表-更新")
+    @ApiOperation("原始表-培训活动场馆支持的项目-更新")
     @AnonymousPostMapping("/trainingActivityItemStadium/update")
     public Response<HydOriginTrainingActivityItemStadium> trainingActivityItemStadiumUpdate(@RequestBody HydOriginTrainingActivityItemStadium trainingActivityItemStadium) {
         return Response.ok(trainingActivityItemStadiumService.update(trainingActivityItemStadium));
     }
 
 
-    // ----------------------------------- 培训活动表 -----------------------------------
+    // ----------------------------------- 原始表-培训活动 -----------------------------------
 
-    @ApiOperation("培训活动表-分页查询")
+    @ApiOperation("原始表-培训活动-分页查询")
     @AnonymousGetMapping("/trainingActivity/list")
     public Response<PageResult<HydOriginTrainingActivity>> trainingActivityList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -1423,21 +1423,21 @@ public class DataController {
         return Response.ok(trainingActivityService.queryAll(page, size));
     }
 
-    @ApiOperation("培训活动表-根据ID查询详情")
+    @ApiOperation("原始表-培训活动-根据ID查询详情")
     @AnonymousGetMapping("/trainingActivity/detail/{id}")
     public Response<HydOriginTrainingActivity> trainingActivityUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
         return Response.ok(trainingActivityService.findById(id));
     }
 
-    @ApiOperation("培训活动表-增加")
+    @ApiOperation("原始表-培训活动-增加")
     @AnonymousPostMapping("/trainingActivity/add")
     public ResponseEntity<HydOriginTrainingActivity> trainingActivityAdd(
             @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginTrainingActivity trainingActivity) {
         return ResponseEntity.ok(trainingActivityService.save(trainingActivity));
     }
 
-    @ApiOperation("培训活动表-删除")
+    @ApiOperation("原始表-培训活动-删除")
     @AnonymousDeleteMapping("/trainingActivity/delete/{id}")
     public Response<Boolean> trainingActivityDelete(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
@@ -1449,16 +1449,16 @@ public class DataController {
         }
     }
 
-    @ApiOperation("培训活动表-更新")
+    @ApiOperation("原始表-培训活动-更新")
     @AnonymousPostMapping("/trainingActivity/update")
     public Response<HydOriginTrainingActivity> trainingActivityUpdate(@RequestBody HydOriginTrainingActivity trainingActivity) {
         return Response.ok(trainingActivityService.update(trainingActivity));
     }
 
 
-    // ----------------------------------- 培训课程表 -----------------------------------
+    // ----------------------------------- 原始表-培训课程 -----------------------------------
 
-    @ApiOperation("培训课程表-分页查询")
+    @ApiOperation("原始表-培训课程-分页查询")
     @AnonymousGetMapping("/trainingCourse/list")
     public Response<PageResult<HydOriginTrainingCourse>> trainingCourseList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -1466,21 +1466,21 @@ public class DataController {
         return Response.ok(trainingCourseService.queryAll(page, size));
     }
 
-    @ApiOperation("培训课程表-根据ID查询详情")
+    @ApiOperation("原始表-培训课程-根据ID查询详情")
     @AnonymousGetMapping("/trainingCourse/detail/{id}")
     public Response<HydOriginTrainingCourse> trainingCourseUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
         return Response.ok(trainingCourseService.findById(id));
     }
 
-    @ApiOperation("培训课程表-增加")
+    @ApiOperation("原始表-培训课程-增加")
     @AnonymousPostMapping("/trainingCourse/add")
     public ResponseEntity<HydOriginTrainingCourse> trainingCourseAdd(
             @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginTrainingCourse trainingCourse) {
         return ResponseEntity.ok(trainingCourseService.save(trainingCourse));
     }
 
-    @ApiOperation("培训课程表-删除")
+    @ApiOperation("原始表-培训课程-删除")
     @AnonymousDeleteMapping("/trainingCourse/delete/{id}")
     public Response<Boolean> trainingCourseDelete(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
@@ -1492,7 +1492,7 @@ public class DataController {
         }
     }
 
-    @ApiOperation("培训课程表-更新")
+    @ApiOperation("原始表-培训课程-更新")
     @AnonymousPostMapping("/trainingCourse/update")
     public Response<HydOriginTrainingCourse> trainingCourseUpdate(@RequestBody HydOriginTrainingCourse trainingCourse) {
         return Response.ok(trainingCourseService.update(trainingCourse));

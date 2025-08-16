@@ -1,22 +1,25 @@
 package cn.wuhan.hyd.sports.controller;
 
+import cn.wuhan.hyd.framework.annotation.rest.AnonymousDeleteMapping;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousPostMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.framework.utils.ExcelUtils;
+import cn.wuhan.hyd.framework.utils.PageResult;
+import cn.wuhan.hyd.sports.domain.HydExcelInstructorAgeGrowth;
+import cn.wuhan.hyd.sports.domain.HydExcelInstructorAgeStats;
+import cn.wuhan.hyd.sports.domain.HydExcelInstructorInfo;
 import cn.wuhan.hyd.sports.service.IHydExcelInstructorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +63,132 @@ public class HydInstructorController {
         } catch (Exception e) {
             return new ResponseEntity<>("文件上传或处理失败", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    // ----------------------------------- 社会体育指导员汇总信息 -----------------------------------
+
+    @ApiOperation("社会体育指导员汇总信息-分页查询")
+    @AnonymousGetMapping("/instructorInfo/list")
+    public Response<PageResult<HydExcelInstructorInfo>> instructorInfoList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(hydInstructorService.queryAllInstructorInfo(page, size));
+    }
+
+    @ApiOperation("社会体育指导员汇总信息-根据ID查询详情")
+    @AnonymousGetMapping("/instructorInfo/detail/{id}")
+    public Response<HydExcelInstructorInfo> instructorInfoDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(hydInstructorService.findInstructorInfoById(id));
+    }
+
+    @ApiOperation("社会体育指导员汇总信息-增加")
+    @AnonymousPostMapping("/instructorInfo/add")
+    public ResponseEntity<HydExcelInstructorInfo> instructorInfoAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydExcelInstructorInfo instructorInfo) {
+        return ResponseEntity.ok(hydInstructorService.save(instructorInfo));
+    }
+
+    @ApiOperation("社会体育指导员汇总信息-删除")
+    @AnonymousDeleteMapping("/instructorInfo/delete/{id}")
+    public Response<Boolean> instructorInfoDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            hydInstructorService.deleteInstructorInfoById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("社会体育指导员汇总信息-更新")
+    @AnonymousPostMapping("/instructorInfo/update")
+    public Response<HydExcelInstructorInfo> instructorInfoUpdate(@RequestBody HydExcelInstructorInfo instructorInfo) {
+        return Response.ok(hydInstructorService.updateInstructorInfo(instructorInfo));
+    }
+
+    // ----------------------------------- 体育指导员 - 年龄统计明细表 -----------------------------------
+
+    @ApiOperation("体育指导员 - 年龄统计明细表-分页查询")
+    @AnonymousGetMapping("/instructorAgeStats/list")
+    public Response<PageResult<HydExcelInstructorAgeStats>> instructorAgeStatsList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(hydInstructorService.queryAllInstructorAgeStats(page, size));
+    }
+
+    @ApiOperation("体育指导员 - 年龄统计明细表-根据ID查询详情")
+    @AnonymousGetMapping("/instructorAgeStats/detail/{id}")
+    public Response<HydExcelInstructorAgeStats> instructorAgeStatsDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(hydInstructorService.findInstructorAgeStatsById(id));
+    }
+
+    @ApiOperation("体育指导员 - 年龄统计明细表-增加")
+    @AnonymousPostMapping("/instructorAgeStats/add")
+    public ResponseEntity<HydExcelInstructorAgeStats> instructorAgeStatsAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydExcelInstructorAgeStats instructorAgeStats) {
+        return ResponseEntity.ok(hydInstructorService.save(instructorAgeStats));
+    }
+
+    @ApiOperation("体育指导员 - 年龄统计明细表-删除")
+    @AnonymousDeleteMapping("/instructorAgeStats/delete/{id}")
+    public Response<Boolean> instructorAgeStatsDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            hydInstructorService.deleteInstructorAgeStatsById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("体育指导员 - 年龄统计明细表-更新")
+    @AnonymousPostMapping("/instructorAgeStats/update")
+    public Response<HydExcelInstructorAgeStats> instructorAgeStatsUpdate(@RequestBody HydExcelInstructorAgeStats instructorAgeStats) {
+        return Response.ok(hydInstructorService.updateInstructorAgeStats(instructorAgeStats));
+    }
+
+    // ----------------------------------- 体育指导员 - 人数增长统计明细 -----------------------------------
+
+    @ApiOperation("体育指导员 - 人数增长统计明细-分页查询")
+    @AnonymousGetMapping("/instructorAgeGrowth/list")
+    public Response<PageResult<HydExcelInstructorAgeGrowth>> instructorAgeGrowthList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(hydInstructorService.queryAllInstructorAgeGrowth(page, size));
+    }
+
+    @ApiOperation("体育指导员 - 人数增长统计明细-根据ID查询详情")
+    @AnonymousGetMapping("/instructorAgeGrowth/detail/{id}")
+    public Response<HydExcelInstructorAgeGrowth> instructorAgeGrowthDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(hydInstructorService.findInstructorAgeGrowthById(id));
+    }
+
+    @ApiOperation("体育指导员 - 人数增长统计明细-增加")
+    @AnonymousPostMapping("/instructorAgeGrowth/add")
+    public ResponseEntity<HydExcelInstructorAgeGrowth> instructorAgeGrowthAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydExcelInstructorAgeGrowth instructorAgeGrowth) {
+        return ResponseEntity.ok(hydInstructorService.save(instructorAgeGrowth));
+    }
+
+    @ApiOperation("体育指导员 - 人数增长统计明细-删除")
+    @AnonymousDeleteMapping("/instructorAgeGrowth/delete/{id}")
+    public Response<Boolean> instructorAgeGrowthDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            hydInstructorService.deleteInstructorAgeGrowthById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("体育指导员 - 人数增长统计明细-更新")
+    @AnonymousPostMapping("/instructorAgeGrowth/update")
+    public Response<HydExcelInstructorAgeGrowth> instructorAgeGrowthUpdate(@RequestBody HydExcelInstructorAgeGrowth instructorAgeGrowth) {
+        return Response.ok(hydInstructorService.updateInstructorAgeGrowth(instructorAgeGrowth));
     }
 
     /**

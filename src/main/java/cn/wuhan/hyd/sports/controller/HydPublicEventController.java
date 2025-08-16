@@ -1,22 +1,23 @@
 package cn.wuhan.hyd.sports.controller;
 
+import cn.wuhan.hyd.framework.annotation.rest.AnonymousDeleteMapping;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousPostMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.framework.utils.ExcelUtils;
+import cn.wuhan.hyd.framework.utils.PageResult;
+import cn.wuhan.hyd.sports.domain.HydExcelPublicEvents;
 import cn.wuhan.hyd.sports.service.IHydExcelPublicEventsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +61,49 @@ public class HydPublicEventController {
         } catch (Exception e) {
             return new ResponseEntity<>("文件上传或处理失败", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+
+    // ----------------------------------- 大众赛事-体育赛事信息表 -----------------------------------
+
+    @ApiOperation("大众赛事-体育赛事信息表-分页查询")
+    @AnonymousGetMapping("/list")
+    public Response<PageResult<HydExcelPublicEvents>> eventsList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(hydPublicEventsService.queryAll(page, size));
+    }
+
+    @ApiOperation("大众赛事-体育赛事信息表-根据ID查询详情")
+    @AnonymousGetMapping("/detail/{id}")
+    public Response<HydExcelPublicEvents> eventsDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(hydPublicEventsService.findById(id));
+    }
+
+    @ApiOperation("大众赛事-体育赛事信息表-增加")
+    @AnonymousPostMapping("/add")
+    public ResponseEntity<HydExcelPublicEvents> eventsAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydExcelPublicEvents events) {
+        return ResponseEntity.ok(hydPublicEventsService.save(events));
+    }
+
+    @ApiOperation("大众赛事-体育赛事信息表-删除")
+    @AnonymousDeleteMapping("/delete/{id}")
+    public Response<Boolean> eventsDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            hydPublicEventsService.deleteById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("大众赛事-体育赛事信息表-更新")
+    @AnonymousPostMapping("/update")
+    public Response<HydExcelPublicEvents> eventsUpdate(@RequestBody HydExcelPublicEvents events) {
+        return Response.ok(hydPublicEventsService.update(events));
     }
 
     /**
