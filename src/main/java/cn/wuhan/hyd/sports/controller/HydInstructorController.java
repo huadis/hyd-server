@@ -4,7 +4,7 @@ import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousPostMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.framework.utils.ExcelUtils;
-import cn.wuhan.hyd.sports.service.IHydInstructorService;
+import cn.wuhan.hyd.sports.service.IHydExcelInstructorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,7 +31,7 @@ import java.util.Map;
 public class HydInstructorController {
 
     @Resource
-    private IHydInstructorService hydInstructorService;
+    private IHydExcelInstructorService hydInstructorService;
 
     @ApiOperation("上传数据")
     @AnonymousPostMapping("/uploadExcel")

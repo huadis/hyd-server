@@ -2,7 +2,7 @@ package cn.wuhan.hyd.sports.controller;
 
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousPostMapping;
 import cn.wuhan.hyd.framework.utils.ExcelUtils;
-import cn.wuhan.hyd.sports.service.IHydIndustryService;
+import cn.wuhan.hyd.sports.service.IHydExcelIndustryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ import java.util.Map;
 public class HydIndustryController {
 
     @Resource
-    private IHydIndustryService hydIndustryService;
+    private IHydExcelIndustryService hydIndustryService;
 
     @ApiOperation("上传数据")
     @AnonymousPostMapping("/uploadExcel")

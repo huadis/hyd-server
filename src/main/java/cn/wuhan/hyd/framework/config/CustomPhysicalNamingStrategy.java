@@ -3,6 +3,7 @@ package cn.wuhan.hyd.framework.config;
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
+
 /**
  * 功能说明：  <br>
  * 开发人员：@author huadi <br>
