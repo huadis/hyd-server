@@ -30,6 +30,8 @@ public class ImportController {
     @Resource
     private IHydResultCouponStadiumTopService hydCouponStadiumTopService;
     @Resource
+    private IHydResultStadiumMapPointService stadiumMapPointService;
+    @Resource
     private IHydResultCouponUserAgeService hydCouponUserAgeService;
     @Resource
     private IHydResultCouponUserService hydCouponUserService;
@@ -113,6 +115,19 @@ public class ImportController {
         logger.info("结果表-消费券场馆预订Top-批量导入, 条数 : {}", couponStadiumTops.size());
         try {
             return Response.ok(hydCouponStadiumTopService.batchSave(couponStadiumTops) > 0);
+        } catch (IllegalArgumentException e) {
+            return Response.fail(e.getMessage());
+        } catch (Exception e) {
+            return Response.fail("服务异常");
+        }
+    }
+
+    @ApiOperation("结果表-电子地图点位信息-批量导入")
+    @AnonymousPostMapping("/stadiumMapPointImport")
+    public Response<Boolean> stadiumMapPointImport(@RequestBody List<HydResultStadiumMapPoint> stadiumMapPoints) {
+        logger.info("结果表-电子地图点位信息-批量导入, 条数 : {}", stadiumMapPoints.size());
+        try {
+            return Response.ok(stadiumMapPointService.batchSave(stadiumMapPoints) > 0);
         } catch (IllegalArgumentException e) {
             return Response.fail(e.getMessage());
         } catch (Exception e) {

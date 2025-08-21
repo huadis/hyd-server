@@ -703,7 +703,32 @@ CREATE TABLE `hyd_result_coupon_stadium_top_history` (
     `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='结果表（历史）-驾驶舱-消费券场馆预订 top';
+
 -- --------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE `hyd_result_stadium_map_point` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `resourceType` varchar(255) COMMENT '资源类型',
+    `resourceName` varchar(255) COMMENT '资源名称',
+    `longitude` varchar(255) COMMENT '经度',
+    `latitude` varchar(255) COMMENT '纬度',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '资源名称：驾驶舱-电子地图点位信息';
+
+CREATE TABLE `hyd_result_stadium_map_point_history` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+    `resourceType` varchar(255) COMMENT '资源类型',
+    `resourceName` varchar(255) COMMENT '资源名称',
+    `longitude` varchar(255) COMMENT '经度',
+    `latitude` varchar(255) COMMENT '纬度',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '资源名称（历史）：驾驶舱-电子地图点位信息';
 
 -- ------------------------------------------ 体育指导员 --------------------------------------------
 CREATE TABLE `hyd_excel_instructor_info` (
@@ -1221,7 +1246,7 @@ CREATE TABLE `hyd_origin_training_course` (
     `tenantId` varchar(32) COMMENT '组织id',
     `stadiumId` varchar(32) COMMENT '场馆id',
     `stadiumItemId` varchar(32) COMMENT '项目id',
-    `courseName` varchar(32) COMMENT '课程名称',
+    `courseName` varchar(64) COMMENT '课程名称',
     `startTime` bigint(20) COMMENT '开课时间',
     `endTime` bigint(20) COMMENT '结课时间',
     `registrationStartTime` bigint(20) COMMENT '报名开始时间',
@@ -1246,7 +1271,7 @@ CREATE TABLE `hyd_origin_training_course_history` (
     `tenantId` varchar(32) COMMENT '组织id',
     `stadiumId` varchar(32) COMMENT '场馆id',
     `stadiumItemId` varchar(32) COMMENT '项目id',
-    `courseName` varchar(32) COMMENT '课程名称',
+    `courseName` varchar(64) COMMENT '课程名称',
     `startTime` bigint(20) COMMENT '开课时间',
     `endTime` bigint(20) COMMENT '结课时间',
     `registrationStartTime` bigint(20) COMMENT '报名开始时间',
@@ -1316,9 +1341,9 @@ CREATE TABLE `hyd_origin_order_history` (
 CREATE TABLE `hyd_origin_la_stadium` (
     `id` INT(11) NOT NULL COMMENT '主键',
     `userId` INT(11) COMMENT '用户id',
-    `title` VARCHAR(32) COMMENT '名称',
-    `certBus` VARCHAR(10) COMMENT '营业类型',
-    `doorImages` VARCHAR(32) COMMENT '门头照片',
+    `title` VARCHAR(255) COMMENT '名称',
+    `certBus` VARCHAR(255) COMMENT '营业类型',
+    `doorImages` VARCHAR(255) COMMENT '门头照片',
     `busHours` VARCHAR(255) COMMENT '营业时间',
     `socialCode` VARCHAR(255) COMMENT '统一社会信用代码',
     `legalPerson` VARCHAR(255) COMMENT '法人',
@@ -1343,9 +1368,9 @@ CREATE TABLE `hyd_origin_la_stadium` (
 CREATE TABLE `hyd_origin_la_stadium_history` (
     `id` INT(11) NOT NULL COMMENT '主键',
     `userId` INT(11) COMMENT '用户id',
-    `title` VARCHAR(32) COMMENT '名称',
-    `certBus` VARCHAR(10) COMMENT '营业类型',
-    `doorImages` VARCHAR(32) COMMENT '门头照片',
+    `title` VARCHAR(255) COMMENT '名称',
+    `certBus` VARCHAR(255) COMMENT '营业类型',
+    `doorImages` VARCHAR(255) COMMENT '门头照片',
     `busHours` VARCHAR(255) COMMENT '营业时间',
     `socialCode` VARCHAR(255) COMMENT '统一社会信用代码',
     `legalPerson` VARCHAR(255) COMMENT '法人',

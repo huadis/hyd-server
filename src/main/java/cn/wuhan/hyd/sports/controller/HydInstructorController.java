@@ -13,13 +13,19 @@ import cn.wuhan.hyd.sports.service.IHydExcelInstructorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +41,51 @@ public class HydInstructorController {
 
     @Resource
     private IHydExcelInstructorService hydInstructorService;
+
+    /**
+     * 下载指定模板文件
+     *
+     * @return 模板文件的响应实体
+     */
+    @ApiOperation("下载模板")
+    @AnonymousGetMapping(value = "/template/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public void downloadTemplate(HttpServletResponse response) {
+        String fileName = "社会体育指导员数据导入模版.xlsx";
+        ClassPathResource resource = new ClassPathResource("templates/" + fileName);
+        try (InputStream inputStream = resource.getInputStream()) {
+            if (!resource.exists()) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "模板文件未找到");
+                return;
+            }
+
+            // 设置响应头
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+
+            // 获取输出流
+            OutputStream outputStream = response.getOutputStream();
+
+            // 复制输入流到输出流
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, bytesRead);
+            }
+
+            // 刷新确保数据写出
+            outputStream.flush();
+
+        } catch (IOException e) {
+            try {
+                // 避免重复响应
+                if (!response.isCommitted()) {
+                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "文件下载失败");
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
     @ApiOperation("上传数据")
     @AnonymousPostMapping("/uploadExcel")
