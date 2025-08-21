@@ -51,12 +51,11 @@ public class WebLogAspect {
 
             // 打印请求信息
             log.info("========================================== 开始请求 ==========================================");
-            log.info("请求时间  : {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            log.info("请求 URL : {}", request.getRequestURL().toString());
-            log.info("请求方法  : {}", request.getMethod());
-            log.info("客户端 IP : {}", request.getRemoteAddr());
-            log.info("请求类方法 : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
-            log.info("请求参数   : {}", Arrays.toString(joinPoint.getArgs()));
+            log.info("RequestTime    :  {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            log.info("RequestURL     :  {}", request.getRequestURL().toString());
+            log.info("RequestMethod  :  {}", request.getMethod());
+            log.info("RequestIP      :  {}", request.getRemoteAddr());
+            log.info("RequestParam   :  {}", Arrays.toString(joinPoint.getArgs()));
         }
     }
 
@@ -64,8 +63,8 @@ public class WebLogAspect {
     @AfterReturning(returning = "result", pointcut = "webLog()")
     public void doAfterReturning(Object result) {
         // 打印响应信息
-        log.info("响应结果: {}", result);
-        log.info("请求耗时: {} ms", System.currentTimeMillis() - startTime.get());
+        log.info("Response Result : {}", result);
+        log.info("Total toast     : {} ms", System.currentTimeMillis() - startTime.get());
         log.info("========================================== 结束请求 ==========================================\n");
 
         // 清除 ThreadLocal，避免内存泄漏
