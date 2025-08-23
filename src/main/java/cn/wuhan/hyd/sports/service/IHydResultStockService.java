@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultStock;
+import cn.wuhan.hyd.sports.req.HydResultStockReq;
 
 import java.util.List;
 
@@ -60,5 +61,5 @@ public interface IHydResultStockService {
      */
     HydResultStock findById(Long id);
 
-    int batchSave(List<HydResultStock> stocks);
+    int batchSave(List<HydResultStockReq> stocks);
 }

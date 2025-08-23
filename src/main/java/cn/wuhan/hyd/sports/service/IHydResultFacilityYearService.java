@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultFacilityYear;
+import cn.wuhan.hyd.sports.req.HydResultFacilityYearReq;
 
 import java.util.List;
 
@@ -60,7 +61,12 @@ public interface IHydResultFacilityYearService {
      */
     HydResultFacilityYear findById(Long id);
 
-    int batchSave(List<HydResultFacilityYear> facilityYears);
+    int batchSave(List<HydResultFacilityYearReq> facilityYears);
 
-    HydResultFacilityYear findLatestFacilityYear();
+    /**
+     * 健身点位
+     * @param year 年份
+     * @return 健身点位
+     */
+    HydResultFacilityYear fitnessOverview(String year);
 }

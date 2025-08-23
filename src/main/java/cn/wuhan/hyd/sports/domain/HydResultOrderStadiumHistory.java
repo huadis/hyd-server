@@ -36,6 +36,10 @@ public class HydResultOrderStadiumHistory implements Serializable {
     @ApiModelProperty(value = "消费券订单金额")
     private String orderAmount;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

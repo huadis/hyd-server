@@ -2,9 +2,9 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultFacility;
+import cn.wuhan.hyd.sports.req.HydResultFacilityReq;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 功能说明： 驾驶舱-设施全貌 <br>
@@ -61,7 +61,7 @@ public interface IHydResultFacilityService {
      */
     HydResultFacility findById(Long id);
 
-    int batchSave(List<HydResultFacility> facilities);
+    int batchSave(List<HydResultFacilityReq> facilities);
 
-    List<Map<String, Object>> facility();
+    List<HydResultFacility> facility();
 }

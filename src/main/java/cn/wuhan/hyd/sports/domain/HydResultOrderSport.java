@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * 功能说明：结果表-场馆预定/体育消费卷-项目消费券订单金额Top5 <br>
+ * 功能说明：体育消费卷-项目消费券订单金额Top5 <br>
  * 开发人员：@author huadi <br>
  * 开发时间: 2025年08月03日 <br>
  */
@@ -35,6 +35,10 @@ public class HydResultOrderSport implements Serializable {
     @Column(name = "orderAmount")
     @ApiModelProperty(value = "消费券订单金额")
     private String orderAmount;
+
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
 
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)

@@ -6,8 +6,8 @@ import cn.wuhan.hyd.sports.domain.HydResultOrder;
 import cn.wuhan.hyd.sports.domain.HydResultOrderHistory;
 import cn.wuhan.hyd.sports.repository.HydResultOrderHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultOrderRepo;
+import cn.wuhan.hyd.sports.req.HydResultOrderReq;
 import cn.wuhan.hyd.sports.service.IHydResultOrderService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,19 +17,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
- * 功能说明： 场馆预定-订单数量 服务实现 <br>
+ * 功能说明： 体育消费卷-订单数量 服务实现 <br>
  * 开发人员：@author huadi <br>
  * 开发时间: 2025年08月03日 <br>
  */
 @Service
-public class HydResultOrderServiceImpl implements IHydResultOrderService {
+public class HydResultOrderServiceImpl extends HydBaseServiceImpl implements IHydResultOrderService {
 
     private final Logger logger = LoggerFactory.getLogger(IHydResultOrderService.class);
 
@@ -99,7 +97,7 @@ public class HydResultOrderServiceImpl implements IHydResultOrderService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int batchSave(List<HydResultOrder> orders) {
+    public int batchSave(List<HydResultOrderReq> orders) {
         // 验证参数
         if (orders == null || orders.isEmpty()) {
             throw new IllegalArgumentException("导入的数据列表不能为空");
@@ -110,8 +108,11 @@ public class HydResultOrderServiceImpl implements IHydResultOrderService {
             throw new IllegalArgumentException("单次导入最大支持1000条数据");
         }
         String batchNo = UUIDUtil.getBatchNo();
+
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydResultOrderHistory> historyList = convertToHistoryList(orders, batchNo);
+        List<HydResultOrder> queryList = convert(logger, orders, HydResultOrder.class, batchNo);
+        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
+        List<HydResultOrderHistory> historyList = convert(logger, orders, HydResultOrderHistory.class, batchNo);
         try {
             // 4. 清空查询表：日志记录操作意图，便于问题追溯
             logger.info("【批量保存】开始清空HydResultOrder表，批次号：{}", batchNo);
@@ -119,7 +120,8 @@ public class HydResultOrderServiceImpl implements IHydResultOrderService {
 
             // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
             int querySaveCount = saveAndLog(
-                    orders,
+                    logger,
+                    queryList,
                     orderRepo::saveAll,
                     "HydResultOrder",
                     batchNo
@@ -127,6 +129,7 @@ public class HydResultOrderServiceImpl implements IHydResultOrderService {
 
             // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
             int historySaveCount = saveAndLog(
+                    logger,
                     historyList,
                     orderHistoryRepo::saveAll,
                     "HydResultOrderHistory",
@@ -150,57 +153,5 @@ public class HydResultOrderServiceImpl implements IHydResultOrderService {
                     batchNo, orders.size(), e);
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
-    }
-
-    /**
-     * 转换为历史表实体列表：统一处理属性拷贝，异常封装为RuntimeException
-     */
-    private List<HydResultOrderHistory> convertToHistoryList(
-            List<HydResultOrder> sourceList,
-            String batchNo) {
-        try {
-            return sourceList.stream()
-                    .map(source -> {
-                        HydResultOrderHistory history = new HydResultOrderHistory();
-                        try {
-                            BeanUtils.copyProperties(history, source);
-                            return history;
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(
-                                    String.format("【批量保存】数据转换失败，原数据ID：%s（若有），异常信息：%s",
-                                            source.getId(), e.getMessage()), e);
-                        }
-                    })
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            logger.error("【批量保存】数据转换为历史表实体失败，批次号：{}，异常信息：", batchNo, e);
-            throw e;
-        }
-    }
-
-    /**
-     * 通用保存并日志记录方法：复用时间统计逻辑，减少代码冗余
-     *
-     * @param dataList     待保存数据列表
-     * @param saveFunction 保存操作的函数式接口（Repository的saveAll方法）
-     * @param tableName    表名（用于日志）
-     * @param batchNo      批次号
-     * @param <T>          数据类型
-     * @return 实际保存的数量
-     */
-    private <T> int saveAndLog(
-            List<T> dataList,
-            java.util.function.Function<List<T>, List<T>> saveFunction,
-            String tableName,
-            String batchNo) {
-        long startTime = System.currentTimeMillis();
-        List<T> savedList = saveFunction.apply(dataList);
-        long costTime = System.currentTimeMillis() - startTime;
-
-        // 日志包含批次号、表名、数据量、耗时，便于问题定位和性能分析
-        logger.info("【批量保存】{}表保存完成，批次号：{}，保存数量：{}，耗时：{} ms",
-                tableName, batchNo, savedList.size(), costTime);
-
-        return savedList.size();
     }
 }

@@ -3,10 +3,7 @@ package cn.wuhan.hyd.sports.controller;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydResultFacilityDistrict;
-import cn.wuhan.hyd.sports.domain.HydResultFacilityDistrictMonth;
-import cn.wuhan.hyd.sports.domain.HydResultFacilityInspect;
-import cn.wuhan.hyd.sports.domain.HydResultFacilityYear;
+import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 功能说明： 体育基础设施 <br>
@@ -43,14 +41,16 @@ public class HydFacilityController {
 
     @ApiOperation("健身点位")
     @AnonymousGetMapping("/fitnessOverview")
-    public Response<HydResultFacilityYear> FitnessOverview(@ApiParam(value = "年份") @RequestParam String year) {
-        // HydFacilityYear
-        return Response.ok(hydFacilityYearService.findLatestFacilityYear());
+    public Response<HydResultFacilityYear> fitnessOverview(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(hydFacilityYearService.fitnessOverview(year));
     }
 
     @ApiOperation("体育设施全貌")
     @AnonymousGetMapping("/facilityOverview")
-    public Response<List<Map<String, Object>>> facilityOverview(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<HydResultFacility>> facilityOverview(@ApiParam(value = "年份") @RequestParam String year) {
         // HydFacility
         return Response.ok(hydFacilityService.facility());
     }

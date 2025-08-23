@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 /**
- * 功能说明：结果表-体育基础设施-设施各区分布 <br>
+ * 功能说明：体育基础设施-设施各区分布 <br>
  * 开发人员：@author huadi <br>
  * 开发时间: 2025年08月03日 <br>
  */
@@ -38,6 +38,10 @@ public class HydResultFacilityDistrict implements Serializable {
     @Column(name = "facilityNum")
     @ApiModelProperty(value = "设施数量")
     private String facilityNum;
+
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
 
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)

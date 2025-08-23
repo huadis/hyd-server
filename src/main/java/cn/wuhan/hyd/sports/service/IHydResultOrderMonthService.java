@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultOrderMonth;
+import cn.wuhan.hyd.sports.req.HydResultOrderMonthReq;
 
 import java.util.List;
 
@@ -60,5 +61,5 @@ public interface IHydResultOrderMonthService {
      */
     HydResultOrderMonth findById(Long id);
 
-    int batchSave(List<HydResultOrderMonth> orderMonths);
+    int batchSave(List<HydResultOrderMonthReq> orderMonths);
 }

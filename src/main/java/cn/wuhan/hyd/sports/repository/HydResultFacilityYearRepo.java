@@ -14,10 +14,11 @@ import org.springframework.stereotype.Repository;
 public interface HydResultFacilityYearRepo extends JpaRepository<HydResultFacilityYear, Long> {
 
     /**
-     * 统计用户渠道
+     * 健身点位
      *
-     * @return 包含 实名用户数、领券用户数、用券用户数、下单用户数
+     * @param year 年份
+     * @return 健身点位
      */
-    @Query(value = "SELECT * FROM hyd_result_facility_year ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
-    HydResultFacilityYear findLatestFacilityYear();
+    @Query(value = "SELECT * FROM hyd_result_facility_year WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
+    HydResultFacilityYear fitnessOverview(String year);
 }

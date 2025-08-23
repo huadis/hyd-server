@@ -6,8 +6,8 @@ import cn.wuhan.hyd.sports.domain.HydResultCouponAmount;
 import cn.wuhan.hyd.sports.domain.HydResultCouponAmountHistory;
 import cn.wuhan.hyd.sports.repository.HydResultCouponAmountHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultCouponAmountRepo;
+import cn.wuhan.hyd.sports.req.HydResultCouponAmountReq;
 import cn.wuhan.hyd.sports.service.IHydResultCouponAmountService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,9 +17,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 功能说明： 体育消费卷-消费券总金额 服务实现 <br>
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
  * 开发时间: 2025年08月03日 <br>
  */
 @Service
-public class HydResultCouponAmountServiceImpl implements IHydResultCouponAmountService {
+public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl implements IHydResultCouponAmountService {
 
     private final Logger logger = LoggerFactory.getLogger(IHydResultCouponAmountService.class);
 
@@ -88,7 +89,7 @@ public class HydResultCouponAmountServiceImpl implements IHydResultCouponAmountS
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int batchSave(List<HydResultCouponAmount> couponAmounts) {
+    public int batchSave(List<HydResultCouponAmountReq> couponAmounts) {
         // 验证参数
         if (couponAmounts == null || couponAmounts.isEmpty()) {
             throw new IllegalArgumentException("导入的数据列表不能为空");
@@ -99,8 +100,63 @@ public class HydResultCouponAmountServiceImpl implements IHydResultCouponAmountS
             throw new IllegalArgumentException("单次导入最大支持1000条数据");
         }
         String batchNo = UUIDUtil.getBatchNo();
+        // 初始化求和变量
+        BigDecimal totalSendAmount = BigDecimal.ZERO;
+        BigDecimal totalReceiveCount = BigDecimal.ZERO;
+        BigDecimal totalUsedCount = BigDecimal.ZERO;
+        BigDecimal totalUseCouponAmount = BigDecimal.ZERO;
+        BigDecimal totalOrderAmount = BigDecimal.ZERO;
+
+        // 用于计算平均值的计数器
+        int validUsedRatioCount = 0;
+        int validOrderRatioCount = 0;
+        BigDecimal totalUsedRatio = BigDecimal.ZERO;
+        BigDecimal totalOrderRatio = BigDecimal.ZERO;
+
+        // 遍历列表进行累加
+        for (HydResultCouponAmountReq couponAmount : couponAmounts) {
+            // 求和字段（String -> BigDecimal）
+            totalSendAmount = parseAndAdd(totalSendAmount, couponAmount.getSendAmount());
+            totalReceiveCount = parseAndAdd(totalReceiveCount, couponAmount.getReceiveCount());
+            totalUsedCount = parseAndAdd(totalUsedCount, couponAmount.getUsedCount());
+            totalUseCouponAmount = parseAndAdd(totalUseCouponAmount, couponAmount.getUseCouponAmount());
+            totalOrderAmount = parseAndAdd(totalOrderAmount, couponAmount.getOrderAmount());
+
+            // 平均值字段
+            totalUsedRatio = parseAndAdd(totalUsedRatio, couponAmount.getUsedRatio());
+            if (couponAmount.getUsedRatio() != null && !couponAmount.getUsedRatio().trim().isEmpty()) {
+                validUsedRatioCount++;
+            }
+
+            totalOrderRatio = parseAndAdd(totalOrderRatio, couponAmount.getOrderRatio());
+            if (couponAmount.getOrderRatio() != null && !couponAmount.getOrderRatio().trim().isEmpty()) {
+                validOrderRatioCount++;
+            }
+        }
+
+        // 计算平均值（保留4位小数，可根据需要调整）
+        BigDecimal avgUsedRatio = validUsedRatioCount > 0
+                ? totalUsedRatio.divide(BigDecimal.valueOf(validUsedRatioCount), 4, RoundingMode.HALF_UP)
+                : BigDecimal.ZERO;
+
+        BigDecimal avgOrderRatio = validOrderRatioCount > 0
+                ? totalOrderRatio.divide(BigDecimal.valueOf(validOrderRatioCount), 4, RoundingMode.HALF_UP)
+                : BigDecimal.ZERO;
+        HydResultCouponAmount couponAmount = new HydResultCouponAmount();
+        couponAmount.setSendAmount(totalSendAmount.toString());
+        couponAmount.setReceiveCount(totalReceiveCount.toString());
+        couponAmount.setUsedCount(totalUsedCount.toString());
+        couponAmount.setUseCouponAmount(totalUseCouponAmount.toString());
+        couponAmount.setOrderAmount(totalOrderAmount.toString());
+        couponAmount.setUsedRatio(avgUsedRatio.toString());
+        couponAmount.setOrderRatio(avgOrderRatio.toString());
+        couponAmount.setBatchNo(batchNo);
+        List<HydResultCouponAmount> queryList = new ArrayList<>();
+        queryList.add(couponAmount);
+
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydResultCouponAmountHistory> historyList = convertToHistoryList(couponAmounts, batchNo);
+        List<HydResultCouponAmountHistory> historyList = convert(logger, couponAmounts, HydResultCouponAmountHistory.class, batchNo);
+
         try {
             // 4. 清空查询表：日志记录操作意图，便于问题追溯
             logger.info("【批量保存】开始清空HydResultCouponAmount表，批次号：{}", batchNo);
@@ -108,7 +164,8 @@ public class HydResultCouponAmountServiceImpl implements IHydResultCouponAmountS
 
             // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
             int querySaveCount = saveAndLog(
-                    couponAmounts,
+                    logger,
+                    queryList,
                     couponAmountRepo::saveAll,
                     "HydResultCouponAmount",
                     batchNo
@@ -116,6 +173,7 @@ public class HydResultCouponAmountServiceImpl implements IHydResultCouponAmountS
 
             // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
             int historySaveCount = saveAndLog(
+                    logger,
                     historyList,
                     couponAmountHistoryRepo::saveAll,
                     "HydResultCouponAmountHistory",
@@ -123,7 +181,7 @@ public class HydResultCouponAmountServiceImpl implements IHydResultCouponAmountS
             );
 
             // 7. 校验保存结果：确保双表保存数量一致，避免数据不一致
-            if (querySaveCount != historySaveCount || querySaveCount != couponAmounts.size()) {
+            if (historySaveCount != couponAmounts.size()) {
                 throw new RuntimeException(
                         String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
                                 batchNo, couponAmounts.size(), querySaveCount, historySaveCount)
@@ -141,57 +199,19 @@ public class HydResultCouponAmountServiceImpl implements IHydResultCouponAmountS
         }
     }
 
-    /**
-     * 转换为历史表实体列表：统一处理属性拷贝，异常封装为RuntimeException
-     */
-    private List<HydResultCouponAmountHistory> convertToHistoryList(
-            List<HydResultCouponAmount> sourceList,
-            String batchNo) {
+    // 工具方法：安全地将 String 转为 BigDecimal 并相加
+    private static BigDecimal parseAndAdd(BigDecimal sum, String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return sum;
+        }
         try {
-            return sourceList.stream()
-                    .map(source -> {
-                        HydResultCouponAmountHistory history = new HydResultCouponAmountHistory();
-                        try {
-                            BeanUtils.copyProperties(history, source);
-                            return history;
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(
-                                    String.format("【批量保存】数据转换失败，原数据ID：%s（若有），异常信息：%s",
-                                            source.getId(), e.getMessage()), e);
-                        }
-                    })
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            logger.error("【批量保存】数据转换为历史表实体失败，批次号：{}，异常信息：", batchNo, e);
-            throw e;
+            return sum.add(new BigDecimal(value.trim()));
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid number format: " + value);
+            return sum;
         }
     }
 
-    /**
-     * 通用保存并日志记录方法：复用时间统计逻辑，减少代码冗余
-     *
-     * @param dataList     待保存数据列表
-     * @param saveFunction 保存操作的函数式接口（Repository的saveAll方法）
-     * @param tableName    表名（用于日志）
-     * @param batchNo      批次号
-     * @param <T>          数据类型
-     * @return 实际保存的数量
-     */
-    private <T> int saveAndLog(
-            List<T> dataList,
-            java.util.function.Function<List<T>, List<T>> saveFunction,
-            String tableName,
-            String batchNo) {
-        long startTime = System.currentTimeMillis();
-        List<T> savedList = saveFunction.apply(dataList);
-        long costTime = System.currentTimeMillis() - startTime;
-
-        // 日志包含批次号、表名、数据量、耗时，便于问题定位和性能分析
-        logger.info("【批量保存】{}表保存完成，批次号：{}，保存数量：{}，耗时：{} ms",
-                tableName, batchNo, savedList.size(), costTime);
-
-        return savedList.size();
-    }
 
     @Override
     public HydResultCouponAmount findLatestCouponAmount() {

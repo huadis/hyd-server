@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultFacilityDistrictMonth;
+import cn.wuhan.hyd.sports.req.HydResultFacilityDistrictMonthReq;
 
 import java.util.List;
 
@@ -60,5 +61,5 @@ public interface IHydResultFacilityDistrictMonthService {
      */
     HydResultFacilityDistrictMonth findById(Long id);
 
-    int batchSave(List<HydResultFacilityDistrictMonth> facilityDistrictMonths);
+    int batchSave(List<HydResultFacilityDistrictMonthReq> facilityDistrictMonths);
 }

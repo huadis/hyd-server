@@ -36,6 +36,10 @@ public class HydResultOrderMonthHistory implements Serializable {
     @ApiModelProperty(value = "数量")
     private String orderNum;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

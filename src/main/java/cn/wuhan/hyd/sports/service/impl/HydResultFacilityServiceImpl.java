@@ -6,8 +6,8 @@ import cn.wuhan.hyd.sports.domain.HydResultFacility;
 import cn.wuhan.hyd.sports.domain.HydResultFacilityHistory;
 import cn.wuhan.hyd.sports.repository.HydResultFacilityHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultFacilityRepo;
+import cn.wuhan.hyd.sports.req.HydResultFacilityReq;
 import cn.wuhan.hyd.sports.service.IHydResultFacilityService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,12 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 功能说明： 体育基础设施-设施全貌 服务实现 <br>
@@ -30,7 +26,7 @@ import java.util.stream.Collectors;
  * 开发时间: 2025年08月03日 <br>
  */
 @Service
-public class HydResultFacilityServiceImpl implements IHydResultFacilityService {
+public class HydResultFacilityServiceImpl extends HydBaseServiceImpl implements IHydResultFacilityService {
 
     private final Logger logger = LoggerFactory.getLogger(IHydResultFacilityService.class);
 
@@ -91,7 +87,7 @@ public class HydResultFacilityServiceImpl implements IHydResultFacilityService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int batchSave(List<HydResultFacility> facilities) {
+    public int batchSave(List<HydResultFacilityReq> facilities) {
         // 验证参数
         if (facilities == null || facilities.isEmpty()) {
             throw new IllegalArgumentException("导入的数据列表不能为空");
@@ -102,8 +98,37 @@ public class HydResultFacilityServiceImpl implements IHydResultFacilityService {
             throw new IllegalArgumentException("单次导入最大支持1000条数据");
         }
         String batchNo = UUIDUtil.getBatchNo();
+        int total = facilities.stream()
+                .map(HydResultFacilityReq::getFacilityNum)
+                .map(obj -> obj == null ? "0" : obj) // 处理null值
+                .filter(str -> str.matches("\\d+"))       // 只保留数字字符串
+                .mapToInt(val -> {
+                    try {
+                        return Integer.parseInt(val);
+                    } catch (NumberFormatException e) {
+                        return 0;
+                    }
+                }).sum();
+        List<HydResultFacility> queryList = new ArrayList<>();
+        facilities.forEach(entity -> {
+            String facilityNum = entity.getFacilityNum();
+            String facilityTypeName = entity.getFacilityTypeName();
+            String v = facilityNum == null ? "0" : facilityNum;
+            double tmpV = 0;
+            try {
+                tmpV = Double.parseDouble(v);
+            } catch (NumberFormatException e) {
+                tmpV = 0;
+            }
+            double percentage = tmpV / total * 100;
+            HydResultFacility facility = new HydResultFacility();
+            facility.setFacilityTypeName(facilityTypeName);
+            facility.setFacilityPercentage(percentage);
+            facility.setBatchNo(batchNo);
+            queryList.add(facility);
+        });
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydResultFacilityHistory> historyList = convertToHistoryList(facilities, batchNo);
+        List<HydResultFacilityHistory> historyList = convert(logger, facilities, HydResultFacilityHistory.class, batchNo);
         try {
             // 4. 清空查询表：日志记录操作意图，便于问题追溯
             logger.info("【批量保存】开始清空HydResultFacility表，批次号：{}", batchNo);
@@ -111,7 +136,8 @@ public class HydResultFacilityServiceImpl implements IHydResultFacilityService {
 
             // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
             int querySaveCount = saveAndLog(
-                    facilities,
+                    logger,
+                    queryList,
                     facilityRepo::saveAll,
                     "HydResultFacility",
                     batchNo
@@ -119,6 +145,7 @@ public class HydResultFacilityServiceImpl implements IHydResultFacilityService {
 
             // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
             int historySaveCount = saveAndLog(
+                    logger,
                     historyList,
                     facilityHistoryRepo::saveAll,
                     "HydResultFacilityHistory",
@@ -144,90 +171,8 @@ public class HydResultFacilityServiceImpl implements IHydResultFacilityService {
         }
     }
 
-    /**
-     * 转换为历史表实体列表：统一处理属性拷贝，异常封装为RuntimeException
-     */
-    private List<HydResultFacilityHistory> convertToHistoryList(
-            List<HydResultFacility> sourceList,
-            String batchNo) {
-        try {
-            return sourceList.stream()
-                    .map(source -> {
-                        HydResultFacilityHistory history = new HydResultFacilityHistory();
-                        try {
-                            BeanUtils.copyProperties(history, source);
-                            return history;
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(
-                                    String.format("【批量保存】数据转换失败，原数据ID：%s（若有），异常信息：%s",
-                                            source.getId(), e.getMessage()), e);
-                        }
-                    })
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            logger.error("【批量保存】数据转换为历史表实体失败，批次号：{}，异常信息：", batchNo, e);
-            throw e;
-        }
-    }
-
-    /**
-     * 通用保存并日志记录方法：复用时间统计逻辑，减少代码冗余
-     *
-     * @param dataList     待保存数据列表
-     * @param saveFunction 保存操作的函数式接口（Repository的saveAll方法）
-     * @param tableName    表名（用于日志）
-     * @param batchNo      批次号
-     * @param <T>          数据类型
-     * @return 实际保存的数量
-     */
-    private <T> int saveAndLog(
-            List<T> dataList,
-            java.util.function.Function<List<T>, List<T>> saveFunction,
-            String tableName,
-            String batchNo) {
-        long startTime = System.currentTimeMillis();
-        List<T> savedList = saveFunction.apply(dataList);
-        long costTime = System.currentTimeMillis() - startTime;
-
-        // 日志包含批次号、表名、数据量、耗时，便于问题定位和性能分析
-        logger.info("【批量保存】{}表保存完成，批次号：{}，保存数量：{}，耗时：{} ms",
-                tableName, batchNo, savedList.size(), costTime);
-
-        return savedList.size();
-    }
-
     @Override
-    public List<Map<String, Object>> facility() {
-        List<HydResultFacility> hydFacilities = queryAll();
-        int total = hydFacilities.stream()
-                .map(HydResultFacility::getFacilityNum)
-                .map(obj -> obj == null ? "0" : obj) // 处理null值
-                .filter(str -> str.matches("\\d+"))       // 只保留数字字符串
-                .mapToInt(val -> {
-                    try {
-                        return Integer.parseInt(val);
-                    } catch (NumberFormatException e) {
-                        return 0;
-                    }
-                }).sum();
-        List<Map<String, Object>> result = new ArrayList<>();
-        hydFacilities.forEach(entity -> {
-            String facilityNum = entity.getFacilityNum();
-            String facilityTypeName = entity.getFacilityTypeName();
-            String v = facilityNum == null ? "0" : facilityNum;
-            double tmpV = 0;
-            try {
-                tmpV = Double.parseDouble(v);
-            } catch (NumberFormatException e) {
-                tmpV = 0;
-            }
-            double percentage = tmpV / total * 100;
-            Map<String, Object> tmp = new HashMap<>();
-            tmp.put("key", facilityTypeName);
-            tmp.put("count", tmpV);
-            tmp.put("percent", percentage);
-            result.add(tmp);
-        });
-        return result;
+    public List<HydResultFacility> facility() {
+        return queryAll();
     }
 }

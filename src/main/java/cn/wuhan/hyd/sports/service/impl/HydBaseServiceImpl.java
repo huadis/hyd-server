@@ -1,0 +1,104 @@
+package cn.wuhan.hyd.sports.service.impl;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * 功能说明： 基础服务实现 <br>
+ * 开发人员：@author huadi <br>
+ * 开发时间: 2025年08月23日 <br>
+ */
+public class HydBaseServiceImpl {
+
+    /**
+     * 将源实体列表转换为目标实体（历史表实体）列表
+     *
+     * @param sourceList  源实体列表
+     * @param targetClass 目标实体类（如历史表实体类）
+     * @param batchNo     批次号
+     * @param <S>         源实体类型
+     * @param <T>         目标实体类型（历史表实体类型）
+     * @return 转换后的目标实体列表
+     */
+    public static <S, T> List<T> convert(
+            Logger logger,
+            List<S> sourceList,
+            Class<T> targetClass,
+            String batchNo) {
+
+        try {
+            return sourceList.stream()
+                    .map(source -> {
+                        try {
+                            // 创建目标实体实例
+                            T target = targetClass.getDeclaredConstructor().newInstance();
+                            // 拷贝属性
+                            BeanUtils.copyProperties(target, source);
+                            // 设置版本号
+                            setBatchNoToTarget(target, batchNo);
+                            return target;
+                        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException |
+                                 InstantiationException e) {
+                            throw new RuntimeException(
+                                    String.format("【批量保存】数据转换失败，异常信息：%s", e.getMessage()), e);
+                        }
+                    })
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error("【批量保存】数据转换失败，批次号：{}，异常信息：", batchNo, e);
+            throw new RuntimeException("【批量保存】数据转换失败，批次号：" + batchNo, e);
+        }
+    }
+
+    /**
+     * 通用保存并日志记录方法：复用时间统计逻辑，减少代码冗余
+     *
+     * @param dataList     待保存数据列表
+     * @param saveFunction 保存操作的函数式接口（Repository的saveAll方法）
+     * @param tableName    表名（用于日志）
+     * @param batchNo      批次号
+     * @param <T>          数据类型
+     * @return 实际保存的数量
+     */
+    public <T> int saveAndLog(
+            Logger logger,
+            List<T> dataList,
+            java.util.function.Function<List<T>, List<T>> saveFunction,
+            String tableName,
+            String batchNo) {
+        long startTime = System.currentTimeMillis();
+        List<T> savedList = saveFunction.apply(dataList);
+        long costTime = System.currentTimeMillis() - startTime;
+
+        // 日志包含批次号、表名、数据量、耗时，便于问题定位和性能分析
+        logger.info("【批量保存】{}表保存完成，批次号：{}，保存数量：{}，耗时：{} ms",
+                tableName, batchNo, savedList.size(), costTime);
+
+        return savedList.size();
+    }
+
+    /**
+     * 为目标实体设置批次号（通过反射调用setBatchNo方法）
+     */
+    private static <T> void setBatchNoToTarget(T target, String batchNo) {
+        Method setBatchNo = null;
+        try {
+            // 调用目标实体的setBatchNo(String)方法
+            setBatchNo = target.getClass().getMethod("setBatchNo", String.class);
+        } catch (NoSuchMethodException ignored) {
+        }
+        if (setBatchNo != null) {
+            try {
+                setBatchNo.invoke(target, batchNo);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException("调用setBatchNo方法失败", e);
+            }
+        }
+
+    }
+}

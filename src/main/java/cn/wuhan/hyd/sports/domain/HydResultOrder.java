@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 /**
- * 功能说明：结果表-场馆预定-订单数量 <br>
+ * 功能说明：体育消费卷-订单数量 <br>
  * 开发人员：@author huadi <br>
  * 开发时间: 2025年08月03日 <br>
  */
@@ -42,6 +42,10 @@ public class HydResultOrder implements Serializable {
     @Column(name = "couponAmount")
     @ApiModelProperty(value = "消费券总金额")
     private String couponAmount;
+
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
 
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)

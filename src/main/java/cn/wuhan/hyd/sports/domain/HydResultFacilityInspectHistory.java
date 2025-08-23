@@ -60,6 +60,10 @@ public class HydResultFacilityInspectHistory implements Serializable {
     @ApiModelProperty(value = "巡检完成时间")
     private String completeTime;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

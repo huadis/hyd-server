@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * 功能说明：结果表-体育消费卷-消费券领用券 <br>
+ * 功能说明：体育消费卷-消费券领卷用券 <br>
  * 开发人员：@author huadi <br>
  * 开发时间: 2025年08月03日 <br>
  */
@@ -75,6 +75,10 @@ public class HydResultStock implements Serializable {
     @Column(name = "type")
     @ApiModelProperty(value = "类型")
     private String type;
+
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
 
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
