@@ -51,6 +51,10 @@ public class HydOriginStadiumItem implements Serializable {
     @ApiModelProperty(value = "状态（0-启用，1-停用 ）")
     private Integer disabled;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

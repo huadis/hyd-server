@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultStadium;
+import cn.wuhan.hyd.sports.req.HydResultStadiumReq;
 
 import java.util.List;
 
@@ -60,5 +61,5 @@ public interface IHydResultStadiumService {
      */
     HydResultStadium findById(Long id);
 
-    int batchSave(List<HydResultStadium> stadiums);
+    int batchSave(List<HydResultStadiumReq> stadiums);
 }

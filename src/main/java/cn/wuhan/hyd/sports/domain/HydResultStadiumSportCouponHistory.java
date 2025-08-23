@@ -40,6 +40,10 @@ public class HydResultStadiumSportCouponHistory implements Serializable {
     @ApiModelProperty(value = "用券占比")
     private String useCountRate;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

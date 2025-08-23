@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultStadiumDistrict;
+import cn.wuhan.hyd.sports.req.HydResultStadiumDistrictReq;
 
 import java.util.List;
 import java.util.Map;
@@ -68,5 +69,5 @@ public interface IHydResultStadiumDistrictService {
      */
     List<Map<String, Object>> countStadiumDistrict();
 
-    int batchSave(List<HydResultStadiumDistrict> stadiumDistricts);
+    int batchSave(List<HydResultStadiumDistrictReq> stadiumDistricts);
 }

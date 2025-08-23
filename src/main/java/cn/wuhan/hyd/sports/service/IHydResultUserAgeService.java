@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultUserAge;
+import cn.wuhan.hyd.sports.req.HydResultUserAgeReq;
 
 import java.util.List;
 import java.util.Map;
@@ -62,5 +63,5 @@ public interface IHydResultUserAgeService {
 
     List<Map<String, Object>> countStadiumUserAgeStat();
 
-    int batchSave(List<HydResultUserAge> userAges);
+    int batchSave(List<HydResultUserAgeReq> userAges);
 }

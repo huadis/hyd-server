@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultCouponStadiumTop;
+import cn.wuhan.hyd.sports.req.HydResultCouponStadiumTopReq;
 
 import java.util.List;
 import java.util.Map;
@@ -63,5 +64,5 @@ public interface IHydResultCouponStadiumTopService {
 
     List<Map<String, Object>> stadiumTop5();
 
-    int batchSave(List<HydResultCouponStadiumTop> couponStadiumTops);
+    int batchSave(List<HydResultCouponStadiumTopReq> couponStadiumTops);
 }

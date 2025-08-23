@@ -51,6 +51,10 @@ public class HydOriginTrainingActivityItemHistory implements Serializable {
     @ApiModelProperty(value = "状态（0-启用，1-停用 ）")
     private Integer disabled;  // 表中TINYINT类型，用Integer接收
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

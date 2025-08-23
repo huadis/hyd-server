@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydOriginOrder;
+import cn.wuhan.hyd.sports.req.HydOriginOrderReq;
 
 import java.util.List;
 import java.util.Map;
@@ -63,5 +64,5 @@ public interface IHydOriginOrderService {
 
     Map<String, Object> orderStat();
 
-    int batchSave(List<HydOriginOrder> orders);
+    int batchSave(List<HydOriginOrderReq> orders);
 }

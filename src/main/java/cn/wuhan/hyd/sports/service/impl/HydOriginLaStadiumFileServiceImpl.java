@@ -4,8 +4,11 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.HydOriginLaStadiumFile;
 import cn.wuhan.hyd.sports.domain.HydOriginLaStadiumFileHistory;
+import cn.wuhan.hyd.sports.domain.HydResultCouponStadiumTop;
+import cn.wuhan.hyd.sports.domain.HydResultCouponStadiumTopHistory;
 import cn.wuhan.hyd.sports.repository.HydOriginLaStadiumFileHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydOriginLaStadiumFileRepo;
+import cn.wuhan.hyd.sports.req.HydOriginLaStadiumFileReq;
 import cn.wuhan.hyd.sports.service.IHydOriginLaStadiumFileService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
@@ -28,7 +31,7 @@ import java.util.stream.Collectors;
  * 开发时间: 2025年08月15日 <br>
  */
 @Service
-public class HydOriginLaStadiumFileServiceImpl implements IHydOriginLaStadiumFileService {
+public class HydOriginLaStadiumFileServiceImpl extends HydBaseServiceImpl implements IHydOriginLaStadiumFileService {
 
     private final Logger logger = LoggerFactory.getLogger(IHydOriginLaStadiumFileService.class);
 
@@ -57,6 +60,11 @@ public class HydOriginLaStadiumFileServiceImpl implements IHydOriginLaStadiumFil
     public HydOriginLaStadiumFile findById(Integer id) {
         return laStadiumFileRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("校外培训机构附件不存在，ID：" + id));
+    }
+
+    @Override
+    public Map<String, Object> orderStat() {
+        return null;
     }
 
     @Override
@@ -89,7 +97,7 @@ public class HydOriginLaStadiumFileServiceImpl implements IHydOriginLaStadiumFil
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int batchSave(List<HydOriginLaStadiumFile> stadiumFiles) {
+    public int batchSave(List<HydOriginLaStadiumFileReq> stadiumFiles) {
         // 验证参数
         if (stadiumFiles == null || stadiumFiles.isEmpty()) {
             throw new IllegalArgumentException("导入的数据列表不能为空");
@@ -101,7 +109,10 @@ public class HydOriginLaStadiumFileServiceImpl implements IHydOriginLaStadiumFil
         }
         String batchNo = UUIDUtil.getBatchNo();
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydOriginLaStadiumFileHistory> historyList = convertToHistoryList(stadiumFiles, batchNo);
+        List<HydOriginLaStadiumFile> queryList = convert(logger, stadiumFiles, HydOriginLaStadiumFile.class, batchNo);
+        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
+        List<HydOriginLaStadiumFileHistory> historyList = convert(logger, stadiumFiles, HydOriginLaStadiumFileHistory.class, batchNo);
+
         try {
             // 4. 清空查询表：日志记录操作意图，便于问题追溯
             logger.info("【批量保存】开始清空HydOriginLaStadiumFile表，批次号：{}", batchNo);
@@ -109,7 +120,8 @@ public class HydOriginLaStadiumFileServiceImpl implements IHydOriginLaStadiumFil
 
             // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
             int querySaveCount = saveAndLog(
-                    stadiumFiles,
+                    logger,
+                    queryList,
                     laStadiumFileRepo::saveAll,
                     "HydOriginLaStadiumFile",
                     batchNo
@@ -117,6 +129,7 @@ public class HydOriginLaStadiumFileServiceImpl implements IHydOriginLaStadiumFil
 
             // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
             int historySaveCount = saveAndLog(
+                    logger,
                     historyList,
                     laStadiumFileHistoryRepo::saveAll,
                     "HydOriginLaStadiumFileHistory",
@@ -140,63 +153,5 @@ public class HydOriginLaStadiumFileServiceImpl implements IHydOriginLaStadiumFil
                     batchNo, stadiumFiles.size(), e);
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
-    }
-
-    /**
-     * 转换为历史表实体列表：统一处理属性拷贝，异常封装为RuntimeException
-     */
-    private List<HydOriginLaStadiumFileHistory> convertToHistoryList(
-            List<HydOriginLaStadiumFile> sourceList,
-            String batchNo) {
-        try {
-            return sourceList.stream()
-                    .map(source -> {
-                        HydOriginLaStadiumFileHistory history = new HydOriginLaStadiumFileHistory();
-                        try {
-                            BeanUtils.copyProperties(history, source);
-                            return history;
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(
-                                    String.format("【批量保存】数据转换失败，原数据ID：%s（若有），异常信息：%s",
-                                            source.getId(), e.getMessage()), e);
-                        }
-                    })
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            logger.error("【批量保存】数据转换为历史表实体失败，批次号：{}，异常信息：", batchNo, e);
-            throw e;
-        }
-    }
-
-    /**
-     * 通用保存并日志记录方法：复用时间统计逻辑，减少代码冗余
-     *
-     * @param dataList     待保存数据列表
-     * @param saveFunction 保存操作的函数式接口（Repository的saveAll方法）
-     * @param tableName    表名（用于日志）
-     * @param batchNo      批次号
-     * @param <T>          数据类型
-     * @return 实际保存的数量
-     */
-    private <T> int saveAndLog(
-            List<T> dataList,
-            java.util.function.Function<List<T>, List<T>> saveFunction,
-            String tableName,
-            String batchNo) {
-        long startTime = System.currentTimeMillis();
-        List<T> savedList = saveFunction.apply(dataList);
-        long costTime = System.currentTimeMillis() - startTime;
-
-        // 日志包含批次号、表名、数据量、耗时，便于问题定位和性能分析
-        logger.info("【批量保存】{}表保存完成，批次号：{}，保存数量：{}，耗时：{} ms",
-                tableName, batchNo, savedList.size(), costTime);
-
-        return savedList.size();
-    }
-
-    @Override
-    public Map<String, Object> orderStat() {
-        // 如需实现统计功能，可在此补充（如附件数量、关联场馆统计等）
-        throw new UnsupportedOperationException("统计功能待实现");
     }
 }

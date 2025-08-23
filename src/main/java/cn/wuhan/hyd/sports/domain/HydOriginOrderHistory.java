@@ -91,6 +91,10 @@ public class HydOriginOrderHistory implements Serializable {
     @ApiModelProperty(value = "订单状态")
     private String orderStatus;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

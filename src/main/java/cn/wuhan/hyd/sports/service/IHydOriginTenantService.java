@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydOriginTenant;
+import cn.wuhan.hyd.sports.req.HydOriginTenantReq;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public interface IHydOriginTenantService {
      * @param tenants 租户列表
      * @return 新增数量
      */
-    int batchSave(List<HydOriginTenant> tenants);
+    int batchSave(List<HydOriginTenantReq> tenants);
 
     /**
      * 更新租户

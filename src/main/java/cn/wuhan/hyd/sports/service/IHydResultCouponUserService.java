@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultCouponUser;
+import cn.wuhan.hyd.sports.req.HydResultCouponUserReq;
 
 import java.util.List;
 
@@ -60,5 +61,5 @@ public interface IHydResultCouponUserService {
      */
     HydResultCouponUser findById(Long id);
 
-    int batchSave(List<HydResultCouponUser> couponUsers);
+    int batchSave(List<HydResultCouponUserReq> couponUsers);
 }

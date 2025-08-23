@@ -45,6 +45,10 @@ public class HydResultStadiumMapPointHistory implements Serializable {
     @ApiModelProperty(value = "纬度")
     private String latitude;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

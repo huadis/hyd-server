@@ -6,8 +6,8 @@ import cn.wuhan.hyd.sports.domain.HydOriginTenant;
 import cn.wuhan.hyd.sports.domain.HydOriginTenantHistory;
 import cn.wuhan.hyd.sports.repository.HydOriginTenantHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydOriginTenantRepo;
+import cn.wuhan.hyd.sports.req.HydOriginTenantReq;
 import cn.wuhan.hyd.sports.service.IHydOriginTenantService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 功能说明：组织机构表服务实现类 <br>
@@ -27,7 +25,7 @@ import java.util.stream.Collectors;
  * 开发时间: 2025年08月14日 <br>
  */
 @Service
-public class HydOriginTenantServiceImpl implements IHydOriginTenantService {
+public class HydOriginTenantServiceImpl extends HydBaseServiceImpl implements IHydOriginTenantService {
 
     private final Logger logger = LoggerFactory.getLogger(IHydOriginTenantService.class);
 
@@ -82,7 +80,7 @@ public class HydOriginTenantServiceImpl implements IHydOriginTenantService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int batchSave(List<HydOriginTenant> tenants) {
+    public int batchSave(List<HydOriginTenantReq> tenants) {
         // 验证参数
         if (tenants == null || tenants.isEmpty()) {
             throw new IllegalArgumentException("导入的数据列表不能为空");
@@ -94,7 +92,10 @@ public class HydOriginTenantServiceImpl implements IHydOriginTenantService {
         }
         String batchNo = UUIDUtil.getBatchNo();
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydOriginTenantHistory> historyList = convertToHistoryList(tenants, batchNo);
+        List<HydOriginTenant> queryList = convert(logger, tenants, HydOriginTenant.class, batchNo);
+        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
+        List<HydOriginTenantHistory> historyList = convert(logger, tenants, HydOriginTenantHistory.class, batchNo);
+
         try {
             // 4. 清空查询表：日志记录操作意图，便于问题追溯
             logger.info("【批量保存】开始清空HydOriginTenant表，批次号：{}", batchNo);
@@ -102,7 +103,8 @@ public class HydOriginTenantServiceImpl implements IHydOriginTenantService {
 
             // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
             int querySaveCount = saveAndLog(
-                    tenants,
+                    logger,
+                    queryList,
                     tenantRepo::saveAll,
                     "HydOriginTenant",
                     batchNo
@@ -110,6 +112,7 @@ public class HydOriginTenantServiceImpl implements IHydOriginTenantService {
 
             // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
             int historySaveCount = saveAndLog(
+                    logger,
                     historyList,
                     tenantHistoryRepo::saveAll,
                     "HydOriginTenantHistory",
@@ -133,58 +136,6 @@ public class HydOriginTenantServiceImpl implements IHydOriginTenantService {
                     batchNo, tenants.size(), e);
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
-    }
-
-    /**
-     * 转换为历史表实体列表：统一处理属性拷贝，异常封装为RuntimeException
-     */
-    private List<HydOriginTenantHistory> convertToHistoryList(
-            List<HydOriginTenant> sourceList,
-            String batchNo) {
-        try {
-            return sourceList.stream()
-                    .map(source -> {
-                        HydOriginTenantHistory history = new HydOriginTenantHistory();
-                        try {
-                            BeanUtils.copyProperties(history, source);
-                            return history;
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(
-                                    String.format("【批量保存】数据转换失败，原数据ID：%s（若有），异常信息：%s",
-                                            source.getId(), e.getMessage()), e);
-                        }
-                    })
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            logger.error("【批量保存】数据转换为历史表实体失败，批次号：{}，异常信息：", batchNo, e);
-            throw e;
-        }
-    }
-
-    /**
-     * 通用保存并日志记录方法：复用时间统计逻辑，减少代码冗余
-     *
-     * @param dataList     待保存数据列表
-     * @param saveFunction 保存操作的函数式接口（Repository的saveAll方法）
-     * @param tableName    表名（用于日志）
-     * @param batchNo      批次号
-     * @param <T>          数据类型
-     * @return 实际保存的数量
-     */
-    private <T> int saveAndLog(
-            List<T> dataList,
-            java.util.function.Function<List<T>, List<T>> saveFunction,
-            String tableName,
-            String batchNo) {
-        long startTime = System.currentTimeMillis();
-        List<T> savedList = saveFunction.apply(dataList);
-        long costTime = System.currentTimeMillis() - startTime;
-
-        // 日志包含批次号、表名、数据量、耗时，便于问题定位和性能分析
-        logger.info("【批量保存】{}表保存完成，批次号：{}，保存数量：{}，耗时：{} ms",
-                tableName, batchNo, savedList.size(), costTime);
-
-        return savedList.size();
     }
 
     @Override

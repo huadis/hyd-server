@@ -48,6 +48,10 @@ public class HydResultUserRepurchaseHistory implements Serializable {
     @ApiModelProperty(value = "50次以上")
     private String over50Num;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

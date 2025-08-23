@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultUserSex;
+import cn.wuhan.hyd.sports.req.HydResultUserSexReq;
 
 import java.util.List;
 import java.util.Map;
@@ -62,5 +63,5 @@ public interface IHydResultUserSexService {
 
     List<Map<String, Object>> countStadiumUserSexStat();
 
-    int batchSave(List<HydResultUserSex> userSexes);
+    int batchSave(List<HydResultUserSexReq> userSexes);
 }

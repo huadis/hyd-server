@@ -64,6 +64,10 @@ public class HydResultCouponUser implements Serializable {
     @ApiModelProperty(value = "类型")
     private String type;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

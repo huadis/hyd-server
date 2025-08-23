@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydOriginTrainingActivity;
+import cn.wuhan.hyd.sports.req.HydOriginTrainingActivityReq;
 
 import java.util.List;
 
@@ -60,5 +61,5 @@ public interface IHydOriginTrainingActivityService {
      */
     HydOriginTrainingActivity findById(String id);  // 主键是String类型
 
-    int batchSave(List<HydOriginTrainingActivity> activities);
+    int batchSave(List<HydOriginTrainingActivityReq> activities);
 }

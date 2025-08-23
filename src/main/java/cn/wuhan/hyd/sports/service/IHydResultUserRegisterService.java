@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultUserRegister;
+import cn.wuhan.hyd.sports.req.HydResultUserRegisterReq;
 
 import java.util.List;
 import java.util.Map;
@@ -62,5 +63,5 @@ public interface IHydResultUserRegisterService {
 
     List<Map<String, Object>> countStadiumUserGrowthStat();
 
-    int batchSave(List<HydResultUserRegister> userRegisters);
+    int batchSave(List<HydResultUserRegisterReq> userRegisters);
 }

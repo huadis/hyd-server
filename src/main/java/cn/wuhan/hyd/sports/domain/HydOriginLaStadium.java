@@ -111,6 +111,10 @@ public class HydOriginLaStadium implements Serializable {
     @ApiModelProperty(value = "删除时间", hidden = true)
     private Integer deleteTime;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "importTime")
     @ApiModelProperty(value = "导入时间", hidden = true)
     private Timestamp importTime;

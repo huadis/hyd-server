@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultUserRepurchase;
+import cn.wuhan.hyd.sports.req.HydResultUserRepurchaseReq;
 
 import java.util.List;
 import java.util.Map;
@@ -62,5 +63,5 @@ public interface IHydResultUserRepurchaseService {
 
     List<Map<String, Object>> countStadiumUserRepurchaseStat();
 
-    int batchSave(List<HydResultUserRepurchase> userRepurchases);
+    int batchSave(List<HydResultUserRepurchaseReq> userRepurchases);
 }

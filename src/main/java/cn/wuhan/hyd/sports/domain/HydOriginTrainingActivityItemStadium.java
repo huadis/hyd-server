@@ -43,6 +43,10 @@ public class HydOriginTrainingActivityItemStadium implements Serializable {
     @ApiModelProperty(value = "项目类型名称")
     private String sportName;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "importTime")
     @ApiModelProperty(value = "导入时间", hidden = true)
     private Timestamp importTime;

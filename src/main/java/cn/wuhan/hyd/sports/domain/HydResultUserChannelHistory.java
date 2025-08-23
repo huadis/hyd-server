@@ -48,6 +48,10 @@ public class HydResultUserChannelHistory implements Serializable {
     @ApiModelProperty(value = "下单用户")
     private String orderUserNum;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;
