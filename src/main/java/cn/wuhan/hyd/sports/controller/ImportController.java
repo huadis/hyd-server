@@ -138,10 +138,10 @@ public class ImportController {
         }
     }
 
-    @ApiOperation("结果表-电子地图点位信息-批量导入")
+    @ApiOperation("体育基础设施-电子地图点位信息-批量导入")
     @AnonymousPostMapping("/stadiumMapPointImport")
     public Response<Boolean> stadiumMapPointImport(@RequestBody List<HydResultStadiumMapPoint> stadiumMapPoints) {
-        logger.info("结果表-电子地图点位信息-批量导入, 条数 : {}", stadiumMapPoints.size());
+        logger.info("体育基础设施-电子地图点位信息-批量导入, 条数 : {}", stadiumMapPoints.size());
         try {
             return Response.ok(stadiumMapPointService.batchSave(stadiumMapPoints) > 0);
         } catch (IllegalArgumentException e) {
@@ -152,10 +152,10 @@ public class ImportController {
     }
 
 
-    @ApiOperation("结果表-电子地图-批量导入")
+    @ApiOperation("体育基础设施-电子地图-批量导入")
     @AnonymousPostMapping("/stadiumMap")
     public Response<Boolean> stadiumMapImport(@RequestBody List<HydResultStadiumMap> stadiumMaps) {
-        logger.info("结果表-电子地图-批量导入, 条数 : {}", stadiumMaps.size());
+        logger.info("体育基础设施-电子地图-批量导入, 条数 : {}", stadiumMaps.size());
         try {
             return Response.ok(stadiumMapService.batchSave(stadiumMaps) > 0);
         } catch (IllegalArgumentException e) {
@@ -325,32 +325,6 @@ public class ImportController {
         }
     }
 
-    @ApiOperation("结果表-在线场馆数量-批量导入")
-    @AnonymousPostMapping("/stadium")
-    public Response<Boolean> stadiumImport(@RequestBody List<HydResultStadium> stadiums) {
-        logger.info("结果表-在线场馆数量-批量导入, 条数 : {}", stadiums.size());
-        try {
-            return Response.ok(stadiumService.batchSave(stadiums) > 0);
-        } catch (IllegalArgumentException e) {
-            return Response.fail(e.getMessage());
-        } catch (Exception e) {
-            return Response.fail("服务异常");
-        }
-    }
-
-    @ApiOperation("结果表-运动项目分布用券数占比-批量导入")
-    @AnonymousPostMapping("/stadiumSportCoupon")
-    public Response<Boolean> stadiumSportCouponImport(@RequestBody List<HydResultStadiumSportCoupon> stadiumSportCoupons) {
-        logger.info("结果表-运动项目分布用券数占比-批量导入, 条数 : {}", stadiumSportCoupons.size());
-        try {
-            return Response.ok(stadiumSportCouponService.batchSave(stadiumSportCoupons) > 0);
-        } catch (IllegalArgumentException e) {
-            return Response.fail(e.getMessage());
-        } catch (Exception e) {
-            return Response.fail("服务异常");
-        }
-    }
-
     @ApiOperation("场馆预定-年龄占比-批量导入")
     @AnonymousPostMapping("/userAge")
     public Response<Boolean> userAgeImport(@RequestBody List<HydResultUserAge> userAges) {
@@ -409,6 +383,32 @@ public class ImportController {
         logger.info("场馆预定-男女占比-批量导入, 条数 : {}", userSexes.size());
         try {
             return Response.ok(userSexService.batchSave(userSexes) > 0);
+        } catch (IllegalArgumentException e) {
+            return Response.fail(e.getMessage());
+        } catch (Exception e) {
+            return Response.fail("服务异常");
+        }
+    }
+
+    @ApiOperation("场馆预定-在线场馆数量-批量导入")
+    @AnonymousPostMapping("/stadium")
+    public Response<Boolean> stadiumImport(@RequestBody List<HydResultStadium> stadiums) {
+        logger.info("场馆预定-在线场馆数量-批量导入, 条数 : {}", stadiums.size());
+        try {
+            return Response.ok(stadiumService.batchSave(stadiums) > 0);
+        } catch (IllegalArgumentException e) {
+            return Response.fail(e.getMessage());
+        } catch (Exception e) {
+            return Response.fail("服务异常");
+        }
+    }
+
+    @ApiOperation("场馆预定-运动项目分布用券数占比-批量导入")
+    @AnonymousPostMapping("/stadiumSportCoupon")
+    public Response<Boolean> stadiumSportCouponImport(@RequestBody List<HydResultStadiumSportCoupon> stadiumSportCoupons) {
+        logger.info("场馆预定-运动项目分布用券数占比-批量导入, 条数 : {}", stadiumSportCoupons.size());
+        try {
+            return Response.ok(stadiumSportCouponService.batchSave(stadiumSportCoupons) > 0);
         } catch (IllegalArgumentException e) {
             return Response.fail(e.getMessage());
         } catch (Exception e) {
