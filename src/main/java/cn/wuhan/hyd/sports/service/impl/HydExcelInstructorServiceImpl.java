@@ -2,12 +2,8 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.wuhan.hyd.framework.utils.MapUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydExcelInstructorAgeGrowth;
-import cn.wuhan.hyd.sports.domain.HydExcelInstructorAgeStats;
-import cn.wuhan.hyd.sports.domain.HydExcelInstructorInfo;
-import cn.wuhan.hyd.sports.repository.HydExcelInstructorAgeGrowthRepo;
-import cn.wuhan.hyd.sports.repository.HydExcelInstructorAgeStatsRepo;
-import cn.wuhan.hyd.sports.repository.HydExcelInstructorInfoRepo;
+import cn.wuhan.hyd.sports.domain.*;
+import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydExcelInstructorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,16 +26,22 @@ import java.util.Map;
 public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService {
 
     @Resource
-    private HydExcelInstructorInfoRepo hydExcelInstructorInfoRepo;
+    private HydExcelInstructorInfoRepo instructorInfoRepo;
     @Resource
-    private HydExcelInstructorAgeStatsRepo hydExcelInstructorAgeStatsRepo;
+    private HydExcelInstructorInfoHistoryRepo infoHistoryRepo;
     @Resource
-    private HydExcelInstructorAgeGrowthRepo hydExcelInstructorAgeGrowthRepo;
+    private HydExcelInstructorAgeStatsRepo instructorAgeStatsRepo;
+    @Resource
+    private HydExcelInstructorAgeStatsHistoryRepo ageStatsHistoryRepo;
+    @Resource
+    private HydExcelInstructorAgeGrowthRepo instructorAgeGrowthRepo;
+    @Resource
+    private HydExcelInstructorAgeGrowthHistoryRepo ageGrowthHistoryRepo;
 
     @Override
     public PageResult<HydExcelInstructorInfo> queryAllInstructorInfo(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<HydExcelInstructorInfo> pageResult = hydExcelInstructorInfoRepo.findAll(pageable);
+        Page<HydExcelInstructorInfo> pageResult = instructorInfoRepo.findAll(pageable);
         PageResult<HydExcelInstructorInfo> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
         result.setContent(pageResult.getContent());
@@ -48,19 +50,19 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
 
     @Override
     public List<HydExcelInstructorInfo> queryAllInstructorInfo() {
-        return hydExcelInstructorInfoRepo.findAll();
+        return instructorInfoRepo.findAll();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public HydExcelInstructorInfo save(HydExcelInstructorInfo instructorInfo) {
-        return hydExcelInstructorInfoRepo.save(instructorInfo);
+        return instructorInfoRepo.save(instructorInfo);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteInstructorInfoById(Long id) {
-        hydExcelInstructorInfoRepo.deleteById(id);
+        instructorInfoRepo.deleteById(id);
     }
 
     @Override
@@ -70,19 +72,19 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
             throw new IllegalArgumentException("更新操作必须提供ID");
         }
         findInstructorInfoById(instructorInfo.getId());
-        return hydExcelInstructorInfoRepo.save(instructorInfo);
+        return instructorInfoRepo.save(instructorInfo);
     }
 
     @Override
     public HydExcelInstructorInfo findInstructorInfoById(Long id) {
-        return hydExcelInstructorInfoRepo.findById(id)
+        return instructorInfoRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("社会体育指导员汇总信息，ID：" + id));
     }
 
     @Override
     public PageResult<HydExcelInstructorAgeStats> queryAllInstructorAgeStats(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<HydExcelInstructorAgeStats> pageResult = hydExcelInstructorAgeStatsRepo.findAll(pageable);
+        Page<HydExcelInstructorAgeStats> pageResult = instructorAgeStatsRepo.findAll(pageable);
         PageResult<HydExcelInstructorAgeStats> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
         result.setContent(pageResult.getContent());
@@ -91,19 +93,19 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
 
     @Override
     public List<HydExcelInstructorAgeStats> queryAllInstructorAgeStats() {
-        return hydExcelInstructorAgeStatsRepo.findAll();
+        return instructorAgeStatsRepo.findAll();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public HydExcelInstructorAgeStats save(HydExcelInstructorAgeStats instructorAgeStats) {
-        return hydExcelInstructorAgeStatsRepo.save(instructorAgeStats);
+        return instructorAgeStatsRepo.save(instructorAgeStats);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteInstructorAgeStatsById(Long id) {
-        hydExcelInstructorAgeStatsRepo.deleteById(id);
+        instructorAgeStatsRepo.deleteById(id);
     }
 
     @Override
@@ -113,19 +115,19 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
             throw new IllegalArgumentException("更新操作必须提供ID");
         }
         findInstructorAgeStatsById(instructorAgeStats.getId());
-        return hydExcelInstructorAgeStatsRepo.save(instructorAgeStats);
+        return instructorAgeStatsRepo.save(instructorAgeStats);
     }
 
     @Override
     public HydExcelInstructorAgeStats findInstructorAgeStatsById(Long id) {
-        return hydExcelInstructorAgeStatsRepo.findById(id)
+        return instructorAgeStatsRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("体育指导员 - 年龄统计明细表，ID：" + id));
     }
 
     @Override
     public PageResult<HydExcelInstructorAgeGrowth> queryAllInstructorAgeGrowth(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<HydExcelInstructorAgeGrowth> pageResult = hydExcelInstructorAgeGrowthRepo.findAll(pageable);
+        Page<HydExcelInstructorAgeGrowth> pageResult = instructorAgeGrowthRepo.findAll(pageable);
         PageResult<HydExcelInstructorAgeGrowth> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
         result.setContent(pageResult.getContent());
@@ -134,19 +136,19 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
 
     @Override
     public List<HydExcelInstructorAgeGrowth> queryAllInstructorAgeGrowth() {
-        return hydExcelInstructorAgeGrowthRepo.findAll();
+        return instructorAgeGrowthRepo.findAll();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public HydExcelInstructorAgeGrowth save(HydExcelInstructorAgeGrowth instructorAgeGrowth) {
-        return hydExcelInstructorAgeGrowthRepo.save(instructorAgeGrowth);
+        return instructorAgeGrowthRepo.save(instructorAgeGrowth);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteInstructorAgeGrowthById(Long id) {
-        hydExcelInstructorAgeGrowthRepo.deleteById(id);
+        instructorAgeGrowthRepo.deleteById(id);
     }
 
     @Override
@@ -156,43 +158,53 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
             throw new IllegalArgumentException("更新操作必须提供ID");
         }
         findInstructorAgeGrowthById(instructorAgeGrowth.getId());
-        return hydExcelInstructorAgeGrowthRepo.save(instructorAgeGrowth);
+        return instructorAgeGrowthRepo.save(instructorAgeGrowth);
     }
 
     @Override
     public HydExcelInstructorAgeGrowth findInstructorAgeGrowthById(Long id) {
-        return hydExcelInstructorAgeGrowthRepo.findById(id)
+        return instructorAgeGrowthRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("体育指导员 - 人数增长统计明细表，ID：" + id));
     }
 
     public boolean importExcel(Map<String, List<Map<String, Object>>> sheetMapData) {
-        List<HydExcelInstructorInfo> instructorInfos = new ArrayList<>();
-        List<HydExcelInstructorAgeStats> instructorAgeStats = new ArrayList<>();
-        List<HydExcelInstructorAgeGrowth> instructorAgeGrowths = new ArrayList<>();
+        List<HydExcelInstructorInfo> infos = new ArrayList<>();
+        List<HydExcelInstructorAgeStats> ageStats = new ArrayList<>();
+        List<HydExcelInstructorAgeGrowth> ageGrowths = new ArrayList<>();
+
+        List<HydExcelInstructorInfoHistory> infoHistories = new ArrayList<>();
+        List<HydExcelInstructorAgeStatsHistory> ageStatsHistories = new ArrayList<>();
+        List<HydExcelInstructorAgeGrowthHistory> ageGrowthHistories = new ArrayList<>();
         sheetMapData.forEach((key, list) -> {
             Map<String, Object> rowData = new HashMap<>();
             switch (key) {
                 case "汇总":
                     list.forEach(m -> {
-                        instructorInfos.add(MapUtil.map2Object(HydExcelInstructorInfo.class, m));
+                        infos.add(MapUtil.map2Object(HydExcelInstructorInfo.class, m));
+                        infoHistories.add(MapUtil.map2Object(HydExcelInstructorInfoHistory.class, m));
                     });
                     break;
                 case "年龄统计明细表":
                     list.forEach(m -> {
-                        instructorAgeStats.add(MapUtil.map2Object(HydExcelInstructorAgeStats.class, m));
+                        ageStats.add(MapUtil.map2Object(HydExcelInstructorAgeStats.class, m));
+                        ageStatsHistories.add(MapUtil.map2Object(HydExcelInstructorAgeStatsHistory.class, m));
                     });
                     break;
                 case "人数增长统计明细表":
                     list.forEach(m -> {
-                        instructorAgeGrowths.add(MapUtil.map2Object(HydExcelInstructorAgeGrowth.class, m));
+                        ageGrowths.add(MapUtil.map2Object(HydExcelInstructorAgeGrowth.class, m));
+                        ageGrowthHistories.add(MapUtil.map2Object(HydExcelInstructorAgeGrowthHistory.class, m));
                     });
                     break;
             }
         });
         // 批量保存
-        hydExcelInstructorInfoRepo.saveAll(instructorInfos);
-        hydExcelInstructorAgeStatsRepo.saveAll(instructorAgeStats);
-        hydExcelInstructorAgeGrowthRepo.saveAll(instructorAgeGrowths);
+        instructorInfoRepo.saveAll(infos);
+        infoHistoryRepo.saveAll(infoHistories);
+        instructorAgeStatsRepo.saveAll(ageStats);
+        ageStatsHistoryRepo.saveAll(ageStatsHistories);
+        instructorAgeGrowthRepo.saveAll(ageGrowths);
+        ageGrowthHistoryRepo.saveAll(ageGrowthHistories);
         return true;
     }
 
@@ -201,7 +213,7 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
      */
     @Override
     public List<Map<String, Object>> serviceProjectTop15() {
-        return hydExcelInstructorInfoRepo.serviceProjectTop15();
+        return instructorInfoRepo.serviceProjectTop15();
     }
 
     /**
@@ -209,7 +221,7 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
      */
     @Override
     public List<Map<String, Object>> genderStat() {
-        return hydExcelInstructorInfoRepo.genderStat();
+        return instructorInfoRepo.genderStat();
     }
 
     /**
@@ -217,7 +229,7 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
      */
     @Override
     public List<Map<String, Object>> levelStat() {
-        return hydExcelInstructorInfoRepo.levelStat();
+        return instructorInfoRepo.levelStat();
     }
 
     /**
@@ -225,7 +237,7 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
      */
     @Override
     public List<Map<String, Object>> regionInstructorStat() {
-        return hydExcelInstructorInfoRepo.regionInstructorStat();
+        return instructorInfoRepo.regionInstructorStat();
     }
 
     /**
@@ -233,7 +245,7 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
      */
     @Override
     public List<Map<String, Object>> ageIntervalStat() {
-        return hydExcelInstructorAgeStatsRepo.ageIntervalStat();
+        return instructorAgeStatsRepo.ageIntervalStat();
     }
 
     /**
@@ -241,7 +253,7 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
      */
     @Override
     public List<Map<String, Object>> ageGrowthStat() {
-        return hydExcelInstructorAgeGrowthRepo.ageGrowthStat();
+        return instructorAgeGrowthRepo.ageGrowthStat();
     }
 
 

@@ -5,6 +5,7 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydExcelIndustryService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,17 +28,31 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
     @Resource
     private HydExcelIndustryCoreIndicatorsRepo industryCoreIndicatorsRepo;
     @Resource
+    private HydExcelIndustryCoreIndicatorsHistoryRepo industryCoreIndicatorsHistoryRepo;
+    @Resource
     private HydExcelIndustryEmployeeCountRepo industryEmployeeCountRepo;
+    @Resource
+    private HydExcelIndustryEmployeeCountHistoryRepo industryEmployeeCountHistoryRepo;
     @Resource
     private HydExcelIndustryEntityCountRatioRepo industryEntityCountRatioRepo;
     @Resource
+    private HydExcelIndustryEntityCountRatioHistoryRepo industryEntityCountRatioHistoryRepo;
+    @Resource
     private HydExcelIndustryGoodsPurchaseRateRepo industryGoodsPurchaseRateRepo;
+    @Resource
+    private HydExcelIndustryGoodsPurchaseRateHistoryRepo industryGoodsPurchaseRateHistoryRepo;
     @Resource
     private HydExcelIndustryGrowthValueTrendRepo industryGrowthValueTrendRepo;
     @Resource
+    private HydExcelIndustryGrowthValueTrendHistoryRepo industryGrowthValueTrendHistoryRepo;
+    @Resource
     private HydExcelIndustryScaleTrendRepo industryScaleTrendRepo;
     @Resource
+    private HydExcelIndustryScaleTrendHistoryRepo industryScaleTrendHistoryRepo;
+    @Resource
     private HydExcelIndustryTrainingParticipationRateRepo industryTrainingParticipationRateRepo;
+    @Resource
+    private HydExcelIndustryTrainingParticipationRateHistoryRepo industryTrainingParticipationRateHistoryRepo;
 
     @Override
     public PageResult<HydExcelIndustryCoreIndicators> queryAllIndustryCoreIndicators(int page, int size) {
@@ -349,54 +364,76 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
         List<HydExcelIndustryTrainingParticipationRate> trainingParticipationRates = new ArrayList<>();
         List<HydExcelIndustryGoodsPurchaseRate> goodsPurchaseRates = new ArrayList<>();
         List<HydExcelIndustryEmployeeCount> employeeCounts = new ArrayList<>();
+
+        List<HydExcelIndustryCoreIndicatorsHistory> coreIndicatorsHistories = new ArrayList<>();
+        List<HydExcelIndustryScaleTrendHistory> scaleTrendHistories = new ArrayList<>();
+        List<HydExcelIndustryEntityCountRatioHistory> entityCountRatioHistories = new ArrayList<>();
+        List<HydExcelIndustryGrowthValueTrendHistory> growthValueTrendHistories = new ArrayList<>();
+        List<HydExcelIndustryTrainingParticipationRateHistory> trainingParticipationRateHistories = new ArrayList<>();
+        List<HydExcelIndustryGoodsPurchaseRateHistory> goodsPurchaseRateHistories = new ArrayList<>();
+        List<HydExcelIndustryEmployeeCountHistory> employeeCountHistories = new ArrayList<>();
         sheetMapData.forEach((key, list) -> {
             Map<String, Object> rowData = new HashMap<>();
             switch (key) {
                 case "核心指标总表":
                     list.forEach(m -> {
                         coreIndicators.add(MapUtil.map2Object(HydExcelIndustryCoreIndicators.class, m));
+                        coreIndicatorsHistories.add(MapUtil.map2Object(HydExcelIndustryCoreIndicatorsHistory.class, m));
                     });
                     break;
                 case "总规模（年度趋势）表":
                     list.forEach(m -> {
                         scaleTrends.add(MapUtil.map2Object(HydExcelIndustryScaleTrend.class, m));
+                        scaleTrendHistories.add(MapUtil.map2Object(HydExcelIndustryScaleTrendHistory.class, m));
                     });
                     break;
                 case "场主体数量（分类占比）表":
                     list.forEach(m -> {
                         entityCountRatios.add(MapUtil.map2Object(HydExcelIndustryEntityCountRatio.class, m));
+                        entityCountRatioHistories.add(MapUtil.map2Object(HydExcelIndustryEntityCountRatioHistory.class, m));
                     });
                     break;
                 case "总增速和增加值（年度趋势）表":
                     list.forEach(m -> {
                         growthValueTrends.add(MapUtil.map2Object(HydExcelIndustryGrowthValueTrend.class, m));
+                        growthValueTrendHistories.add(MapUtil.map2Object(HydExcelIndustryGrowthValueTrendHistory.class, m));
                     });
                     break;
                 case "居民体育培训项目参与率表":
                     list.forEach(m -> {
                         trainingParticipationRates.add(MapUtil.map2Object(HydExcelIndustryTrainingParticipationRate.class, m));
+                        trainingParticipationRateHistories.add(MapUtil.map2Object(HydExcelIndustryTrainingParticipationRateHistory.class, m));
                     });
                     break;
                 case "居民体育用品购买率表":
                     list.forEach(m -> {
                         goodsPurchaseRates.add(MapUtil.map2Object(HydExcelIndustryGoodsPurchaseRate.class, m));
+                        goodsPurchaseRateHistories.add(MapUtil.map2Object(HydExcelIndustryGoodsPurchaseRateHistory.class, m));
                     });
                     break;
                 case "从业人员数量（分类统计）表":
                     list.forEach(m -> {
                         employeeCounts.add(MapUtil.map2Object(HydExcelIndustryEmployeeCount.class, m));
+                        employeeCountHistories.add(MapUtil.map2Object(HydExcelIndustryEmployeeCountHistory.class, m));
                     });
                     break;
             }
         });
         // 批量保存
         industryCoreIndicatorsRepo.saveAll(coreIndicators);
+        industryCoreIndicatorsHistoryRepo.saveAll(coreIndicatorsHistories);
         industryScaleTrendRepo.saveAll(scaleTrends);
+        industryScaleTrendHistoryRepo.saveAll(scaleTrendHistories);
         industryEntityCountRatioRepo.saveAll(entityCountRatios);
+        industryEntityCountRatioHistoryRepo.saveAll(entityCountRatioHistories);
         industryGrowthValueTrendRepo.saveAll(growthValueTrends);
+        industryGrowthValueTrendHistoryRepo.saveAll(growthValueTrendHistories);
         industryTrainingParticipationRateRepo.saveAll(trainingParticipationRates);
+        industryTrainingParticipationRateHistoryRepo.saveAll(trainingParticipationRateHistories);
         industryGoodsPurchaseRateRepo.saveAll(goodsPurchaseRates);
+        industryGoodsPurchaseRateHistoryRepo.saveAll(goodsPurchaseRateHistories);
         industryEmployeeCountRepo.saveAll(employeeCounts);
+        industryEmployeeCountHistoryRepo.saveAll(employeeCountHistories);
         return true;
     }
 
