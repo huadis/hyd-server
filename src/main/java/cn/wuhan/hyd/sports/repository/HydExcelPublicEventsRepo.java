@@ -107,8 +107,8 @@ public interface HydExcelPublicEventsRepo extends JpaRepository<HydExcelPublicEv
             "FROM \n" +
             "    hyd_excel_public_events\n" +
             "WHERE \n" +
-            "    TO_CHAR(eventDate, 'MM') = TO_CHAR(SYSDATE, 'MM')\n" +
-            "    AND TO_CHAR(eventDate, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')\n" +
+            "    eventDate >= DATE_FORMAT(CURDATE(), '%Y-%m-01')\n" +
+            "    AND eventDate < DATE_FORMAT(CURDATE() + INTERVAL 1 MONTH, '%Y-%m-01')\n" +
             "ORDER BY \n" +
             "    eventDate;", nativeQuery = true)
     List<Map<String, Object>> currentMouthEvents();
