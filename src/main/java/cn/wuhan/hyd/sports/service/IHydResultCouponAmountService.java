@@ -63,5 +63,5 @@ public interface IHydResultCouponAmountService {
 
     int batchSave(List<HydResultCouponAmountReq> couponAmounts);
 
-    HydResultCouponAmount findLatestCouponAmount();
+    HydResultCouponAmount findLatestCouponAmount(String year);
 }

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明： 体育消费卷-场馆消费券订单金额Top5 服务实现 <br>
@@ -144,4 +145,11 @@ public class HydResultOrderStadiumServiceImpl extends HydBaseServiceImpl impleme
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
     }
+
+    @Override
+    public List<Map<String, Object>> stadiumTop5(String year) {
+        return orderStadiumRepo.stadiumTop5(year);
+    }
+
+
 }

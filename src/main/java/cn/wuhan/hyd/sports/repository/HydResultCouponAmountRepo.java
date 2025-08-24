@@ -18,6 +18,6 @@ public interface HydResultCouponAmountRepo extends JpaRepository<HydResultCoupon
      *
      * @return 包含 实名用户数、领券用户数、用券用户数、下单用户数
      */
-    @Query(value = "SELECT * FROM hyd_result_coupon_amount ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
-    HydResultCouponAmount findLatestCouponAmount();
+    @Query(value = "SELECT * FROM hyd_result_coupon_amount WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
+    HydResultCouponAmount findLatestCouponAmount(String year);
 }

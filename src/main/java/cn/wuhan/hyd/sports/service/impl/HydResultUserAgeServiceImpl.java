@@ -2,15 +2,12 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
-import cn.wuhan.hyd.sports.domain.HydResultOrder;
-import cn.wuhan.hyd.sports.domain.HydResultOrderHistory;
 import cn.wuhan.hyd.sports.domain.HydResultUserAge;
 import cn.wuhan.hyd.sports.domain.HydResultUserAgeHistory;
 import cn.wuhan.hyd.sports.repository.HydResultUserAgeHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultUserAgeRepo;
 import cn.wuhan.hyd.sports.req.HydResultUserAgeReq;
 import cn.wuhan.hyd.sports.service.IHydResultUserAgeService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 功能说明： 场馆预定-年龄占比 服务实现 <br>

@@ -4,13 +4,10 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.HydResultCouponUser;
 import cn.wuhan.hyd.sports.domain.HydResultCouponUserHistory;
-import cn.wuhan.hyd.sports.domain.HydResultOrder;
-import cn.wuhan.hyd.sports.domain.HydResultOrderHistory;
 import cn.wuhan.hyd.sports.repository.HydResultCouponUserHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultCouponUserRepo;
 import cn.wuhan.hyd.sports.req.HydResultCouponUserReq;
 import cn.wuhan.hyd.sports.service.IHydResultCouponUserService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,9 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 /**
  * 功能说明： 体育消费卷-券用户分析 服务实现 <br>
@@ -148,5 +144,10 @@ public class HydResultCouponUserServiceImpl extends HydBaseServiceImpl implement
                     batchNo, couponUsers.size(), e);
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
+    }
+
+    @Override
+    public Map<String, Object> latestCouponUser(String year) {
+        return couponUserRepo.latestCouponUser(year);
     }
 }

@@ -2,15 +2,12 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
-import cn.wuhan.hyd.sports.domain.HydResultOrder;
-import cn.wuhan.hyd.sports.domain.HydResultOrderHistory;
 import cn.wuhan.hyd.sports.domain.HydResultUserRepurchase;
 import cn.wuhan.hyd.sports.domain.HydResultUserRepurchaseHistory;
 import cn.wuhan.hyd.sports.repository.HydResultUserRepurchaseHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultUserRepurchaseRepo;
 import cn.wuhan.hyd.sports.req.HydResultUserRepurchaseReq;
 import cn.wuhan.hyd.sports.service.IHydResultUserRepurchaseService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 功能说明： 场馆预定-复购率 <br>

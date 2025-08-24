@@ -4,13 +4,10 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.HydResultCouponStadiumTop;
 import cn.wuhan.hyd.sports.domain.HydResultCouponStadiumTopHistory;
-import cn.wuhan.hyd.sports.domain.HydResultOrder;
-import cn.wuhan.hyd.sports.domain.HydResultOrderHistory;
 import cn.wuhan.hyd.sports.repository.HydResultCouponStadiumTopHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultCouponStadiumTopRepo;
 import cn.wuhan.hyd.sports.req.HydResultCouponStadiumTopReq;
 import cn.wuhan.hyd.sports.service.IHydResultCouponStadiumTopService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,10 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 功能说明： 场馆预定/体育消费卷-消费券场馆预订Top 服务实现 <br>

@@ -62,4 +62,6 @@ public interface IHydResultFacilityDistrictService {
     HydResultFacilityDistrict findById(Long id);
 
     int batchSave(List<HydResultFacilityDistrictReq> facilityDistricts);
+
+    List<HydResultFacilityDistrict> districtDistribution(String year, String typeName);
 }

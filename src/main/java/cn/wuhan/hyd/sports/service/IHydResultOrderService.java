@@ -62,7 +62,9 @@ public interface IHydResultOrderService {
      */
     HydResultOrder findById(Long id);
 
-    Map<String, Object> orderStat();
+    Map<String, Object> orderStat(String year);
 
     int batchSave(List<HydResultOrderReq> orders);
+
+    Map<String, Object> overview(String year);
 }

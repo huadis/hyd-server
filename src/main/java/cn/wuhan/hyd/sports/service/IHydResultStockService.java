@@ -29,6 +29,13 @@ public interface IHydResultStockService {
      */
     List<HydResultStock> queryAll();
 
+    /**
+     * 查询全部
+     *
+     * @return 实体对象列表
+     */
+    List<HydResultStock> queryAll(String year);
+
 
     /**
      * 新增数据

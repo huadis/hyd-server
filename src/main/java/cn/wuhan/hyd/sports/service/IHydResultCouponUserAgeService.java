@@ -62,4 +62,6 @@ public interface IHydResultCouponUserAgeService {
     HydResultCouponUserAge findById(Long id);
 
     int batchSave(List<HydResultCouponUserAgeReq> couponUserAges);
+
+    HydResultCouponUserAge latestCouponUserAge(String year);
 }

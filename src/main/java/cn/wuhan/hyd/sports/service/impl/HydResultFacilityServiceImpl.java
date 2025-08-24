@@ -172,7 +172,12 @@ public class HydResultFacilityServiceImpl extends HydBaseServiceImpl implements 
     }
 
     @Override
-    public List<HydResultFacility> facility() {
-        return queryAll();
+    public List<HydResultFacility> facilityOverview(String year) {
+        return facilityRepo.facilityOverview(year);
+    }
+
+    @Override
+    public List<String> allTypeName(String year) {
+        return facilityRepo.allTypeName(year);
     }
 }

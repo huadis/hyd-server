@@ -63,5 +63,7 @@ public interface IHydResultFacilityService {
 
     int batchSave(List<HydResultFacilityReq> facilities);
 
-    List<HydResultFacility> facility();
+    List<HydResultFacility> facilityOverview(String year);
+
+    List<String> allTypeName(String year);
 }

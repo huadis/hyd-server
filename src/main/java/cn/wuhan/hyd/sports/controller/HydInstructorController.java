@@ -26,6 +26,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +61,9 @@ public class HydInstructorController {
 
             // 设置响应头
             response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            response.setHeader("Content-Disposition",
+                    "attachment; filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\"; " +
+                            "filename*=UTF-8''" + URLEncoder.encode(fileName, "UTF-8"));
 
             // 获取输出流
             OutputStream outputStream = response.getOutputStream();

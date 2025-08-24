@@ -62,4 +62,6 @@ public interface IHydResultOrderMonthService {
     HydResultOrderMonth findById(Long id);
 
     int batchSave(List<HydResultOrderMonthReq> orderMonths);
+
+    List<HydResultOrderMonth> list(String year);
 }

@@ -4,13 +4,10 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.HydOriginTrainingCourse;
 import cn.wuhan.hyd.sports.domain.HydOriginTrainingCourseHistory;
-import cn.wuhan.hyd.sports.domain.HydResultCouponStadiumTop;
-import cn.wuhan.hyd.sports.domain.HydResultCouponStadiumTopHistory;
 import cn.wuhan.hyd.sports.repository.HydOriginTrainingCourseHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydOriginTrainingCourseRepo;
 import cn.wuhan.hyd.sports.req.HydOriginTrainingCourseReq;
 import cn.wuhan.hyd.sports.service.IHydOriginTrainingCourseService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,9 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 功能说明： 培训课程表业务实现 <br>

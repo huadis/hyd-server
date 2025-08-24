@@ -80,8 +80,8 @@ public class HydResultOrderSportServiceImpl extends HydBaseServiceImpl implement
     }
 
     @Override
-    public List<Map<String, Object>> projectTop5() {
-        return orderSportRepo.projectTop5();
+    public List<Map<String, Object>> projectTop5(String year) {
+        return orderSportRepo.projectTop5(year);
     }
 
     /**

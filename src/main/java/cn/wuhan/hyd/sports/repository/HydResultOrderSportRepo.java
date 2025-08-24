@@ -18,6 +18,6 @@ public interface HydResultOrderSportRepo extends JpaRepository<HydResultOrderSpo
     @Query(value = "SELECT " +
             "sportName, " +
             "orderAmount " +
-            "FROM hyd_result_order_sport ", nativeQuery = true)
-    List<Map<String, Object>> projectTop5();
+            "FROM hyd_result_order_sport WHERE YEAR(createdTime) = ?1 ORDER BY orderAmount DESC limit 5", nativeQuery = true)
+    List<Map<String, Object>> projectTop5(String year);
 }

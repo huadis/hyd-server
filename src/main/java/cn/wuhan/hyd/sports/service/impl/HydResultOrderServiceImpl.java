@@ -81,12 +81,17 @@ public class HydResultOrderServiceImpl extends HydBaseServiceImpl implements IHy
     }
 
     @Override
-    public Map<String, Object> orderStat() {
+    public Map<String, Object> orderStat(String year) {
         Map<String, Object> result = new HashMap<>();
         result.put("sumOrderNum", orderRepo.sumOrderNum());
         result.put("sumOrderAmount", orderRepo.sumOrderAmount());
-        result.put("monthOrderStat", orderRepo.orderStat());
+        result.put("monthOrderStat", orderRepo.overview(year));
         return result;
+    }
+
+    @Override
+    public Map<String, Object> overview(String year) {
+        return orderRepo.overview(year);
     }
 
     /**

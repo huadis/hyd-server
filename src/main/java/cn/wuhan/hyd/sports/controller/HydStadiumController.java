@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,12 +52,15 @@ public class HydStadiumController {
      */
     @ApiOperation("各区场馆数量统计数据")
     @AnonymousGetMapping("/districtStat")
-    public Response<Map<String, Object>> countStadiumDistrict(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<Map<String, Object>> countStadiumDistrict(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         Map<String, Object> result = new HashMap<>();
         result.put("stadiumDistrict", hydStadiumDistrictService.countStadiumDistrict());
-        result.put("projectTop5", hydOrderSportService.projectTop5());
+        result.put("projectTop5", hydOrderSportService.projectTop5(year));
         result.put("stadiumTop5", hydCouponStadiumTopService.stadiumTop5());
-        result.put("orderStat", hydOrderService.orderStat());
+        result.put("orderStat", hydOrderService.orderStat(year));
         return Response.ok(result);
     }
 
@@ -65,7 +70,10 @@ public class HydStadiumController {
      */
     @ApiOperation("用户")
     @AnonymousGetMapping("/userStat")
-    public Response<Map<String, Object>> userStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<Map<String, Object>> userStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         Map<String, Object> result = new HashMap<>();
         result.put("userInfo", hydUserChannelService.countStadiumUserChannelStat());
         result.put("userSex", hydUserSexService.countStadiumUserSexStat());
@@ -79,7 +87,10 @@ public class HydStadiumController {
      */
     @ApiOperation("复购率")
     @AnonymousGetMapping("/repurchase")
-    public Response<List<Map<String, Object>>> repurchase(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> repurchase(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydUserRepurchaseService.countStadiumUserRepurchaseStat());
     }
 
@@ -89,7 +100,10 @@ public class HydStadiumController {
      */
     @ApiOperation("新增用户")
     @AnonymousGetMapping("/userGrowth")
-    public Response<List<Map<String, Object>>> userGrowth(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> userGrowth(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydUserRegisterService.countStadiumUserGrowthStat());
     }
 }

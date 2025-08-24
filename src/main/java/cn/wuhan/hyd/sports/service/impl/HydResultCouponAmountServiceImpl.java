@@ -214,7 +214,7 @@ public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl impleme
 
 
     @Override
-    public HydResultCouponAmount findLatestCouponAmount() {
-        return couponAmountRepo.findLatestCouponAmount();
+    public HydResultCouponAmount findLatestCouponAmount(String year) {
+        return couponAmountRepo.findLatestCouponAmount(year);
     }
 }

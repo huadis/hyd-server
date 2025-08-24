@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -142,5 +143,24 @@ public class HydResultOrderMonthServiceImpl extends HydBaseServiceImpl implement
                     batchNo, orderMonths.size(), e);
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
+    }
+
+    @Override
+    public List<HydResultOrderMonth> list(String year) {
+        List<HydResultOrderMonth> list = orderMonthRepo.list(year);
+        // 排序
+        list.sort((o1, o2) -> {
+            // 定义年龄段的正确顺序
+            List<String> order = Arrays.asList(
+                    "1", "2", "3", "4", "5", "6",
+                    "7", "8", "9", "10", "11", "12"
+            );
+            // 根据在顺序列表中的索引进行比较
+            return Integer.compare(
+                    order.indexOf(o1.getMonth()),
+                    order.indexOf(o2.getMonth())
+            );
+        });
+        return list;
     }
 }

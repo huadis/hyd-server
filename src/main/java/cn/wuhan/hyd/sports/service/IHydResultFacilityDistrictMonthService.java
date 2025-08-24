@@ -62,4 +62,6 @@ public interface IHydResultFacilityDistrictMonthService {
     HydResultFacilityDistrictMonth findById(Long id);
 
     int batchSave(List<HydResultFacilityDistrictMonthReq> facilityDistrictMonths);
+
+    List<HydResultFacilityDistrictMonth> inspectMaintenance(String year);
 }

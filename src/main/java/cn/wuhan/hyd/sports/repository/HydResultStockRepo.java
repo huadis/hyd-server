@@ -2,7 +2,10 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultStock;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * 功能说明： 体育消费卷-消费券领用券 <br>
@@ -11,4 +14,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface HydResultStockRepo extends JpaRepository<HydResultStock, Long> {
+
+    @Query(value = "SELECT * FROM hyd_result_stock WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC", nativeQuery = true)
+    List<HydResultStock> list(String year);
 }

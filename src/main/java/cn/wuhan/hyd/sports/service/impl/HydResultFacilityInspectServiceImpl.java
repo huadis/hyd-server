@@ -13,10 +13,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.persistence.criteria.Predicate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,10 +41,45 @@ public class HydResultFacilityInspectServiceImpl extends HydBaseServiceImpl impl
     @Resource
     private HydResultFacilityInspectHistoryRepo facilityInspectHistoryRepo;
 
+    /**
+     * 分页查询
+     *
+     * @param page 页数
+     * @param size 每页条数
+     * @return 实体对象列表
+     */
     @Override
     public PageResult<HydResultFacilityInspect> queryAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultFacilityInspect> pageResult = facilityInspectRepo.findAll(pageable);
+        PageResult<HydResultFacilityInspect> pageResult1 = new PageResult<>();
+        pageResult1.setTotalElements(pageResult.getTotalElements());
+        pageResult1.setContent(pageResult.getContent());
+        return pageResult1;
+    }
+
+    @Override
+    public PageResult<HydResultFacilityInspect> queryAll(String year, int page, int size) {
+        int yearInt = Integer.parseInt(year);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
+        // 2. 构建查询条件（Specification）
+        Specification<HydResultFacilityInspect> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            LocalDateTime startOf = LocalDateTime.of(yearInt, 1, 1, 0, 0, 0);
+            Date startDate = Date.from(startOf.atZone(ZoneId.systemDefault()).toInstant());
+            LocalDateTime endOf = LocalDateTime.of(yearInt, 12, 31, 23, 59, 59, 999000000);
+            Date endDate = Date.from(endOf.atZone(ZoneId.systemDefault()).toInstant());
+
+            predicates.add(cb.between(root.get("createdTime"), startDate, endDate));
+
+            // 将所有条件组合起来
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+
+        Page<HydResultFacilityInspect> pageResult = facilityInspectRepo.findAll(spec, pageable);
         PageResult<HydResultFacilityInspect> pageResult1 = new PageResult<>();
         pageResult1.setTotalElements(pageResult.getTotalElements());
         pageResult1.setContent(pageResult.getContent());

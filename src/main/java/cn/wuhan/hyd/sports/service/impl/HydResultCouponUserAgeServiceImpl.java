@@ -144,4 +144,9 @@ public class HydResultCouponUserAgeServiceImpl extends HydBaseServiceImpl implem
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
     }
+
+    @Override
+    public HydResultCouponUserAge latestCouponUserAge(String year) {
+        return couponUserAgeRepo.latestCouponUserAge(year);
+    }
 }

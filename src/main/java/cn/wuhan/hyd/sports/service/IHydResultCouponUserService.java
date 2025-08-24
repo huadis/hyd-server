@@ -5,6 +5,7 @@ import cn.wuhan.hyd.sports.domain.HydResultCouponUser;
 import cn.wuhan.hyd.sports.req.HydResultCouponUserReq;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明： 驾驶舱-券用户分析 <br>
@@ -62,4 +63,8 @@ public interface IHydResultCouponUserService {
     HydResultCouponUser findById(Long id);
 
     int batchSave(List<HydResultCouponUserReq> couponUsers);
+
+    Map<String, Object> latestCouponUser(String year);
+
+
 }

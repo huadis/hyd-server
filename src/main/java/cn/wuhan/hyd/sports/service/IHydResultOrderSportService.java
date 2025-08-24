@@ -62,7 +62,7 @@ public interface IHydResultOrderSportService {
      */
     HydResultOrderSport findById(Long id);
 
-    List<Map<String, Object>> projectTop5();
+    List<Map<String, Object>> projectTop5(String year);
 
     int batchSave(List<HydResultOrderSportReq> orderSports);
 }

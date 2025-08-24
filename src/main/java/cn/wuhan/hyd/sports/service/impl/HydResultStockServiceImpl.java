@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,6 +50,16 @@ public class HydResultStockServiceImpl extends HydBaseServiceImpl implements IHy
     @Override
     public List<HydResultStock> queryAll() {
         return stockRepo.findAll();
+    }
+
+    /**
+     * 查询全部
+     *
+     * @return 实体对象列表
+     */
+    @Override
+    public List<HydResultStock> queryAll(String year) {
+        return stockRepo.list(year);
     }
 
     @Override
@@ -97,7 +110,6 @@ public class HydResultStockServiceImpl extends HydBaseServiceImpl implements IHy
             throw new IllegalArgumentException("单次导入最大支持1000条数据");
         }
         String batchNo = UUIDUtil.getBatchNo();
-
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydResultStock> queryList = convert(logger, stocks, HydResultStock.class, batchNo);
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止

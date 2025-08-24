@@ -23,6 +23,15 @@ public interface IHydResultFacilityInspectService {
     PageResult<HydResultFacilityInspect> queryAll(int page, int size);
 
     /**
+     * 分页查询
+     *
+     * @param page 页数
+     * @param size 每页条数
+     * @return 实体对象列表
+     */
+    PageResult<HydResultFacilityInspect> queryAll(String year, int page, int size);
+
+    /**
      * 查询全部
      *
      * @return 实体对象列表

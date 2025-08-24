@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,12 +16,11 @@ import java.util.Map;
 public interface HydResultOrderRepo extends JpaRepository<HydResultOrder, Long> {
 
     @Query(value = "SELECT " +
-            "month, " +
             "orderNum, " +
             "orderAmount, " +
             "couponAmount " +
-            "FROM hyd_result_order ", nativeQuery = true)
-    List<Map<String, Object>> orderStat();
+            "FROM hyd_result_order WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
+    Map<String, Object> overview(String year);
 
     @Query(value = "SELECT " +
             "sum(orderNum) orderNumSum " +

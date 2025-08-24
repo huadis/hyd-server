@@ -5,6 +5,7 @@ import cn.wuhan.hyd.sports.domain.HydResultOrderStadium;
 import cn.wuhan.hyd.sports.req.HydResultOrderStadiumReq;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明： 驾驶舱-场馆消费券订单金额Top5 <br>
@@ -62,4 +63,6 @@ public interface IHydResultOrderStadiumService {
     HydResultOrderStadium findById(Long id);
 
     int batchSave(List<HydResultOrderStadiumReq> orderStadiums);
+
+    List<Map<String, Object>> stadiumTop5(String year);
 }
