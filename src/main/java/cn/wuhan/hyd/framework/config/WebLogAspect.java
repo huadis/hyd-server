@@ -51,11 +51,11 @@ public class WebLogAspect {
 
             // 打印请求信息
             log.info("========================================== 开始请求 ==========================================");
-            log.info("RequestTime    :  {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            log.info("RequestURL     :  {}", request.getRequestURL().toString());
-            log.info("RequestMethod  :  {}", request.getMethod());
-            log.info("RequestIP      :  {}", request.getRemoteAddr());
-            log.info("RequestParam   :  {}", Arrays.toString(joinPoint.getArgs()));
+            log.info("RequestTime     :  {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            log.info("RequestURL      :  {}", request.getRequestURL().toString());
+            log.info("RequestMethod   :  {}", request.getMethod());
+            log.info("RequestIP       :  {}", request.getRemoteAddr());
+            log.info("RequestParam    :  {}", Arrays.toString(joinPoint.getArgs()));
         }
     }
 

@@ -72,13 +72,13 @@ public class ConfigurerAdapter implements WebMvcConfigurer {
         converter.setSupportedMediaTypes(supportMediaTypeList);
         converter.setDefaultCharset(StandardCharsets.UTF_8);
         converters.add(converter);
-        ByteArrayHttpMessageConverter byteArrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
+        /*ByteArrayHttpMessageConverter byteArrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
         converter.setSupportedMediaTypes(Arrays.asList(
                 MediaType.IMAGE_JPEG,
                 MediaType.IMAGE_PNG,
                 MediaType.APPLICATION_OCTET_STREAM
         ));
-        converters.add(byteArrayHttpMessageConverter);
+        converters.add(byteArrayHttpMessageConverter);*/
     }
 
     // 正确方式：扩展而非覆盖默认转换器
