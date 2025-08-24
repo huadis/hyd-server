@@ -13,6 +13,9 @@ import java.io.Serializable;
 @Data
 public class HydOriginLaStadiumReq implements Serializable {
 
+    @ApiModelProperty(value = "主键ID", required = true)
+    private Integer id;
+
     @ApiModelProperty(value = "用户id")
     private Integer userId;
 

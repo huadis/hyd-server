@@ -152,6 +152,7 @@ CREATE TABLE `hyd_result_stadium_map` (
     `resourceType` varchar(255) COMMENT '资源类型',
     `resourceName` varchar(255) COMMENT '资源名称',
     `resourceNum` varchar(255) COMMENT '资源数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
@@ -163,6 +164,7 @@ CREATE TABLE `hyd_result_stadium_map_history` (
     `resourceType` varchar(255) COMMENT '资源类型',
     `resourceName` varchar(255) COMMENT '资源名称',
     `resourceNum` varchar(255) COMMENT '资源数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
     `createdTime` timestamp COMMENT '创建时间',
     `updateTime` timestamp COMMENT '更新时间',
     `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
@@ -374,7 +376,6 @@ CREATE TABLE `hyd_result_order_stadium_history` (
 
 CREATE TABLE `hyd_result_order` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `month` varchar(255) COMMENT '月份',
     `orderNum` varchar(255) COMMENT '订单总数',
     `orderAmount` varchar(255) COMMENT '订单总金额',
     `couponAmount` varchar(255) COMMENT '消费券总金额',
@@ -387,7 +388,6 @@ CREATE TABLE `hyd_result_order` (
 
 CREATE TABLE `hyd_result_order_history` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
-    `month` varchar(255) COMMENT '月份',
     `orderNum` varchar(255) COMMENT '订单总数',
     `orderAmount` varchar(255) COMMENT '订单总金额',
     `couponAmount` varchar(255) COMMENT '消费券总金额',

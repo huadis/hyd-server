@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 public class HydOriginTrainingActivityItemReq implements Serializable {
 
     @ApiModelProperty(value = "主键ID", required = true)
-    private String id;  // 表中主键为VARCHAR类型，此处用String
+    private String id;
 
     @ApiModelProperty(value = "活动id")
     private String activityId;

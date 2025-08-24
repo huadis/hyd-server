@@ -13,9 +13,6 @@ import java.io.Serializable;
 @Data
 public class HydResultOrderReq implements Serializable {
 
-    @ApiModelProperty(value = "月份")
-    private String month;
-
     @ApiModelProperty(value = "订单总数")
     private String orderNum;
 

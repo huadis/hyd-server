@@ -22,10 +22,7 @@ import springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -61,7 +58,8 @@ public class SwaggerConfig {
                 .build()
                 //添加登陆认证
                 .securitySchemes(securitySchemes())
-                .securityContexts(securityContexts());
+                .securityContexts(securityContexts())
+                .operationOrdering(Comparator.comparingInt(Operation::getPosition));
     }
 
     private ApiInfo apiInfo() {

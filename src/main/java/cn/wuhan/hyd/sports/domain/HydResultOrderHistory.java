@@ -28,10 +28,6 @@ public class HydResultOrderHistory implements Serializable {
     @ApiModelProperty(value = "主键ID", hidden = true)
     private Long id;
 
-    @Column(name = "month")
-    @ApiModelProperty(value = "月份")
-    private String month;
-
     @Column(name = "orderNum")
     @ApiModelProperty(value = "订单总数")
     private String orderNum;

@@ -14,6 +14,9 @@ import java.sql.Timestamp;
 @Data
 public class HydOriginTenantReq implements Serializable {
 
+    @ApiModelProperty(value = "主键ID", required = true)
+    private String id;
+
     @ApiModelProperty(value = "名称")
     private String tenantName;
 
