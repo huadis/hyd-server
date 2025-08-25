@@ -1574,3 +1574,52 @@ CREATE TABLE `hyd_result_order_ykt_stadium_stat` (
     `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='青少年技能培训-培训场馆销售统计TOP10';
+
+
+CREATE TABLE `hyd_result_events_overview_stat` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `total` bigint COMMENT '总赛事场次',
+    `participantCount` bigint COMMENT '总参与人数',
+    `internationalCount` bigint COMMENT '国际赛事',
+    `nationalCount` bigint COMMENT '国家级赛事',
+    `provinceCount` bigint COMMENT '省级赛事',
+    `cityCount` bigint COMMENT '市级赛事',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='大众赛事-总览信息';
+
+CREATE TABLE `hyd_result_events_month_count_stat` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `eventMonth` varchar(255) COMMENT '月份',
+    `eventCount` bigint COMMENT '赛事数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='大众赛事-各月办赛数据';
+
+CREATE TABLE `hyd_result_events_sport_item_top` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `sportItem` varchar(255) COMMENT '项目',
+    `count` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='大众赛事-赛事数量TOP5项目';
+
+CREATE TABLE `hyd_result_events_participant_level` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `participantLevel` varchar(255) COMMENT '人数人档级别',
+    `count` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='大众赛事-参赛人数人档';

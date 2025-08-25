@@ -59,7 +59,7 @@ public interface HydExcelPublicEventsRepo extends JpaRepository<HydExcelPublicEv
             "eventMonth, " +
             "COUNT(id) AS eventCount " +
             " FROM " +
-            "hyd_excel_public_events WHERE eventYear = ?1 GROUP BY eventMonth ORDER BY " +
+            "hyd_excel_public_events WHERE eventYear = ?1 AND eventMonth != '' AND eventMonth is not null GROUP BY eventMonth ORDER BY " +
             "FIELD(eventMonth, '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月')", nativeQuery = true)
     List<Map<String, Object>> monthStat(String year);
 
@@ -113,7 +113,7 @@ public interface HydExcelPublicEventsRepo extends JpaRepository<HydExcelPublicEv
             "    eventMonth desc ;", nativeQuery = true)
     List<Map<String, Object>> currentMouthEvents(String year, String month);
 
-    @Query(value = "SELECT district, count(*) as num from hyd_excel_public_events WHERE eventYear = ?1 and district is not null GROUP BY district order by num", nativeQuery = true)
+    @Query(value = "SELECT district, count(*) as num from hyd_excel_public_events WHERE eventYear = ?1 and district is not null AND district != '' GROUP BY district order by num", nativeQuery = true)
     List<Map<String, Object>> districtCountByYear(String year);
 
 }
