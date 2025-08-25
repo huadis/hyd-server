@@ -26,7 +26,7 @@ public interface HydResultUserChannelRepo extends JpaRepository<HydResultUserCha
             "receiveCouponUserNum AS receiveCouponUserCount, " +
             "useCouponUserNum AS useCouponUserCount, " +
             "orderUserNum AS orderUserCount " +
-            "FROM hyd_result_user_channel " +
+            "FROM hyd_result_user_channel WHERE YEAR(createdTime) = ?1 " +
             "ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
-    List<Map<String, Object>> countStadiumUserChannelStat();
+    List<Map<String, Object>> countStadiumUserChannelStat(String year);
 }

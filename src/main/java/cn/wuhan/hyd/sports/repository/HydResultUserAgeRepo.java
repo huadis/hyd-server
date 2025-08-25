@@ -26,7 +26,7 @@ public interface HydResultUserAgeRepo extends JpaRepository<HydResultUserAge, Lo
             "bt41and45Num AS '41岁-45岁', " +
             "bt46and50Num AS '46岁-50岁', " +
             "over50Num AS '50岁以上' " +
-            "FROM hyd_result_user_age " +
+            "FROM hyd_result_user_age WHERE YEAR(createdTime) = ?1 " +
             "ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
-    Map<String, Object> countStadiumUserAgeStat();
+    Map<String, Object> countStadiumUserAgeStat(String year);
 }

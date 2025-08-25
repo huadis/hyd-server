@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明： 场馆培训项目表 <br>
@@ -135,5 +136,9 @@ public class HydOriginStadiumItemServiceImpl extends HydBaseServiceImpl implemen
                     batchNo, stadiumItems.size(), e);
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
+    }
+
+    public List<Map<String, Integer>> itemCountBySportName(String year) {
+        return stadiumItemRepo.itemCountBySportName(year);
     }
 }

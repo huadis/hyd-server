@@ -83,8 +83,8 @@ public class HydResultUserSexServiceImpl extends HydBaseServiceImpl implements I
     }
 
     @Override
-    public List<Map<String, Object>> countStadiumUserSexStat() {
-        List<Map<String, Object>> userSexStat = userSexRepo.countStadiumUserSexStat();
+    public List<Map<String, Object>> countStadiumUserSexStat(String year) {
+        List<Map<String, Object>> userSexStat = userSexRepo.countStadiumUserSexStat(year);
         // 计算总人数
         int total = userSexStat.stream()
                 .mapToInt(map -> Integer.parseInt(MapUtil.getStr(map, "genderCount")))

@@ -510,9 +510,7 @@ CREATE TABLE `hyd_result_stadium_district` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
     `district` varchar(255) COMMENT '所属区',
     `districtName` varchar(255) COMMENT '所属区名称',
-    `couponStadiumNum` varchar(255) COMMENT '定点场馆数量',
-    `publicStadiumNum` varchar(255) COMMENT '公共场馆数量',
-    `socialStadiumNum` varchar(255) COMMENT '社会场馆数量',
+    `stadiumNum` varchar(255) COMMENT '定点场馆数量',
     `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
     `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -1504,3 +1502,75 @@ CREATE TABLE `hyd_origin_la_stadium_file_history` (
     `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='校外培训机构附件表（历史）';
+
+
+
+CREATE TABLE `hyd_result_order_ykt_district_stat` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `district` varchar(255) COMMENT '所属区',
+    `districtName` varchar(255) COMMENT '所属区名称',
+    `num` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='青少年技能培训-各区机构数量统计';
+
+
+CREATE TABLE `hyd_result_order_ykt_usersex_stat` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `gender` varchar(255) COMMENT '性别',
+    `num` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='青少年技能培训-性别统计';
+
+CREATE TABLE `hyd_result_order_ykt_project_stat` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `project` varchar(255) COMMENT '项目',
+    `num` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='青少年技能培训-热门项目机构数量统计';
+
+
+CREATE TABLE `hyd_result_order_ykt_course_stat` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `course` varchar(255) COMMENT '课程',
+    `num` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='青少年技能培训-课程热度排行TOP5';
+
+
+CREATE TABLE `hyd_result_order_ykt_userage_stat` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `ageGroup` varchar(255) COMMENT '年龄分布',
+    `num` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='青少年技能培训-年龄分布';
+
+CREATE TABLE `hyd_result_order_ykt_stadium_stat` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `stadium` varchar(255) COMMENT '培训场馆',
+    `num` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='青少年技能培训-培训场馆销售统计TOP10';

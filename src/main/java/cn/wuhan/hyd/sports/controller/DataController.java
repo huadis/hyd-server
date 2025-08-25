@@ -94,6 +94,8 @@ public class DataController {
     private IHydOriginTrainingActivityService trainingActivityService;
     @Resource
     private IHydOriginTrainingCourseService trainingCourseService;
+    @Resource
+    private IHydYktService yktService;
 
     private final Logger logger = LoggerFactory.getLogger(ImportController.class);
 
@@ -1497,5 +1499,7 @@ public class DataController {
     public Response<HydOriginTrainingCourse> trainingCourseUpdate(@RequestBody HydOriginTrainingCourse trainingCourse) {
         return Response.ok(trainingCourseService.update(trainingCourse));
     }
+
+    // ----------------------------------- 青少年技能培训-培训课程 -----------------------------------
 
 }

@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,9 +99,41 @@ public class HydResultCouponUserAgeServiceImpl extends HydBaseServiceImpl implem
             throw new IllegalArgumentException("单次导入最大支持1000条数据");
         }
         String batchNo = UUIDUtil.getBatchNo();
+        // 初始化各年龄段累加器为0
+        BigDecimal under25 = BigDecimal.ZERO;
+        BigDecimal bt26and30 = BigDecimal.ZERO;
+        BigDecimal bt31and35 = BigDecimal.ZERO;
+        BigDecimal bt36and40 = BigDecimal.ZERO;
+        BigDecimal bt41and45 = BigDecimal.ZERO;
+        BigDecimal bt46and50 = BigDecimal.ZERO;
+        BigDecimal bt51and60 = BigDecimal.ZERO;
+        BigDecimal over60 = BigDecimal.ZERO;
 
+        // 遍历列表，累加各字段的有效数值
+        for (HydResultCouponUserAgeReq item : couponUserAges) {
+            // 处理25岁以下
+            under25 = addValue(under25, item.getUnder25Num());
+            bt26and30 = addValue(bt26and30, item.getBt26and30Num());
+            bt31and35 = addValue(bt31and35, item.getBt31and35Num());
+            bt36and40 = addValue(bt36and40, item.getBt36and40Num());
+            bt41and45 = addValue(bt41and45, item.getBt41and45Num());
+            bt46and50 = addValue(bt46and50, item.getBt46and50Num());
+            bt51and60 = addValue(bt51and60, item.getBt51and60Num());
+            over60 = addValue(over60, item.getOver60Num());
+        }
+        HydResultCouponUserAge age = new HydResultCouponUserAge();
+        age.setUnder25Num(calculateSingleAverage(under25, couponUserAges.size()).toString());
+        age.setBt26and30Num(calculateSingleAverage(bt26and30, couponUserAges.size()).toString());
+        age.setBt31and35Num(calculateSingleAverage(bt31and35, couponUserAges.size()).toString());
+        age.setBt36and40Num(calculateSingleAverage(bt36and40, couponUserAges.size()).toString());
+        age.setBt41and45Num(calculateSingleAverage(bt41and45, couponUserAges.size()).toString());
+        age.setBt46and50Num(calculateSingleAverage(bt46and50, couponUserAges.size()).toString());
+        age.setBt51and60Num(calculateSingleAverage(bt51and60, couponUserAges.size()).toString());
+        age.setOver60Num(calculateSingleAverage(over60, couponUserAges.size()).toString());
+        age.setBatchNo(batchNo);
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydResultCouponUserAge> queryList = convert(logger, couponUserAges, HydResultCouponUserAge.class, batchNo);
+        List<HydResultCouponUserAge> queryList = new ArrayList<>();
+        queryList.add(age);
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydResultCouponUserAgeHistory> historyList = convert(logger, couponUserAges, HydResultCouponUserAgeHistory.class, batchNo);
 
@@ -127,7 +161,7 @@ public class HydResultCouponUserAgeServiceImpl extends HydBaseServiceImpl implem
             );
 
             // 7. 校验保存结果：确保双表保存数量一致，避免数据不一致
-            if (querySaveCount != historySaveCount || querySaveCount != couponUserAges.size()) {
+            if (historySaveCount != couponUserAges.size()) {
                 throw new RuntimeException(
                         String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
                                 batchNo, couponUserAges.size(), querySaveCount, historySaveCount)

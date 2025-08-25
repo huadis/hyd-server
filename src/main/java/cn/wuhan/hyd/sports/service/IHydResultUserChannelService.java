@@ -62,7 +62,7 @@ public interface IHydResultUserChannelService {
      */
     HydResultUserChannel findById(Long id);
 
-    List<Map<String, Object>> countStadiumUserChannelStat();
+    List<Map<String, Object>> countStadiumUserChannelStat(String year);
 
     int batchSave(List<HydResultUserChannelReq> userChannels);
 }

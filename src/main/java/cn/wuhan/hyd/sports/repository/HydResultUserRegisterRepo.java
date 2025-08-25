@@ -24,7 +24,7 @@ public interface HydResultUserRegisterRepo extends JpaRepository<HydResultUserRe
     @Query(value = "SELECT " +
             "month AS monthName, " +
             "userNum AS newUserCount " +
-            "FROM hyd_result_user_register " +
+            "FROM hyd_result_user_register WHERE YEAR(createdTime) = ?1 " +
             "ORDER BY createdTime limit 12", nativeQuery = true)
-    List<Map<String, Object>> countStadiumUserGrowthStat();
+    List<Map<String, Object>> countStadiumUserGrowthStat(String year);
 }

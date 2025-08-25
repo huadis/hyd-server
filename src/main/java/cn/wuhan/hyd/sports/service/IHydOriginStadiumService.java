@@ -5,6 +5,7 @@ import cn.wuhan.hyd.sports.domain.HydOriginStadium;
 import cn.wuhan.hyd.sports.req.HydOriginStadiumReq;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明： 培训场馆表 <br>
@@ -62,4 +63,6 @@ public interface IHydOriginStadiumService {
     HydOriginStadium findById(String id);
 
     int batchSave(List<HydOriginStadiumReq> items);
+
+    List<Map<String, Integer>> stadiumCountByDistrict(String year);
 }

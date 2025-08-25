@@ -81,8 +81,8 @@ public class HydResultUserRegisterServiceImpl extends HydBaseServiceImpl impleme
     }
 
     @Override
-    public List<Map<String, Object>> countStadiumUserGrowthStat() {
-        List<Map<String, Object>> list = userRegisterRepo.countStadiumUserGrowthStat();
+    public List<Map<String, Object>> countStadiumUserGrowthStat(String year) {
+        List<Map<String, Object>> list = userRegisterRepo.countStadiumUserGrowthStat(year);
         List<Map<String, Object>> result = new ArrayList<>();
         for (Map<String, Object> tmpMap : list) {
             Map<String, Object> map = new HashMap<>(tmpMap);

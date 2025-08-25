@@ -80,8 +80,8 @@ public class HydResultUserChannelServiceImpl extends HydBaseServiceImpl implemen
     }
 
     @Override
-    public List<Map<String, Object>> countStadiumUserChannelStat() {
-        return userChannelRepo.countStadiumUserChannelStat();
+    public List<Map<String, Object>> countStadiumUserChannelStat(String year) {
+        return userChannelRepo.countStadiumUserChannelStat(year);
     }
 
     /**

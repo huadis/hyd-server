@@ -61,7 +61,7 @@ public interface IHydResultUserAgeService {
      */
     HydResultUserAge findById(Long id);
 
-    List<Map<String, Object>> countStadiumUserAgeStat();
+    List<Map<String, Object>> countStadiumUserAgeStat(String year);
 
     int batchSave(List<HydResultUserAgeReq> userAges);
 }

@@ -24,6 +24,6 @@ public interface HydResultUserSexRepo extends JpaRepository<HydResultUserSex, Lo
     @Query(value = "SELECT " +
             "sex AS gender, " +
             "sexNum AS genderCount " +
-            "FROM hyd_result_user_sex order by createdTime desc limit 2", nativeQuery = true)
-    List<Map<String, Object>> countStadiumUserSexStat();
+            "FROM hyd_result_user_sex WHERE YEAR(createdTime) = ?1 order by createdTime desc limit 2", nativeQuery = true)
+    List<Map<String, Object>> countStadiumUserSexStat(String year);
 }

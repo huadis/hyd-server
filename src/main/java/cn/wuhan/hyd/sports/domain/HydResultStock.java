@@ -28,6 +28,10 @@ public class HydResultStock implements Serializable {
     @ApiModelProperty(value = "主键ID", hidden = true)
     private Long id;
 
+    @Column(name = "stockName")
+    @ApiModelProperty(value = "券名称")
+    private String stockName;
+
     @Column(name = "receiveNum")
     @ApiModelProperty(value = "领券数")
     private String receiveNum;
@@ -51,6 +55,26 @@ public class HydResultStock implements Serializable {
     @Column(name = "orderRate")
     @ApiModelProperty(value = "拉动消费比")
     private String orderRate;
+
+    @Column(name = "activityId")
+    @ApiModelProperty(value = "活动id")
+    private String activityId;
+
+    @Column(name = "activityName")
+    @ApiModelProperty(value = "活动名称")
+    private String activityName;
+
+    @Column(name = "groupId")
+    @ApiModelProperty(value = "分组id")
+    private String groupId;
+
+    @Column(name = "groupName")
+    @ApiModelProperty(value = "分组名称")
+    private String groupName;
+
+    @Column(name = "type")
+    @ApiModelProperty(value = "类型")
+    private String type;
 
     @Column(name = "batchNo")
     @ApiModelProperty(value = "批次号")

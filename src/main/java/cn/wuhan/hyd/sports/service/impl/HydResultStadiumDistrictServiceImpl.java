@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -85,8 +86,8 @@ public class HydResultStadiumDistrictServiceImpl extends HydBaseServiceImpl impl
      * @return 包含区场馆统计数据列表，包含区名称及场馆数量
      */
     @Override
-    public List<Map<String, Object>> countStadiumDistrict() {
-        return stadiumDistrictRepo.countStadiumDistrict();
+    public List<HydResultStadiumDistrict> countStadiumDistrict(String year) {
+        return stadiumDistrictRepo.countStadiumDistrict(year);
     }
 
     /**
@@ -109,8 +110,21 @@ public class HydResultStadiumDistrictServiceImpl extends HydBaseServiceImpl impl
         }
         String batchNo = UUIDUtil.getBatchNo();
 
-        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydResultStadiumDistrict> queryList = convert(logger, stadiumDistricts, HydResultStadiumDistrict.class, batchNo);
+        List<HydResultStadiumDistrict> queryList = new ArrayList<>();
+        for (HydResultStadiumDistrictReq stadiumDistrict : stadiumDistricts) {
+            String couponStadiumNum = stadiumDistrict.getCouponStadiumNum();
+            String socialStadiumNum = stadiumDistrict.getSocialStadiumNum();
+            String publicStadiumNum = stadiumDistrict.getPublicStadiumNum();
+            int stadiumNumInt = Integer.parseInt(couponStadiumNum) + Integer.parseInt(socialStadiumNum) + Integer.parseInt(publicStadiumNum);
+            HydResultStadiumDistrict district = new HydResultStadiumDistrict();
+            district.setDistrict(stadiumDistrict.getDistrict());
+            district.setDistrictName(stadiumDistrict.getDistrictName());
+            district.setStadiumNum(stadiumNumInt + "");
+            district.setBatchNo(batchNo);
+            queryList.add(district);
+        }
+
+
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydResultStadiumDistrictHistory> historyList = convert(logger, stadiumDistricts, HydResultStadiumDistrictHistory.class, batchNo);
 

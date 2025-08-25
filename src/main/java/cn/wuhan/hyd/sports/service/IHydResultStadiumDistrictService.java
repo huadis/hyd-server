@@ -67,7 +67,7 @@ public interface IHydResultStadiumDistrictService {
      *
      * @return 包含区场馆统计数据列表，包含区名称及场馆数量
      */
-    List<Map<String, Object>> countStadiumDistrict();
+    List<HydResultStadiumDistrict> countStadiumDistrict(String year);
 
     int batchSave(List<HydResultStadiumDistrictReq> stadiumDistricts);
 }

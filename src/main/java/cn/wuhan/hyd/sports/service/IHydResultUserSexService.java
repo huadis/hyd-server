@@ -61,7 +61,7 @@ public interface IHydResultUserSexService {
      */
     HydResultUserSex findById(Long id);
 
-    List<Map<String, Object>> countStadiumUserSexStat();
+    List<Map<String, Object>> countStadiumUserSexStat(String year);
 
     int batchSave(List<HydResultUserSexReq> userSexes);
 }

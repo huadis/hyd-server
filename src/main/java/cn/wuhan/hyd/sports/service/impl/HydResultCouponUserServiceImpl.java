@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -99,8 +101,33 @@ public class HydResultCouponUserServiceImpl extends HydBaseServiceImpl implement
         }
         String batchNo = UUIDUtil.getBatchNo();
 
+        // 初始化累加器为0
+        BigDecimal totalReceive = BigDecimal.ZERO;
+        BigDecimal totalUse = BigDecimal.ZERO;
+        BigDecimal totalMale = BigDecimal.ZERO;
+        BigDecimal totalFemale = BigDecimal.ZERO;
+
+        // 遍历列表累加各字段值
+        for (HydResultCouponUserReq item : couponUsers) {
+            // 累加领券人数
+            totalReceive = addValue(totalReceive, item.getReceiveCouponNum());
+            // 累加用券人数
+            totalUse = addValue(totalUse, item.getUseCouponNum());
+            // 累加男性人数
+            totalMale = addValue(totalMale, item.getMaleNum());
+            // 累加女性人数
+            totalFemale = addValue(totalFemale, item.getFemaleNum());
+        }
+        HydResultCouponUser user = new HydResultCouponUser();
+        // 设置结果
+        user.setReceiveCouponNum(totalReceive.toString());
+        user.setUseCouponNum(totalUse.toString());
+        user.setMaleNum(totalMale.toString());
+        user.setFemaleNum(totalFemale.toString());
+        user.setBatchNo(batchNo);
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydResultCouponUser> queryList = convert(logger, couponUsers, HydResultCouponUser.class, batchNo);
+        List<HydResultCouponUser> queryList = new ArrayList<>();
+        queryList.add(user);
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydResultCouponUserHistory> historyList = convert(logger, couponUsers, HydResultCouponUserHistory.class, batchNo);
 
@@ -128,7 +155,7 @@ public class HydResultCouponUserServiceImpl extends HydBaseServiceImpl implement
             );
 
             // 7. 校验保存结果：确保双表保存数量一致，避免数据不一致
-            if (querySaveCount != historySaveCount || querySaveCount != couponUsers.size()) {
+            if (historySaveCount != couponUsers.size()) {
                 throw new RuntimeException(
                         String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
                                 batchNo, couponUsers.size(), querySaveCount, historySaveCount)

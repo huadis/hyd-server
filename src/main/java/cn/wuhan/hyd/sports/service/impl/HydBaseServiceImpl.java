@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -100,5 +102,52 @@ public class HydBaseServiceImpl {
             }
         }
 
+    }
+
+    static BigDecimal addValue(BigDecimal total, String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return total; // 空值视为0
+        }
+        try {
+            return total.add(processPercentage(value.trim()));
+        } catch (NumberFormatException e) {
+            // 非数字格式视为0
+            return total;
+        }
+    }
+
+    /**
+     * 计算单个字段的平均值
+     *
+     * @param total 总和
+     * @param count 有效数据条数
+     * @return 平均值（保留两位小数）
+     */
+    public static BigDecimal calculateSingleAverage(BigDecimal total, int count) {
+        if (count <= 0) {
+            return BigDecimal.ZERO;
+        }
+        return total.divide(new BigDecimal(count), 2, RoundingMode.HALF_UP);
+    }
+
+    /**
+     * 处理单个百分比字符串（去除百分号、转换为数值）
+     *
+     * @param percentage 带百分号的字符串（如"12.50%"）
+     * @return 处理结果（数值和有效性标识）
+     */
+    public static BigDecimal processPercentage(String percentage) {
+        if (percentage == null || percentage.trim().isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+
+        try {
+            // 去除百分号并转换为BigDecimal
+            String numericStr = percentage.trim().replace("%", "");
+            return new BigDecimal(numericStr);
+        } catch (NumberFormatException e) {
+            // 格式错误时返回0和无效标识
+            return BigDecimal.ZERO;
+        }
     }
 }

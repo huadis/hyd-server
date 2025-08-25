@@ -61,7 +61,7 @@ public interface IHydResultUserRegisterService {
      */
     HydResultUserRegister findById(Long id);
 
-    List<Map<String, Object>> countStadiumUserGrowthStat();
+    List<Map<String, Object>> countStadiumUserGrowthStat(String year);
 
     int batchSave(List<HydResultUserRegisterReq> userRegisters);
 }

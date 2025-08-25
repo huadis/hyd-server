@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 功能说明： 场馆预定-在线场馆各区情况 <br>
@@ -21,12 +20,6 @@ public interface HydResultStadiumDistrictRepo extends JpaRepository<HydResultSta
      *
      * @return 包含区场馆统计数据列表，包含区名称及场馆数量
      */
-    @Query(value = "SELECT " +
-            "d.districtName as districtName, " +
-            "(SUM(CAST(IFNULL(d.couponStadiumNum, '0') AS UNSIGNED)) + " +
-            "SUM(CAST(IFNULL(d.publicStadiumNum, '0') AS UNSIGNED)) + " +
-            "SUM(CAST(IFNULL(d.socialStadiumNum, '0') AS UNSIGNED))) AS stadiumCount " +
-            "FROM hyd_result_stadium_district d " +
-            "GROUP BY d.districtName", nativeQuery = true)
-    List<Map<String, Object>> countStadiumDistrict();
+    @Query(value = "SELECT * FROM hyd_result_stadium_district WHERE YEAR(createdTime) = ?1 order by stadiumNum desc", nativeQuery = true)
+    List<HydResultStadiumDistrict> countStadiumDistrict(String year);
 }

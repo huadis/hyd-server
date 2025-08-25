@@ -80,8 +80,8 @@ public class HydResultUserRepurchaseServiceImpl extends HydBaseServiceImpl imple
     }
 
     @Override
-    public List<Map<String, Object>> countStadiumUserRepurchaseStat() {
-        Map<String, Object> data = userRepurchaseRepo.countStadiumUserRepurchaseStat();
+    public List<Map<String, Object>> countStadiumUserRepurchaseStat(String year) {
+        Map<String, Object> data = userRepurchaseRepo.countStadiumUserRepurchaseStat(year);
         // 计算总人数（安全处理）
         int total = data.values().stream()
                 .map(obj -> obj == null ? "0" : obj.toString()) // 处理null值

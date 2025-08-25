@@ -61,7 +61,7 @@ public interface IHydResultUserRepurchaseService {
      */
     HydResultUserRepurchase findById(Long id);
 
-    List<Map<String, Object>> countStadiumUserRepurchaseStat();
+    List<Map<String, Object>> countStadiumUserRepurchaseStat(String year);
 
     int batchSave(List<HydResultUserRepurchaseReq> userRepurchases);
 }

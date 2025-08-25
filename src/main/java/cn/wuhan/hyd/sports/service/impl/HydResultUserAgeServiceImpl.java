@@ -80,8 +80,8 @@ public class HydResultUserAgeServiceImpl extends HydBaseServiceImpl implements I
     }
 
     @Override
-    public List<Map<String, Object>> countStadiumUserAgeStat() {
-        Map<String, Object> ageData = userAgeRepo.countStadiumUserAgeStat();
+    public List<Map<String, Object>> countStadiumUserAgeStat(String year) {
+        Map<String, Object> ageData = userAgeRepo.countStadiumUserAgeStat(year);
         // 计算总人数（安全处理）
         int total = ageData.values().stream()
                 .map(obj -> obj == null ? "0" : obj.toString()) // 处理null值
