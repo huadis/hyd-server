@@ -1501,5 +1501,249 @@ public class DataController {
     }
 
     // ----------------------------------- 青少年技能培训-培训课程 -----------------------------------
+    @ApiOperation("青少年技能培训-各区机构数量统计-分页查询")
+    @AnonymousGetMapping("/yktDistrictStat/list")
+    public Response<PageResult<HydResultOrderYktDistrictStat>> yktDistrictStatList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(yktService.queryAllDistrict(page, size));
+    }
+
+    @ApiOperation("青少年技能培训-各区机构数量统计-根据ID查询详情")
+    @AnonymousGetMapping("/yktDistrictStat/detail/{id}")
+    public Response<HydResultOrderYktDistrictStat> yktDistrictStatUser(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(yktService.findDistrictById(id));
+    }
+
+    @ApiOperation("青少年技能培训-各区机构数量统计-增加")
+    @AnonymousPostMapping("/yktDistrictStat/add")
+    public ResponseEntity<HydResultOrderYktDistrictStat> yktDistrictStatAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydResultOrderYktDistrictStat districtStat) {
+        return ResponseEntity.ok(yktService.save(districtStat));
+    }
+
+    @ApiOperation("青少年技能培训-各区机构数量统计-删除")
+    @AnonymousDeleteMapping("/yktDistrictStat/delete/{id}")
+    public Response<Boolean> yktDistrictStatDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            yktService.deleteDistrictById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("青少年技能培训-各区机构数量统计-更新")
+    @AnonymousPostMapping("/yktDistrictStat/update")
+    public Response<HydResultOrderYktDistrictStat> yktDistrictStatUpdate(@RequestBody HydResultOrderYktDistrictStat districtStat) {
+        return Response.ok(yktService.update(districtStat));
+    }
+
+
+    @ApiOperation("青少年技能培训-课程热度排行TOP5-分页查询")
+    @AnonymousGetMapping("/yktCourseStat/list")
+    public Response<PageResult<HydResultOrderYktCourseStat>> yktCourseStatList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(yktService.queryAllCourse(page, size));
+    }
+
+    @ApiOperation("青少年技能培训-课程热度排行TOP5-根据ID查询详情")
+    @AnonymousGetMapping("/yktCourseStat/detail/{id}")
+    public Response<HydResultOrderYktCourseStat> yktCourseStatUser(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(yktService.findCourseById(id));
+    }
+
+    @ApiOperation("青少年技能培训-课程热度排行TOP5-增加")
+    @AnonymousPostMapping("/yktCourseStat/add")
+    public ResponseEntity<HydResultOrderYktCourseStat> yktCourseStatAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydResultOrderYktCourseStat yktCourseStat) {
+        return ResponseEntity.ok(yktService.save(yktCourseStat));
+    }
+
+    @ApiOperation("青少年技能培训-课程热度排行TOP5-删除")
+    @AnonymousDeleteMapping("/yktCourseStat/delete/{id}")
+    public Response<Boolean> yktCourseStatDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            yktService.deleteCourseById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("青少年技能培训-课程热度排行TOP5-更新")
+    @AnonymousPostMapping("/yktCourseStat/update")
+    public Response<HydResultOrderYktCourseStat> yktCourseStatUpdate(@RequestBody HydResultOrderYktCourseStat yktCourseStat) {
+        return Response.ok(yktService.update(yktCourseStat));
+    }
+
+
+    @ApiOperation("青少年技能培训-热门项目机构数量统计-分页查询")
+    @AnonymousGetMapping("/yktProjectStat/list")
+    public Response<PageResult<HydResultOrderYktProjectStat>> yktProjectStatList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(yktService.queryAllProject(page, size));
+    }
+
+    @ApiOperation("青少年技能培训-热门项目机构数量统计-根据ID查询详情")
+    @AnonymousGetMapping("/yktProjectStat/detail/{id}")
+    public Response<HydResultOrderYktProjectStat> yktProjectStatUser(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(yktService.findProjectById(id));
+    }
+
+    @ApiOperation("青少年技能培训-热门项目机构数量统计-增加")
+    @AnonymousPostMapping("/yktProjectStat/add")
+    public ResponseEntity<HydResultOrderYktProjectStat> yktProjectStatAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydResultOrderYktProjectStat yktProjectStat) {
+        return ResponseEntity.ok(yktService.save(yktProjectStat));
+    }
+
+    @ApiOperation("青少年技能培训-热门项目机构数量统计-删除")
+    @AnonymousDeleteMapping("/yktProjectStat/delete/{id}")
+    public Response<Boolean> yktProjectStatDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            yktService.deleteProjectById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("青少年技能培训-热门项目机构数量统计-更新")
+    @AnonymousPostMapping("/yktProjectStat/update")
+    public Response<HydResultOrderYktProjectStat> yktProjectStatUpdate(@RequestBody HydResultOrderYktProjectStat yktProjectStat) {
+        return Response.ok(yktService.update(yktProjectStat));
+    }
+
+
+    @ApiOperation("青少年技能培训-培训场馆销售统计TOP10-分页查询")
+    @AnonymousGetMapping("/yktStadiumStat/list")
+    public Response<PageResult<HydResultOrderYktStadiumStat>> yktStadiumStatList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(yktService.queryAllStadium(page, size));
+    }
+
+    @ApiOperation("青少年技能培训-培训场馆销售统计TOP10-根据ID查询详情")
+    @AnonymousGetMapping("/yktStadiumStat/detail/{id}")
+    public Response<HydResultOrderYktStadiumStat> yktStadiumStatUser(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(yktService.findStadiumById(id));
+    }
+
+    @ApiOperation("青少年技能培训-培训场馆销售统计TOP10-增加")
+    @AnonymousPostMapping("/yktStadiumStat/add")
+    public ResponseEntity<HydResultOrderYktStadiumStat> yktStadiumStatAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydResultOrderYktStadiumStat yktStadiumStat) {
+        return ResponseEntity.ok(yktService.save(yktStadiumStat));
+    }
+
+    @ApiOperation("青少年技能培训-培训场馆销售统计TOP10-删除")
+    @AnonymousDeleteMapping("/yktStadiumStat/delete/{id}")
+    public Response<Boolean> yktStadiumStatDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            yktService.deleteStadiumById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("青少年技能培训-培训场馆销售统计TOP10-更新")
+    @AnonymousPostMapping("/yktStadiumStat/update")
+    public Response<HydResultOrderYktStadiumStat> yktStadiumStatUpdate(@RequestBody HydResultOrderYktStadiumStat yktStadiumStat) {
+        return Response.ok(yktService.update(yktStadiumStat));
+    }
+
+
+    @ApiOperation("青少年技能培训-年龄分布-分页查询")
+    @AnonymousGetMapping("/yktUserAgeStat/list")
+    public Response<PageResult<HydResultOrderYktUserAgeStat>> yktUserAgeStatList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(yktService.queryAllUserAge(page, size));
+    }
+
+    @ApiOperation("青少年技能培训-年龄分布-根据ID查询详情")
+    @AnonymousGetMapping("/yktUserAgeStat/detail/{id}")
+    public Response<HydResultOrderYktUserAgeStat> yktUserAgeStatUser(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(yktService.findUserAgeById(id));
+    }
+
+    @ApiOperation("青少年技能培训-年龄分布-增加")
+    @AnonymousPostMapping("/yktUserAgeStat/add")
+    public ResponseEntity<HydResultOrderYktUserAgeStat> yktUserAgeStatAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydResultOrderYktUserAgeStat yktUserAgeStat) {
+        return ResponseEntity.ok(yktService.save(yktUserAgeStat));
+    }
+
+    @ApiOperation("青少年技能培训-年龄分布-删除")
+    @AnonymousDeleteMapping("/yktUserAgeStat/delete/{id}")
+    public Response<Boolean> yktUserAgeStatDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            yktService.deleteUserAgeById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("青少年技能培训-年龄分布-更新")
+    @AnonymousPostMapping("/yktUserAgeStat/update")
+    public Response<HydResultOrderYktUserAgeStat> yktUserAgeStatUpdate(@RequestBody HydResultOrderYktUserAgeStat yktUserAgeStat) {
+        return Response.ok(yktService.update(yktUserAgeStat));
+    }
+
+
+    @ApiOperation("青少年技能培训-性别统计-分页查询")
+    @AnonymousGetMapping("/yktUserSexStat/list")
+    public Response<PageResult<HydResultOrderYktUserSexStat>> yktUserSexStatList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(yktService.queryAllUserSex(page, size));
+    }
+
+    @ApiOperation("青少年技能培训-性别统计-根据ID查询详情")
+    @AnonymousGetMapping("/yktUserSexStat/detail/{id}")
+    public Response<HydResultOrderYktUserSexStat> yktUserSexStatUser(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(yktService.findUserSexById(id));
+    }
+
+    @ApiOperation("青少年技能培训-性别统计-增加")
+    @AnonymousPostMapping("/yktUserSexStat/add")
+    public ResponseEntity<HydResultOrderYktUserSexStat> yktUserSexStatAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydResultOrderYktUserSexStat yktUserSexStat) {
+        return ResponseEntity.ok(yktService.save(yktUserSexStat));
+    }
+
+    @ApiOperation("青少年技能培训-性别统计-删除")
+    @AnonymousDeleteMapping("/yktUserSexStat/delete/{id}")
+    public Response<Boolean> yktUserSexStatDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            yktService.deleteUserSexById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("青少年技能培训-性别统计-更新")
+    @AnonymousPostMapping("/yktUserSexStat/update")
+    public Response<HydResultOrderYktUserSexStat> yktUserSexStatUpdate(@RequestBody HydResultOrderYktUserSexStat yktUserSexStat) {
+        return Response.ok(yktService.update(yktUserSexStat));
+    }
 
 }

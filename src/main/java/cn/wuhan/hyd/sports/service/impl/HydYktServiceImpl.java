@@ -37,6 +37,8 @@ public class HydYktServiceImpl implements IHydYktService {
     private HydResultOrderYktUserSexStatRepo yktUserSexStatRepo;
     @Resource
     private HydOriginOrderRepo originOrderRepo;
+    @Resource
+    private HydOriginOrderHistoryRepo originOrderHistoryRepo;
 
     public void syncResultData() {
         syncDistrict();
@@ -293,7 +295,7 @@ public class HydYktServiceImpl implements IHydYktService {
     }
 
     public void syncDistrict() {
-        List<Map<String, Object>> list = originOrderRepo.districtStatCount();
+        List<Map<String, Object>> list = originOrderHistoryRepo.districtStatCount();
         List<HydResultOrderYktDistrictStat> districtStats = new ArrayList<>();
         list.forEach(map -> {
             HydResultOrderYktDistrictStat e = new HydResultOrderYktDistrictStat();
@@ -306,7 +308,7 @@ public class HydYktServiceImpl implements IHydYktService {
     }
 
     public void syncGender() {
-        List<Map<String, Object>> list = originOrderRepo.genderStatCount();
+        List<Map<String, Object>> list = originOrderHistoryRepo.genderStatCount();
         List<HydResultOrderYktUserSexStat> userSexStats = new ArrayList<>();
         list.forEach(map -> {
             HydResultOrderYktUserSexStat e = new HydResultOrderYktUserSexStat();
@@ -319,7 +321,7 @@ public class HydYktServiceImpl implements IHydYktService {
     }
 
     public void syncProject() {
-        List<Map<String, Object>> list = originOrderRepo.projectStatCount();
+        List<Map<String, Object>> list = originOrderHistoryRepo.projectStatCount();
         List<HydResultOrderYktProjectStat> projectStats = new ArrayList<>();
         list.forEach(map -> {
             HydResultOrderYktProjectStat e = new HydResultOrderYktProjectStat();
@@ -332,7 +334,7 @@ public class HydYktServiceImpl implements IHydYktService {
     }
 
     public void syncCourse() {
-        List<Map<String, Object>> list = originOrderRepo.courseStatCount();
+        List<Map<String, Object>> list = originOrderHistoryRepo.courseStatCount();
         List<HydResultOrderYktCourseStat> courseStats = new ArrayList<>();
         list.forEach(map -> {
             HydResultOrderYktCourseStat e = new HydResultOrderYktCourseStat();
@@ -345,7 +347,7 @@ public class HydYktServiceImpl implements IHydYktService {
     }
 
     public void syncUserAgeStat() {
-        List<Map<String, Object>> list = originOrderRepo.userAgeStatCount();
+        List<Map<String, Object>> list = originOrderHistoryRepo.userAgeStatCount();
         List<HydResultOrderYktUserAgeStat> userAgeStat = new ArrayList<>();
         list.forEach(map -> {
             HydResultOrderYktUserAgeStat e = new HydResultOrderYktUserAgeStat();
@@ -358,7 +360,7 @@ public class HydYktServiceImpl implements IHydYktService {
     }
 
     public void syncStadium() {
-        List<Map<String, Object>> list = originOrderRepo.stadiumStatCount();
+        List<Map<String, Object>> list = originOrderHistoryRepo.stadiumStatCount();
         List<HydResultOrderYktStadiumStat> stadiumStats = new ArrayList<>();
         list.forEach(map -> {
             HydResultOrderYktStadiumStat e = new HydResultOrderYktStadiumStat();
@@ -369,6 +371,4 @@ public class HydYktServiceImpl implements IHydYktService {
         yktStadiumStatRepo.deleteAll();
         yktStadiumStatRepo.saveAll(stadiumStats);
     }
-
-
 }

@@ -23,6 +23,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -250,7 +252,10 @@ public class HydInstructorController {
      */
     @ApiOperation("指导项目top15")
     @AnonymousGetMapping("/serviceProjectTop15")
-    public Response<List<Map<String, Object>>> serviceProjectTop15(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> serviceProjectTop15(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydInstructorService.serviceProjectTop15());
     }
 
@@ -259,7 +264,10 @@ public class HydInstructorController {
      */
     @ApiOperation("性别统计")
     @AnonymousGetMapping("/genderStat")
-    public Response<List<Map<String, Object>>> genderStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> genderStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydInstructorService.genderStat());
     }
 
@@ -268,7 +276,10 @@ public class HydInstructorController {
      */
     @ApiOperation("级别统计")
     @AnonymousGetMapping("/levelStat")
-    public Response<List<Map<String, Object>>> levelStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> levelStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydInstructorService.levelStat());
     }
 
@@ -277,7 +288,10 @@ public class HydInstructorController {
      */
     @ApiOperation("各区指导人员统计")
     @AnonymousGetMapping("/regionInstructorStat")
-    public Response<List<Map<String, Object>>> regionInstructorStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> regionInstructorStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydInstructorService.regionInstructorStat());
     }
 
@@ -286,7 +300,10 @@ public class HydInstructorController {
      */
     @ApiOperation("年龄统计")
     @AnonymousGetMapping("/ageIntervalStat")
-    public Response<List<Map<String, Object>>> ageIntervalStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> ageIntervalStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydInstructorService.ageIntervalStat());
     }
 
@@ -295,7 +312,10 @@ public class HydInstructorController {
      */
     @ApiOperation("人数增长统计")
     @AnonymousGetMapping("/ageGrowthStat")
-    public Response<List<Map<String, Object>>> ageGrowthStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> ageGrowthStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydInstructorService.ageGrowthStat());
     }
 }

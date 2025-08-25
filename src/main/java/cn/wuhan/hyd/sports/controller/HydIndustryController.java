@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -417,7 +419,10 @@ public class HydIndustryController {
      */
     @ApiOperation("总览")
     @AnonymousGetMapping("/overview")
-    public Response<HydExcelIndustryCoreIndicators> overview(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<HydExcelIndustryCoreIndicators> overview(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydIndustryService.overview(year));
     }
 
@@ -426,7 +431,10 @@ public class HydIndustryController {
      */
     @ApiOperation("体育产业总规模")
     @AnonymousGetMapping("/industryScaleTrendStat")
-    public Response<List<Map<String, Object>>> industryScaleTrendStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> industryScaleTrendStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydIndustryService.industryScaleTrendStat(year));
     }
 
@@ -435,7 +443,10 @@ public class HydIndustryController {
      */
     @ApiOperation("体育产业市场主体数量")
     @AnonymousGetMapping("/industryEntityCountRatioStat")
-    public Response<List<Map<String, Object>>> industryEntityCountRatioStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> industryEntityCountRatioStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydIndustryService.industryEntityCountRatioStat(year));
     }
 
@@ -444,7 +455,10 @@ public class HydIndustryController {
      */
     @ApiOperation("体育产业总增速和增加值")
     @AnonymousGetMapping("/industryGrowthValueTrendStat")
-    public Response<List<Map<String, Object>>> industryGrowthValueTrendStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> industryGrowthValueTrendStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydIndustryService.industryGrowthValueTrendStat(year));
     }
 
@@ -453,7 +467,10 @@ public class HydIndustryController {
      */
     @ApiOperation("居民体育用品购买率")
     @AnonymousGetMapping("/industryGoodsPurchaseRateStat")
-    public Response<List<Map<String, Object>>> industryGoodsPurchaseRateStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> industryGoodsPurchaseRateStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydIndustryService.industryGoodsPurchaseRateStat(year));
     }
 
@@ -462,7 +479,10 @@ public class HydIndustryController {
      */
     @ApiOperation("体育产业从业人员数量")
     @AnonymousGetMapping("/HydExcelIndustryEmployeeCountStat")
-    public Response<List<Map<String, Object>>> HydExcelIndustryEmployeeCountStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> HydExcelIndustryEmployeeCountStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydIndustryService.industryEmployeeCountStat(year));
     }
 
@@ -471,7 +491,10 @@ public class HydIndustryController {
      */
     @ApiOperation("居民体育培训项目参与率")
     @AnonymousGetMapping("/industryTrainingParticipationRateStat")
-    public Response<List<Map<String, Object>>> industryTrainingParticipationRateStat(@ApiParam(value = "年份") @RequestParam String year) {
+    public Response<List<Map<String, Object>>> industryTrainingParticipationRateStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydIndustryService.industryTrainingParticipationRateStat(year));
     }
 }
