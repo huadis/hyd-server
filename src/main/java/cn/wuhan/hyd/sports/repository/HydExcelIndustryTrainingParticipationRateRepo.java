@@ -16,14 +16,12 @@ import java.util.Map;
 @Repository
 public interface HydExcelIndustryTrainingParticipationRateRepo extends JpaRepository<HydExcelIndustryTrainingParticipationRate, Long> {
 
-    @Query(value = "SELECT \n" +
-            "    entityType \n" +
-            "    growthRate \n" +
-            "FROM \n" +
-            "    hyd_excel_industry_training_participation_rate\n" +
-            "WHERE \n" +
-            "    statisticalYear = 2025\n" +
-            "ORDER BY \n" +
-            "    growthRate DESC;", nativeQuery = true)
-    List<Map<String, Object>> stat();
+    @Query(value = "SELECT " +
+            "    entityType, " +
+            "    growthRate " +
+            "FROM " +
+            "    hyd_excel_industry_training_participation_rate " +
+            "WHERE statisticalYear = ?1 " +
+            "ORDER BY growthRate DESC;", nativeQuery = true)
+    List<Map<String, Object>> stat(String year);
 }

@@ -62,7 +62,7 @@ public class HydLaStadiumController {
      */
     @ApiOperation("各区场馆数量统计")
     @AnonymousGetMapping("/districtStadiumStat")
-    public Response<List<Map<String, Integer>>> districtStadiumStat(
+    public Response<List<Map<String, Object>>> districtStadiumStat(
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
@@ -74,7 +74,19 @@ public class HydLaStadiumController {
      */
     @ApiOperation("项目类型占比TOP10")
     @AnonymousGetMapping("/sportNameTop10")
-    public Response<List<Map<String, Integer>>> sportNameTop10(
+    public Response<List<Map<String, Object>>> sportNameTop10(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(stadiumItemService.itemCountTop10BySportName(year));
+    }
+
+    /**
+     * 项目类型占比Top5和其他
+     */
+    @ApiOperation("项目类型占比Top5和其他")
+    @AnonymousGetMapping("/sportNameTop5AndOther")
+    public Response<List<Map<String, Object>>> sportNameTop5AndOther(
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {

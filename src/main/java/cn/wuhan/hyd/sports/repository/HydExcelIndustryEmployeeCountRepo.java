@@ -16,14 +16,12 @@ import java.util.Map;
 @Repository
 public interface HydExcelIndustryEmployeeCountRepo extends JpaRepository<HydExcelIndustryEmployeeCount, Long> {
 
-    @Query(value = "SELECT \n" +
-            "    entityType \n" +
-            "    personCount \n" +
-            "FROM \n" +
-            "    hyd_excel_industry_employee_count\n" +
-            "WHERE \n" +
-            "    statisticalYear = 2025\n" +
-            "ORDER BY \n" +
-            "    personCount DESC;", nativeQuery = true)
-    List<Map<String,Object>> stat();
+    @Query(value = "SELECT " +
+            "    entityType, " +
+            "    personCount " +
+            "FROM " +
+            "    hyd_excel_industry_employee_count " +
+            "WHERE statisticalYear = ?1 " +
+            "ORDER BY personCount DESC;", nativeQuery = true)
+    List<Map<String,Object>> stat(String year);
 }

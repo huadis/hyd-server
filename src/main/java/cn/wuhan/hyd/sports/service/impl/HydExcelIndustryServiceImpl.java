@@ -442,8 +442,8 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
      * @return
      */
     @Override
-    public HydExcelIndustryCoreIndicators overview() {
-        return industryCoreIndicatorsRepo.overview();
+    public HydExcelIndustryCoreIndicators overview(String year) {
+        return industryCoreIndicatorsRepo.overview(year);
     }
 
     /**
@@ -452,8 +452,8 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> industryScaleTrendStat() {
-        return industryScaleTrendRepo.stat();
+    public List<Map<String, Object>> industryScaleTrendStat(String year) {
+        return industryScaleTrendRepo.stat(year);
     }
 
     /**
@@ -462,8 +462,8 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> industryEntityCountRatioStat() {
-        return industryEntityCountRatioRepo.stat();
+    public List<Map<String, Object>> industryEntityCountRatioStat(String year) {
+        return industryEntityCountRatioRepo.stat(year);
     }
 
     /**
@@ -472,8 +472,9 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> industryGrowthValueTrendStat() {
-        return industryGrowthValueTrendRepo.stat();
+    public List<Map<String, Object>> industryGrowthValueTrendStat(String year) {
+        Integer fromYear = Integer.parseInt(year) - 6;
+        return industryGrowthValueTrendRepo.stat(fromYear + "", year);
     }
 
     /**
@@ -482,8 +483,8 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> industryGoodsPurchaseRateStat() {
-        return industryGoodsPurchaseRateRepo.stat();
+    public List<Map<String, Object>> industryGoodsPurchaseRateStat(String year) {
+        return industryGoodsPurchaseRateRepo.stat(year);
     }
 
     /**
@@ -492,8 +493,8 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> industryEmployeeCountStat() {
-        return industryEmployeeCountRepo.stat();
+    public List<Map<String, Object>> industryEmployeeCountStat(String year) {
+        return industryEmployeeCountRepo.stat(year);
     }
 
     /**
@@ -502,7 +503,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
      * @return
      */
     @Override
-    public List<Map<String, Object>> industryTrainingParticipationRateStat() {
-        return industryTrainingParticipationRateRepo.stat();
+    public List<Map<String, Object>> industryTrainingParticipationRateStat(String year) {
+        return industryTrainingParticipationRateRepo.stat(year);
     }
 }

@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydExcelPublicEvents;
+import cn.wuhan.hyd.sports.domain.HydExcelPublicEventsHistory;
 
 import java.util.List;
 import java.util.Map;
@@ -63,17 +64,22 @@ public interface IHydExcelPublicEventsService {
 
     boolean importExcel(Map<String, List<Map<String, Object>>> sheetMapData);
 
-    Map<String, Object> overview();
+    Map<String, Object> overview(String year);
 
     /**
      * 各月办赛数据
      */
-    List<Map<String, Object>> latestMonthStat();
+    List<Map<String, Object>> monthStat(String year);
 
-    List<Map<String, Object>> sportItemTop5();
+    List<Map<String, Object>> sportItemTop5(String year);
 
-    List<Map<String, Object>> participantCountStat();
+    List<Map<String, Object>> participantCountStat(String year);
 
-    List<Map<String, Object>> currentMouthEvents();
+    List<Map<String, Object>> currentMouthEvents(String year);
 
+    List<Map<String, Object>> districtCountByYear(String year);
+
+    int batchInsertWithJdbc(List<HydExcelPublicEvents> eventsList, int batchSize);
+
+    int batchInsertHistoryWithJdbc(List<HydExcelPublicEventsHistory> eventsList, int batchSize);
 }

@@ -17,13 +17,12 @@ import java.util.Map;
 public interface HydExcelIndustryEntityCountRatioRepo extends JpaRepository<HydExcelIndustryEntityCountRatio, Long> {
 
     @Query(value = "SELECT \n" +
-            "    entityType ,\n" +
+            "    entityType, \n" +
             "    proportion \n" +
             "FROM \n" +
             "    hyd_excel_industry_entity_count_ratio\n" +
             "WHERE \n" +
-            "    statisticalYear = 2025\n" +
-            "ORDER BY \n" +
-            "    proportion DESC;", nativeQuery = true)
-    List<Map<String,Object>> stat();
+            "    statisticalYear = ?1 \n" +
+            "ORDER BY proportion DESC;", nativeQuery = true)
+    List<Map<String,Object>> stat(String year);
 }

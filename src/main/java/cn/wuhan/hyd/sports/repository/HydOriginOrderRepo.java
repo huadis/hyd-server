@@ -1,6 +1,7 @@
 package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydOriginOrder;
+import cn.wuhan.hyd.sports.domain.HydOriginStadium;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -62,5 +63,8 @@ public interface HydOriginOrderRepo extends JpaRepository<HydOriginOrder, String
 
     @Query(value = "select stadium, count(*) num from (SELECT a.*, b.stadiumName as stadium from hyd_origin_order a, hyd_origin_stadium b WHERE a.stadiumId = b.id) c GROUP BY c.stadium", nativeQuery = true)
     List<Map<String, Object>> stadiumStatCount();
+
+    @Query(value = "select DISTINCT b.* from hyd_origin_order a, hyd_origin_stadium b where a.stadiumId = b.id", nativeQuery = true)
+    List<Map<String, Object>> stadiumsByOrder();
 
 }

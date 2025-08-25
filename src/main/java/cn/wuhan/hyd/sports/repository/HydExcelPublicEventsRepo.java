@@ -19,49 +19,49 @@ public interface HydExcelPublicEventsRepo extends JpaRepository<HydExcelPublicEv
     /**
      * 总赛事场次
      */
-    @Query(value = "SELECT COUNT(id) AS count FROM hyd_excel_public_events", nativeQuery = true)
-    Long countAll();
+    @Query(value = "SELECT COUNT(id) AS count FROM hyd_excel_public_events WHERE eventYear = ?1", nativeQuery = true)
+    Long countAll(String year);
 
     /**
      * 总参与人数
      */
-    @Query(value = "SELECT SUM(participantCount) AS totalParticipantCount FROM hyd_excel_public_events", nativeQuery = true)
-    Long totalParticipantCount();
+    @Query(value = "SELECT SUM(participantCount) AS totalParticipantCount FROM hyd_excel_public_events WHERE eventYear = ?1", nativeQuery = true)
+    Long totalParticipantCount(String year);
 
     /**
      * 国际赛事场次
      */
-    @Query(value = "SELECT COUNT(id) AS internationalEventCount FROM hyd_excel_public_events WHERE eventLevel = '国际级'", nativeQuery = true)
-    Long internationalEventCount();
+    @Query(value = "SELECT COUNT(id) AS internationalEventCount FROM hyd_excel_public_events WHERE eventYear = ?1 and eventLevel = '国际级'", nativeQuery = true)
+    Long internationalEventCount(String year);
 
     /**
      * 国家级赛事场次
      */
-    @Query(value = "SELECT COUNT(id) AS nationalEventCount FROM hyd_excel_public_events WHERE eventLevel = '国家级'", nativeQuery = true)
-    Long nationalEventCount();
+    @Query(value = "SELECT COUNT(id) AS nationalEventCount FROM hyd_excel_public_events WHERE eventYear = ?1 and eventLevel = '国家级'", nativeQuery = true)
+    Long nationalEventCount(String year);
 
     /**
-     * 武汉品牌赛事
+     * 省级
      */
-    @Query(value = "SELECT COUNT(id) AS wuhanBrandEventCount FROM hyd_excel_public_events WHERE eventName LIKE '%武汉品牌%'", nativeQuery = true)
-    Long wuhanBrandEventCount();
+    @Query(value = "SELECT COUNT(id) AS nationalEventCount FROM hyd_excel_public_events WHERE eventYear = ?1 and eventLevel = '省级'", nativeQuery = true)
+    Long provinceCount(String year);
 
     /**
-     * 全民健身赛事
+     * 市级
      */
-    @Query(value = "SELECT COUNT(id) AS nationalFitnessEventCount FROM hyd_excel_public_events WHERE eventLevel = '区级'", nativeQuery = true)
-    Long nationalFitnessEventCount();
+    @Query(value = "SELECT COUNT(id) AS nationalEventCount FROM hyd_excel_public_events WHERE eventYear = ?1 and eventLevel = '市级'", nativeQuery = true)
+    Long cityCount(String year);
 
     /**
      * 各月办赛数据
      */
     @Query(value = "SELECT " +
-            "MONTH(eventDate) AS monthNum, " +
-            "MONTHNAME(eventDate) AS monthName, " +
+            "eventMonth, " +
             "COUNT(id) AS eventCount " +
             " FROM " +
-            "hyd_excel_public_events GROUP BY MONTH(eventDate) ORDER BY MONTH(eventDate)", nativeQuery = true)
-    List<Map<String, Object>> latestMonthStat();
+            "hyd_excel_public_events WHERE eventYear = ?1 GROUP BY eventMonth ORDER BY " +
+            "FIELD(eventMonth, '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月')", nativeQuery = true)
+    List<Map<String, Object>> monthStat(String year);
 
     /**
      * 赛事数量 TOP5 项目
@@ -70,8 +70,8 @@ public interface HydExcelPublicEventsRepo extends JpaRepository<HydExcelPublicEv
             "sportItem, " +
             "COUNT(id) AS count " +
             " FROM " +
-            "hyd_excel_public_events GROUP BY sportItem ORDER BY count DESC limit 5", nativeQuery = true)
-    List<Map<String, Object>> sportItemTop5();
+            "hyd_excel_public_events WHERE eventYear = ?1 AND sportItem is not null AND sportItem != '' GROUP BY sportItem ORDER BY count DESC limit 5", nativeQuery = true)
+    List<Map<String, Object>> sportItemTop5(String year);
 
 
     /**
@@ -87,7 +87,7 @@ public interface HydExcelPublicEventsRepo extends JpaRepository<HydExcelPublicEv
             "    END AS participant_level,\n" +
             "    COUNT(*) AS count\n" +
             "FROM\n" +
-            "    hyd_excel_public_events\n" +
+            "    hyd_excel_public_events WHERE eventYear = ?1 \n" +
             "GROUP BY\n" +
             "    CASE \n" +
             "        WHEN participantCount < 100 THEN '<100人'\n" +
@@ -98,19 +98,22 @@ public interface HydExcelPublicEventsRepo extends JpaRepository<HydExcelPublicEv
             "    END\n" +
             "ORDER BY\n" +
             "    FIELD(participant_level, '<100人', '100-300人', '301-1000人', '>1000人');", nativeQuery = true)
-    List<Map<String, Object>> participantCountStat();
+    List<Map<String, Object>> participantCountStat(String year);
 
 
     @Query(value = "SELECT \n" +
             "    eventName ,\n" +
+            "    eventMonth ,\n" +
             "    eventDate \n" +
             "FROM \n" +
             "    hyd_excel_public_events\n" +
             "WHERE \n" +
-            "    eventDate >= DATE_FORMAT(CURDATE(), '%Y-%m-01')\n" +
-            "    AND eventDate < DATE_FORMAT(CURDATE() + INTERVAL 1 MONTH, '%Y-%m-01')\n" +
+            "    eventYear = ?1 and eventMonth = ?2 \n" +
             "ORDER BY \n" +
-            "    eventDate;", nativeQuery = true)
-    List<Map<String, Object>> currentMouthEvents();
+            "    eventMonth desc ;", nativeQuery = true)
+    List<Map<String, Object>> currentMouthEvents(String year, String month);
+
+    @Query(value = "SELECT district, count(*) as num from hyd_excel_public_events WHERE eventYear = ?1 and district is not null GROUP BY district order by num", nativeQuery = true)
+    List<Map<String, Object>> districtCountByYear(String year);
 
 }

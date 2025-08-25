@@ -16,5 +16,5 @@ import java.util.Map;
 public interface HydOriginStadiumRepo extends JpaRepository<HydOriginStadium, String> {
 
     @Query(value = "select districtName, count(*) as num from hyd_origin_stadium GROUP BY districtName", nativeQuery = true)
-    List<Map<String, Integer>> stadiumCountByDistrict(String year);
+    List<Map<String, Object>> stadiumCountByDistrict(String year);
 }

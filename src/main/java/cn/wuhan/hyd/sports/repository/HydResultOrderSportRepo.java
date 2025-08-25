@@ -15,6 +15,7 @@ import java.util.Map;
  */
 @Repository
 public interface HydResultOrderSportRepo extends JpaRepository<HydResultOrderSport, Long> {
+
     @Query(value = "SELECT " +
             "sportName, " +
             "orderAmount " +

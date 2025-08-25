@@ -350,47 +350,47 @@ public interface IHydExcelIndustryService {
      *
      * @return
      */
-    HydExcelIndustryCoreIndicators overview();
+    HydExcelIndustryCoreIndicators overview(String year);
 
     /**
      * 体育产业总规模
      *
      * @return
      */
-    List<Map<String, Object>> industryScaleTrendStat();
+    List<Map<String, Object>> industryScaleTrendStat(String year);
 
     /**
      * 体育产业市场主体数量
      *
      * @return
      */
-    List<Map<String, Object>> industryEntityCountRatioStat();
+    List<Map<String, Object>> industryEntityCountRatioStat(String year);
 
     /**
      * 体育产业总增速和增加值
      *
      * @return
      */
-    List<Map<String, Object>> industryGrowthValueTrendStat();
+    List<Map<String, Object>> industryGrowthValueTrendStat(String year);
 
     /**
      * 居民体育用品购买率
      *
      * @return
      */
-    List<Map<String, Object>> industryGoodsPurchaseRateStat();
+    List<Map<String, Object>> industryGoodsPurchaseRateStat(String year);
 
     /**
      * 体育产业从业人员数量
      *
      * @return
      */
-    List<Map<String, Object>> industryEmployeeCountStat();
+    List<Map<String, Object>> industryEmployeeCountStat(String year);
 
     /**
      * 居民体育培训项目参与率
      *
      * @return
      */
-    List<Map<String, Object>> industryTrainingParticipationRateStat();
+    List<Map<String, Object>> industryTrainingParticipationRateStat(String year);
 }

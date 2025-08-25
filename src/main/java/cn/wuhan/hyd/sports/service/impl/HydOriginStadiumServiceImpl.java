@@ -140,7 +140,7 @@ public class HydOriginStadiumServiceImpl extends HydBaseServiceImpl implements I
     }
 
     @Override
-    public List<Map<String, Integer>> stadiumCountByDistrict(String year) {
+    public List<Map<String, Object>> stadiumCountByDistrict(String year) {
         return stadiumRepo.stadiumCountByDistrict(year);
     }
 }

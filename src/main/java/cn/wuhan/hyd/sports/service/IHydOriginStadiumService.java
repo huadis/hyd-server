@@ -64,5 +64,5 @@ public interface IHydOriginStadiumService {
 
     int batchSave(List<HydOriginStadiumReq> items);
 
-    List<Map<String, Integer>> stadiumCountByDistrict(String year);
+    List<Map<String, Object>> stadiumCountByDistrict(String year);
 }

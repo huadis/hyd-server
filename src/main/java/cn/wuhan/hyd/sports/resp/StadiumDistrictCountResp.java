@@ -15,5 +15,5 @@ public class StadiumDistrictCountResp implements Serializable {
     @ApiModelProperty(value = "区名称")
     private String districtName;
     @ApiModelProperty(value = "对应区的场馆数量")
-    private Integer stadiumCount;
+    private String stadiumNum;
 }

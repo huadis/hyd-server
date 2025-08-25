@@ -23,8 +23,7 @@ public interface HydExcelIndustryGrowthValueTrendRepo extends JpaRepository<HydE
             "FROM \n" +
             "    hyd_excel_industry_growth_value_trend\n" +
             "WHERE \n" +
-            "    statisticalYear BETWEEN 2018 AND 2024\n" +
-            "ORDER BY \n" +
-            "    statisticalYear\n", nativeQuery = true)
-    List<Map<String,Object>> stat();
+            "    statisticalYear BETWEEN ?1 AND ?2 \n" +
+            "ORDER BY statisticalYear ASC \n", nativeQuery = true)
+    List<Map<String, Object>> stat(String from, String to);
 }

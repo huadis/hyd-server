@@ -17,13 +17,11 @@ import java.util.Map;
 public interface HydExcelIndustryGoodsPurchaseRateRepo extends JpaRepository<HydExcelIndustryGoodsPurchaseRate, Long> {
 
     @Query(value = "SELECT \n" +
-            "    entityType \n" +
+            "    entityType, \n" +
             "    growthRate \n" +
             "FROM \n" +
             "    hyd_excel_industry_goods_purchase_rate\n" +
-            "WHERE \n" +
-            "    statisticalYear = 2025\n" +
-            "ORDER BY \n" +
-            "    growthRate DESC;", nativeQuery = true)
-    List<Map<String,Object>> stat();
+            "WHERE statisticalYear = ?1 \n" +
+            "ORDER BY growthRate DESC;", nativeQuery = true)
+    List<Map<String,Object>> stat(String year);
 }

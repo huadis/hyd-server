@@ -16,6 +16,10 @@ import java.util.Map;
 @Repository
 public interface HydOriginStadiumItemRepo extends JpaRepository<HydOriginStadiumItem, String> {
 
-    @Query(value = "select sportName, count(*) as num from hyd_origin_stadium_item GROUP BY sportName order by num desc limit 10", nativeQuery = true)
-    List<Map<String, Integer>> itemCountBySportName(String year);
+    @Query(value = "select sportName, count(*) as num from hyd_origin_stadium_item WHERE sportName IS NOT NULL AND sportName != '' GROUP BY sportName  order by num desc limit 10", nativeQuery = true)
+    List<Map<String, Object>> itemCountTop10BySportName(String year);
+
+
+    @Query(value = "select sportName, count(*) as num from hyd_origin_stadium_item WHERE sportName IS NOT NULL AND sportName != '' GROUP BY sportName order by num desc", nativeQuery = true)
+    List<Map<String, Object>> itemCountBySportName(String year);
 }

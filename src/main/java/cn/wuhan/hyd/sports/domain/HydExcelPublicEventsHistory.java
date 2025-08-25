@@ -9,7 +9,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -73,7 +72,7 @@ public class HydExcelPublicEventsHistory implements Serializable {
     @Column(name = "eventDate")
     @ExcelField(name = "赛事日期")
     @ApiModelProperty(value = "赛事日期")
-    private Date eventDate;
+    private String eventDate;
 
     @Column(name = "eventLocation")
     @ExcelField(name = "赛事活动地点")

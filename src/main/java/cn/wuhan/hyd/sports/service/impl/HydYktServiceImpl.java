@@ -287,6 +287,11 @@ public class HydYktServiceImpl implements IHydYktService {
         return yktUserAgeStatRepo.listUserAge(year);
     }
 
+    @Override
+    public List<Map<String, Object>> stadiumsByOrder() {
+        return originOrderRepo.stadiumsByOrder();
+    }
+
     public void syncDistrict() {
         List<Map<String, Object>> list = originOrderRepo.districtStatCount();
         List<HydResultOrderYktDistrictStat> districtStats = new ArrayList<>();

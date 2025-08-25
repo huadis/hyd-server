@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -165,8 +167,11 @@ public class HydPublicEventController {
      */
     @ApiOperation("总览信息")
     @AnonymousGetMapping("/overview")
-    public Response<Map<String, Object>> overview(@ApiParam(value = "年份") @RequestParam String year) {
-        return Response.ok(hydPublicEventsService.overview());
+    public Response<Map<String, Object>> overview(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(hydPublicEventsService.overview(year));
     }
 
     /**
@@ -174,8 +179,11 @@ public class HydPublicEventController {
      */
     @ApiOperation("各月办赛数据")
     @AnonymousGetMapping("/latestMonthStat")
-    public Response<List<Map<String, Object>>> latestMonthStat(@ApiParam(value = "年份") @RequestParam String year) {
-        return Response.ok(hydPublicEventsService.latestMonthStat());
+    public Response<List<Map<String, Object>>> latestMonthStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(hydPublicEventsService.monthStat(year));
     }
 
     /**
@@ -183,8 +191,11 @@ public class HydPublicEventController {
      */
     @ApiOperation("赛事数量top5")
     @AnonymousGetMapping("/sportItemTop5")
-    public Response<List<Map<String, Object>>> sportItemTop5(@ApiParam(value = "年份") @RequestParam String year) {
-        return Response.ok(hydPublicEventsService.sportItemTop5());
+    public Response<List<Map<String, Object>>> sportItemTop5(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(hydPublicEventsService.sportItemTop5(year));
     }
 
     /**
@@ -192,8 +203,11 @@ public class HydPublicEventController {
      */
     @ApiOperation("参赛人数人档")
     @AnonymousGetMapping("/participantCountStat")
-    public Response<List<Map<String, Object>>> participantCountStat(@ApiParam(value = "年份") @RequestParam String year) {
-        return Response.ok(hydPublicEventsService.participantCountStat());
+    public Response<List<Map<String, Object>>> participantCountStat(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(hydPublicEventsService.participantCountStat(year));
     }
 
     /**
@@ -201,7 +215,22 @@ public class HydPublicEventController {
      */
     @ApiOperation("本月赛事")
     @AnonymousGetMapping("/currentMouthEvents")
-    public Response<List<Map<String, Object>>> currentMouthEvents(@ApiParam(value = "年份") @RequestParam String year) {
-        return Response.ok(hydPublicEventsService.currentMouthEvents());
+    public Response<List<Map<String, Object>>> currentMouthEvents(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(hydPublicEventsService.currentMouthEvents(year));
+    }
+
+    /**
+     * 按区域统计赛事
+     */
+    @ApiOperation("按区域统计赛事")
+    @AnonymousGetMapping("/districtCountByYear")
+    public Response<List<Map<String, Object>>> districtCountByYear(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(hydPublicEventsService.districtCountByYear(year));
     }
 }

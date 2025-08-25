@@ -73,7 +73,7 @@ public class HydExcelPublicEvents implements Serializable {
     @Column(name = "eventDate")
     @ExcelField(name = "赛事日期")
     @ApiModelProperty(value = "赛事日期")
-    private Date eventDate;
+    private String eventDate;
 
     @Column(name = "eventLocation")
     @ExcelField(name = "赛事活动地点")
@@ -81,8 +81,8 @@ public class HydExcelPublicEvents implements Serializable {
     private String eventLocation;
 
     @Column(name = "participantCount")
-    @ExcelField(name = "参赛规模（人数）")
-    @ApiModelProperty(value = "参赛规模（人数）")
+    @ExcelField(name = "参数规模(人数)")
+    @ApiModelProperty(value = "参数规模(人数)")
     private Integer participantCount;
 
     @Column(name = "eventLevel")

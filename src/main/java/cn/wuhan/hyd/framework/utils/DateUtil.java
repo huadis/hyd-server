@@ -190,4 +190,9 @@ public class DateUtil extends DateUtils {
             return DateFormatUtils.format(date, dateFormat);
         }
     }
+
+    public static int getCurrentMonth() {
+        LocalDate now = LocalDate.now();
+        return now.getMonthValue();
+    }
 }

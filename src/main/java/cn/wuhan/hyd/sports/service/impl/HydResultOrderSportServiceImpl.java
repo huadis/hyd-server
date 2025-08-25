@@ -8,6 +8,7 @@ import cn.wuhan.hyd.sports.repository.HydResultOrderSportHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultOrderSportRepo;
 import cn.wuhan.hyd.sports.req.HydResultOrderSportReq;
 import cn.wuhan.hyd.sports.service.IHydResultOrderSportService;
+import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 功能说明： 场馆预定/体育消费卷-项目消费券订单金额Top5 服务实现 <br>
@@ -81,7 +83,15 @@ public class HydResultOrderSportServiceImpl extends HydBaseServiceImpl implement
 
     @Override
     public List<Map<String, Object>> projectTop5(String year) {
-        return orderSportRepo.projectTop5(year);
+        List<Map<String, Object>> list = orderSportRepo.projectTop5(year);
+        // 排序：按 orderAmount 数值降序
+        return list.stream()
+                .sorted((m1, m2) -> {
+                    Integer amount1 = Integer.parseInt(MapUtils.getString(m1, "orderAmount"));
+                    Integer amount2 = Integer.parseInt(MapUtils.getString(m2, "orderAmount"));
+                    return amount2.compareTo(amount1); // 降序：大数在前
+                })
+                .collect(Collectors.toList());
     }
 
     /**

@@ -4,6 +4,7 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 功能说明：  <br>
@@ -313,4 +314,6 @@ public interface IHydYktService {
     List<HydResultOrderYktStadiumStat> stadiumTop10(String year);
 
     List<HydResultOrderYktUserAgeStat> listUserAge(String year);
+
+    List<Map<String, Object>> stadiumsByOrder();
 }

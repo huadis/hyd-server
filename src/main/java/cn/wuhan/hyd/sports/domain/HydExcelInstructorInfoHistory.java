@@ -43,7 +43,7 @@ public class HydExcelInstructorInfoHistory implements Serializable {
     @Column(name = "birthDate")
     @ExcelField(name = "出生日期")
     @ApiModelProperty(value = "出生日期")
-    private Date birthDate;
+    private String birthDate;
 
     @Column(name = "serviceProject")
     @ExcelField(name = "服务项目")
@@ -58,7 +58,7 @@ public class HydExcelInstructorInfoHistory implements Serializable {
     @Column(name = "certifyTime")
     @ExcelField(name = "获证时间")
     @ApiModelProperty(value = "获证时间")
-    private Date certificateDate;
+    private String certificateDate;
 
     @Column(name = "region")
     @ExcelField(name = "所在地区")
@@ -73,7 +73,7 @@ public class HydExcelInstructorInfoHistory implements Serializable {
     @Column(name = "uploadTime")
     @ExcelField(name = "上传时间")
     @ApiModelProperty(value = "上传时间")
-    private Date uploadTime;
+    private String uploadTime;
 
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)

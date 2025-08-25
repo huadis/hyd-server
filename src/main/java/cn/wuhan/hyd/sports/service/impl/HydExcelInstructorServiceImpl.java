@@ -8,14 +8,17 @@ import cn.wuhan.hyd.sports.service.IHydExcelInstructorService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 
 /**
  * 功能说明： 社会体育指导员 <br>
@@ -37,6 +40,8 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
     private HydExcelInstructorAgeGrowthRepo instructorAgeGrowthRepo;
     @Resource
     private HydExcelInstructorAgeGrowthHistoryRepo ageGrowthHistoryRepo;
+    @Resource
+    private Executor executor;
 
     @Override
     public PageResult<HydExcelInstructorInfo> queryAllInstructorInfo(int page, int size) {
@@ -167,45 +172,83 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
                 .orElseThrow(() -> new RuntimeException("体育指导员 - 人数增长统计明细表，ID：" + id));
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public boolean importExcel(Map<String, List<Map<String, Object>>> sheetMapData) {
-        List<HydExcelInstructorInfo> infos = new ArrayList<>();
-        List<HydExcelInstructorAgeStats> ageStats = new ArrayList<>();
-        List<HydExcelInstructorAgeGrowth> ageGrowths = new ArrayList<>();
+        try {
+            // 2. 多线程并行处理不同sheet
+            CompletableFuture<Void> summaryFuture = CompletableFuture.runAsync(() ->
+                            processSheet(sheetMapData.get("汇总"),
+                                    HydExcelInstructorInfo.class,
+                                    HydExcelInstructorInfoHistory.class,
+                                    instructorInfoRepo,
+                                    infoHistoryRepo),
+                    executor
+            );
 
-        List<HydExcelInstructorInfoHistory> infoHistories = new ArrayList<>();
-        List<HydExcelInstructorAgeStatsHistory> ageStatsHistories = new ArrayList<>();
-        List<HydExcelInstructorAgeGrowthHistory> ageGrowthHistories = new ArrayList<>();
-        sheetMapData.forEach((key, list) -> {
-            Map<String, Object> rowData = new HashMap<>();
-            switch (key) {
-                case "汇总":
-                    list.forEach(m -> {
-                        infos.add(MapUtil.map2Object(HydExcelInstructorInfo.class, m));
-                        infoHistories.add(MapUtil.map2Object(HydExcelInstructorInfoHistory.class, m));
-                    });
-                    break;
-                case "年龄统计明细表":
-                    list.forEach(m -> {
-                        ageStats.add(MapUtil.map2Object(HydExcelInstructorAgeStats.class, m));
-                        ageStatsHistories.add(MapUtil.map2Object(HydExcelInstructorAgeStatsHistory.class, m));
-                    });
-                    break;
-                case "人数增长统计明细表":
-                    list.forEach(m -> {
-                        ageGrowths.add(MapUtil.map2Object(HydExcelInstructorAgeGrowth.class, m));
-                        ageGrowthHistories.add(MapUtil.map2Object(HydExcelInstructorAgeGrowthHistory.class, m));
-                    });
-                    break;
+            CompletableFuture<Void> ageStatsFuture = CompletableFuture.runAsync(() ->
+                            processSheet(sheetMapData.get("年龄统计明细表"),
+                                    HydExcelInstructorAgeStats.class,
+                                    HydExcelInstructorAgeStatsHistory.class,
+                                    instructorAgeStatsRepo,
+                                    ageStatsHistoryRepo),
+                    executor
+            );
+
+            CompletableFuture<Void> growthFuture = CompletableFuture.runAsync(() ->
+                            processSheet(sheetMapData.get("人数增长统计明细表"),
+                                    HydExcelInstructorAgeGrowth.class,
+                                    HydExcelInstructorAgeGrowthHistory.class,
+                                    instructorAgeGrowthRepo,
+                                    ageGrowthHistoryRepo),
+                    executor
+            );
+
+            // 3. 等待所有线程完成
+            CompletableFuture.allOf(summaryFuture, ageStatsFuture, growthFuture).get();
+            return true;
+        } catch (InterruptedException | ExecutionException e) {
+            // 异常时事务回滚
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Excel导入失败", e);
+        }
+    }
+
+    /**
+     * 通用处理单个sheet的方法：转换+分批保存
+     */
+    private <T, H> void processSheet(List<Map<String, Object>> dataList,
+                                     Class<T> mainClazz,
+                                     Class<H> historyClazz,
+                                     JpaRepository<T, Long> mainRepo,
+                                     JpaRepository<H, Long> historyRepo) {
+        if (dataList == null || dataList.isEmpty()) {
+            return;
+        }
+
+        int batchSize = 500; // 每批插入数量（根据数据库性能调整）
+        int totalSize = dataList.size();
+        List<T> mainBatch = new ArrayList<>(batchSize);
+        List<H> historyBatch = new ArrayList<>(batchSize);
+
+        for (int i = 0; i < totalSize; i++) {
+            Map<String, Object> dataMap = dataList.get(i);
+            T mainEntity = MapUtil.map2Object(mainClazz, dataMap);
+            H historyEntity = MapUtil.map2Object(historyClazz, dataMap);
+
+            mainBatch.add(mainEntity);
+            historyBatch.add(historyEntity);
+
+            if ((i + 1) % batchSize == 0 || i == totalSize - 1) {
+                mainRepo.saveAll(mainBatch);
+                historyRepo.saveAll(historyBatch);
+                // 清空批次列表释放内存
+                mainBatch.clear();
+                historyBatch.clear();
+                // 手动刷新（可选，避免内存堆积）
+                // entityManager.flush();
+                // entityManager.clear();
             }
-        });
-        // 批量保存
-        instructorInfoRepo.saveAll(infos);
-        infoHistoryRepo.saveAll(infoHistories);
-        instructorAgeStatsRepo.saveAll(ageStats);
-        ageStatsHistoryRepo.saveAll(ageStatsHistories);
-        instructorAgeGrowthRepo.saveAll(ageGrowths);
-        ageGrowthHistoryRepo.saveAll(ageGrowthHistories);
-        return true;
+        }
     }
 
     /**

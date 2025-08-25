@@ -8,6 +8,7 @@ import cn.wuhan.hyd.sports.repository.HydResultOrderStadiumHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultOrderStadiumRepo;
 import cn.wuhan.hyd.sports.req.HydResultOrderStadiumReq;
 import cn.wuhan.hyd.sports.service.IHydResultOrderStadiumService;
+import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 功能说明： 体育消费卷-场馆消费券订单金额Top5 服务实现 <br>
@@ -148,7 +150,15 @@ public class HydResultOrderStadiumServiceImpl extends HydBaseServiceImpl impleme
 
     @Override
     public List<Map<String, Object>> stadiumTop5(String year) {
-        return orderStadiumRepo.stadiumTop5(year);
+        List<Map<String, Object>> list = orderStadiumRepo.stadiumTop5(year);
+        // 排序：按 orderAmount 数值降序
+        return list.stream()
+                .sorted((m1, m2) -> {
+                    Integer amount1 = Integer.parseInt(MapUtils.getString(m1, "orderAmount"));
+                    Integer amount2 = Integer.parseInt(MapUtils.getString(m2, "orderAmount"));
+                    return amount2.compareTo(amount1); // 降序：大数在前
+                })
+                .collect(Collectors.toList());
     }
 
 

@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -38,6 +40,12 @@ public class HydYktController {
     public Response<Boolean> refresh() {
         yktService.syncResultData();
         return Response.ok(true);
+    }
+
+    // 每天凌晨 00:00 执行（即 12 点整）
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void dailyCalculation() {
+        yktService.syncResultData();
     }
 
     @ApiOperation("各区机构数量统计")
@@ -152,5 +160,14 @@ public class HydYktController {
             }
         }).filter(Objects::nonNull).collect(Collectors.toList());
         return Response.ok(result);
+    }
+
+    @ApiOperation("机构关联的所有场馆")
+    @AnonymousGetMapping("/stadiumMapWithOrder")
+    public Response<List<Map<String, Object>>> stadiumMapWithOrder(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(yktService.stadiumsByOrder());
     }
 }
