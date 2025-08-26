@@ -6,7 +6,7 @@ import cn.wuhan.hyd.framework.annotation.rest.AnonymousPostMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.framework.utils.ExcelUtils;
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydExcelPublicEvents;
+import cn.wuhan.hyd.sports.domain.HydExcelPublicEventsHistory;
 import cn.wuhan.hyd.sports.service.IHydExcelPublicEventsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +42,13 @@ public class HydPublicEventController {
 
     @Resource
     private IHydExcelPublicEventsService hydPublicEventsService;
+
+    @ApiOperation("手动刷新结果表")
+    @AnonymousGetMapping("/refresh")
+    public Response<Boolean> refresh() {
+        hydPublicEventsService.syncResultData();
+        return Response.ok(true);
+    }
 
     /**
      * 下载指定模板文件
@@ -124,7 +131,7 @@ public class HydPublicEventController {
 
     @ApiOperation("大众赛事-体育赛事信息表-分页查询")
     @AnonymousGetMapping("/list")
-    public Response<PageResult<HydExcelPublicEvents>> eventsList(
+    public Response<PageResult<HydExcelPublicEventsHistory>> eventsList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
             @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
         return Response.ok(hydPublicEventsService.queryAll(page, size));
@@ -132,15 +139,15 @@ public class HydPublicEventController {
 
     @ApiOperation("大众赛事-体育赛事信息表-根据ID查询详情")
     @AnonymousGetMapping("/detail/{id}")
-    public Response<HydExcelPublicEvents> eventsDetail(
+    public Response<HydExcelPublicEventsHistory> eventsDetail(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
         return Response.ok(hydPublicEventsService.findById(id));
     }
 
     @ApiOperation("大众赛事-体育赛事信息表-增加")
     @AnonymousPostMapping("/add")
-    public ResponseEntity<HydExcelPublicEvents> eventsAdd(
-            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydExcelPublicEvents events) {
+    public ResponseEntity<HydExcelPublicEventsHistory> eventsAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydExcelPublicEventsHistory events) {
         return ResponseEntity.ok(hydPublicEventsService.save(events));
     }
 
@@ -158,7 +165,7 @@ public class HydPublicEventController {
 
     @ApiOperation("大众赛事-体育赛事信息表-更新")
     @AnonymousPostMapping("/update")
-    public Response<HydExcelPublicEvents> eventsUpdate(@RequestBody HydExcelPublicEvents events) {
+    public Response<HydExcelPublicEventsHistory> eventsUpdate(@RequestBody HydExcelPublicEventsHistory events) {
         return Response.ok(hydPublicEventsService.update(events));
     }
 

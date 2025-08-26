@@ -13,6 +13,8 @@ import java.util.Map;
  */
 public interface IHydExcelPublicEventsService {
 
+    void syncResultData();
+
     /**
      * 分页查询
      *
@@ -20,14 +22,14 @@ public interface IHydExcelPublicEventsService {
      * @param size 每页条数
      * @return 实体对象列表
      */
-    PageResult<HydExcelPublicEvents> queryAll(int page, int size);
+    PageResult<HydExcelPublicEventsHistory> queryAll(int page, int size);
 
     /**
      * 查询全部
      *
      * @return 实体对象列表
      */
-    List<HydExcelPublicEvents> queryAll();
+    List<HydExcelPublicEventsHistory> queryAll();
 
 
     /**
@@ -36,7 +38,7 @@ public interface IHydExcelPublicEventsService {
      * @param publicEvents 实体对象
      * @return 保存后的实体对象
      */
-    HydExcelPublicEvents save(HydExcelPublicEvents publicEvents);
+    HydExcelPublicEventsHistory save(HydExcelPublicEventsHistory publicEvents);
 
     /**
      * 根据ID删除数据
@@ -51,7 +53,7 @@ public interface IHydExcelPublicEventsService {
      * @param publicEvents 实体对象
      * @return 更新后的实体对象
      */
-    HydExcelPublicEvents update(HydExcelPublicEvents publicEvents);
+    HydExcelPublicEventsHistory update(HydExcelPublicEventsHistory publicEvents);
 
     /**
      * 根据ID查询数据
@@ -59,7 +61,7 @@ public interface IHydExcelPublicEventsService {
      * @param id 主键ID
      * @return 实体对象
      */
-    HydExcelPublicEvents findById(Long id);
+    HydExcelPublicEventsHistory findById(Long id);
 
 
     // ------------------------- 大众赛事-总览信息表操作 -------------------------
@@ -133,8 +135,6 @@ public interface IHydExcelPublicEventsService {
     List<Map<String, Object>> currentMouthEvents(String year);
 
     List<Map<String, Object>> districtCountByYear(String year);
-
-    int batchInsertWithJdbc(List<HydExcelPublicEvents> eventsList, int batchSize);
 
     int batchInsertHistoryWithJdbc(List<HydExcelPublicEventsHistory> eventsList, int batchSize);
 }

@@ -5,10 +5,13 @@ import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.resp.*;
 import cn.wuhan.hyd.sports.service.IHydYktService;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -168,6 +173,22 @@ public class HydYktController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(yktService.stadiumsByOrder());
+        //return Response.ok(yktService.stadiumsByOrder());
+        String fileName = "stadiumData.json";
+        ClassPathResource resource = new ClassPathResource(fileName);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try (InputStream inputStream = resource.getInputStream()) {
+            if (!resource.exists()) {
+                return Response.fail("文件未找到");
+            }
+            List<Map<String, Object>> jsonMapList = objectMapper.readValue(inputStream,
+                    new TypeReference<List<Map<String, Object>>>() {
+                    });
+            return Response.ok(jsonMapList);
+
+        } catch (IOException e) {
+            // 处理文件读取或解析异常
+            throw new RuntimeException("读取JSON文件失败: " + fileName, e);
+        }
     }
 }

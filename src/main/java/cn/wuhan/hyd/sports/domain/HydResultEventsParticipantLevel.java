@@ -29,6 +29,11 @@ public class HydResultEventsParticipantLevel implements Serializable {
     @ApiModelProperty(value = "主键ID", hidden = true)
     private Long id;
 
+    @Column(name = "statisticalYear")
+    @ExcelField(name = "统计年度")
+    @ApiModelProperty(value = "统计年度")
+    private Integer statisticalYear;
+
     @Column(name = "participantLevel")
     @ExcelField(name = "人数人档级别")
     @ApiModelProperty(value = "人数人档级别")

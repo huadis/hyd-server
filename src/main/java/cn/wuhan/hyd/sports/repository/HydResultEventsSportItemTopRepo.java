@@ -15,4 +15,7 @@ import java.util.Map;
  */
 @Repository
 public interface HydResultEventsSportItemTopRepo extends JpaRepository<HydResultEventsSportItemTop, Long> {
+
+    @Query(value = "SELECT * FROM hyd_result_events_sport_item_top WHERE statisticalYear = ?1 order by createdTime", nativeQuery = true)
+    List<Map<String, Object>> sportItemTop5(String year);
 }

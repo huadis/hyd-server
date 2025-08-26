@@ -29,6 +29,11 @@ public class HydResultEventsSportItemTop implements Serializable {
     @ApiModelProperty(value = "主键ID", hidden = true)
     private Long id;
 
+    @Column(name = "statisticalYear")
+    @ExcelField(name = "统计年度")
+    @ApiModelProperty(value = "统计年度")
+    private Integer statisticalYear;
+
     @Column(name = "sportItem")
     @ExcelField(name = "项目")
     @ApiModelProperty(value = "项目")

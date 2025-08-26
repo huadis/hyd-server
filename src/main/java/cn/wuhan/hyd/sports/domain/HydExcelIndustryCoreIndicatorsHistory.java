@@ -55,20 +55,20 @@ public class HydExcelIndustryCoreIndicatorsHistory implements Serializable {
     @ApiModelProperty(value = "从业人员数量（万）")
     private BigDecimal employeeCount;
 
+    @Column(name = "sportsConsumptionTotalScale")
+    @ExcelField(name = "体育消费总规模（万）")
+    @ApiModelProperty(value = "体育消费总规模（万）")
+    private BigDecimal sportsConsumptionTotalScale;
+
     @Column(name = "perCapitaSportsConsumption")
     @ExcelField(name = "人均体育消费（元）")
     @ApiModelProperty(value = "人均体育消费（元）")
-    private Integer perCapitaSportsConsumption;
+    private BigDecimal perCapitaSportsConsumption;
 
-    @Column(name = "perCapitaSportsArea")
-    @ExcelField(name = "人均体育场地面积（㎡）")
-    @ApiModelProperty(value = "人均体育场地面积（㎡）")
-    private BigDecimal perCapitaSportsArea;
-
-    @Column(name = "majorProjectContract")
-    @ExcelField(name = "重大项目签约（亿）")
-    @ApiModelProperty(value = "重大项目签约（亿）")
-    private BigDecimal majorProjectContract;
+    @Column(name = "otherSportsServicesRevenueGrowthRate")
+    @ExcelField(name = "体育其他服务业营收增速")
+    @ApiModelProperty(value = "体育其他服务业营收增速")
+    private BigDecimal otherSportsServicesRevenueGrowthRate;
 
     @Column(name = "remark")
     @ExcelField(name = "备注")

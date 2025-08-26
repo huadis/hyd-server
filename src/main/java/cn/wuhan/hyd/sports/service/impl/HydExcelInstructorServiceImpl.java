@@ -5,6 +5,8 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydExcelInstructorService;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -297,6 +300,37 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
     @Override
     public List<Map<String, Object>> ageGrowthStat() {
         return instructorAgeGrowthRepo.ageGrowthStat();
+    }
+
+    /**
+     * 人数增长统计
+     */
+    @Override
+    public Map<String, Object> overview() {
+        Long totalCount = instructorInfoRepo.countAll();
+        Long newCount = instructorInfoRepo.newCount();
+        List<Map<String, Object>> list = instructorInfoRepo.genderStat();
+        Map<String, Object> result = new HashMap<>();
+        result.put("total", totalCount);
+        result.put("newCount", newCount);
+        int man = 0;
+        int woman = 0;
+        for (Map<String, Object> map : list) {
+            if (map.get("gender") != null) {
+                String gender = MapUtils.getString(map, "gender");
+                if (StringUtils.isNotBlank(gender) && StringUtils.equals(gender, "男")) {
+                    man = MapUtils.getInteger(map, "personCount", 0);
+                } else if (StringUtils.isNotBlank(gender) && StringUtils.equals(gender, "女")) {
+                    woman = MapUtils.getInteger(map, "personCount", 0);
+                }
+            }
+        }
+        int total = man + woman;
+        // 计算百分比并四舍五入为整数
+        int manPercent = (int) Math.round(((double) man / total) * 100);
+        int womanPercent = (int) Math.round(((double) woman / total) * 100);
+        result.put("男:女", manPercent + ":" + womanPercent);
+        return result;
     }
 
 

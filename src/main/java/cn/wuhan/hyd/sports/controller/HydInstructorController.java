@@ -318,4 +318,16 @@ public class HydInstructorController {
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
         return Response.ok(hydInstructorService.ageGrowthStat());
     }
+
+    /**
+     * 总览-首页用
+     */
+    @ApiOperation("总览-首页用")
+    @AnonymousGetMapping("/overview")
+    public Response<Map<String, Object>> overview(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(hydInstructorService.overview());
+    }
 }

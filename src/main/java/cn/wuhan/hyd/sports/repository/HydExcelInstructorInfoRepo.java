@@ -60,4 +60,40 @@ public interface HydExcelInstructorInfoRepo extends JpaRepository<HydExcelInstru
             "hyd_excel_instructor_info GROUP BY region ORDER BY instructorCount DESC", nativeQuery = true)
     List<Map<String, Object>> regionInstructorStat();
 
+    /**
+     * 总人数
+     */
+    @Query(value = "SELECT " +
+            "COUNT(id) AS count " +
+            " FROM " +
+            "hyd_excel_instructor_info ", nativeQuery = true)
+    Long countAll();
+
+    /**
+     * 新增人数
+     */
+    @Query(value = "SELECT " +
+            "COUNT(id) AS count " +
+            " FROM " +
+            "hyd_excel_instructor_info where certifyTime is not null and certifyTime != '' and STR_TO_DATE(certifyTime, '%Y-%m-%d') BETWEEN '2025-01-01' AND '2025-12-31'", nativeQuery = true)
+    Long newCount();
+
+    /**
+     * 指导项目top15
+     */
+    @Query(value = "SELECT " +
+            "serviceProject, " +
+            "COUNT(id) AS personCount " +
+            " FROM " +
+            "hyd_excel_instructor_info GROUP BY serviceProject ORDER BY personCount DESC", nativeQuery = true)
+    List<Map<String, Object>> serviceProject();
+
+    @Query(value = "SELECT " +
+            "serviceProject, " +
+            "COUNT(id) AS personCount " +
+            " FROM " +
+            "hyd_excel_instructor_info where certifyTime is not null and certifyTime != '' and STR_TO_DATE(certifyTime, '%Y-%m-%d') BETWEEN '2025-01-01' AND '2025-12-31' GROUP BY serviceProject ORDER BY personCount DESC", nativeQuery = true)
+    List<Map<String, Object>> serviceProjectWithCurrentYear();
+
+
 }
