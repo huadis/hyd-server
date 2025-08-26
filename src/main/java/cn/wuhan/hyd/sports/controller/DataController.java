@@ -96,6 +96,8 @@ public class DataController {
     private IHydOriginTrainingCourseService trainingCourseService;
     @Resource
     private IHydYktService yktService;
+    @Resource
+    private IHydExcelPublicEventsService publicEventsService;
 
     private final Logger logger = LoggerFactory.getLogger(ImportController.class);
 
@@ -1746,4 +1748,167 @@ public class DataController {
         return Response.ok(yktService.update(yktUserSexStat));
     }
 
+
+    @ApiOperation("大众赛事-总览信息表-分页查询")
+    @AnonymousGetMapping("/eventsOverviewStat/list")
+    public Response<PageResult<HydResultEventsOverviewStat>> eventsOverviewStatList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(publicEventsService.queryAllOverview(page, size));
+    }
+
+    @ApiOperation("大众赛事-总览信息表-根据ID查询详情")
+    @AnonymousGetMapping("/eventsOverviewStat/detail/{id}")
+    public Response<HydResultEventsOverviewStat> eventsOverviewStatUser(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(publicEventsService.findOverviewById(id));
+    }
+
+    @ApiOperation("大众赛事-总览信息表-增加")
+    @AnonymousPostMapping("/eventsOverviewStat/add")
+    public ResponseEntity<HydResultEventsOverviewStat> eventsOverviewStatAdd(
+            @ApiParam(value = "大众赛事-总览信息表", required = true) @Valid @RequestBody HydResultEventsOverviewStat eventsOverviewStat) {
+        return ResponseEntity.ok(publicEventsService.saveOverview(eventsOverviewStat));
+    }
+
+    @ApiOperation("大众赛事-总览信息表-删除")
+    @AnonymousDeleteMapping("/eventsOverviewStat/delete/{id}")
+    public Response<Boolean> eventsOverviewStatDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            publicEventsService.deleteOverviewById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("大众赛事-总览信息表-更新")
+    @AnonymousPostMapping("/eventsOverviewStat/update")
+    public Response<HydResultEventsOverviewStat> eventsOverviewStatUpdate(@RequestBody HydResultEventsOverviewStat eventsOverviewStat) {
+        return Response.ok(publicEventsService.updateOverview(eventsOverviewStat));
+    }
+
+
+    @ApiOperation("大众赛事-各月办赛数据表-分页查询")
+    @AnonymousGetMapping("/eventsMonthCountStat/list")
+    public Response<PageResult<HydResultEventsMonthCountStat>> eventsMonthCountStatList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(publicEventsService.queryAllMonthCount(page, size));
+    }
+
+    @ApiOperation("大众赛事-各月办赛数据表-根据ID查询详情")
+    @AnonymousGetMapping("/eventsMonthCountStat/detail/{id}")
+    public Response<HydResultEventsMonthCountStat> eventsMonthCountStatUser(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(publicEventsService.findMonthCountById(id));
+    }
+
+    @ApiOperation("大众赛事-各月办赛数据表-增加")
+    @AnonymousPostMapping("/eventsMonthCountStat/add")
+    public ResponseEntity<HydResultEventsMonthCountStat> eventsMonthCountStatAdd(
+            @ApiParam(value = "大众赛事-各月办赛数据表", required = true) @Valid @RequestBody HydResultEventsMonthCountStat eventsMonthCountStat) {
+        return ResponseEntity.ok(publicEventsService.saveMonthCount(eventsMonthCountStat));
+    }
+
+    @ApiOperation("大众赛事-各月办赛数据表-删除")
+    @AnonymousDeleteMapping("/eventsMonthCountStat/delete/{id}")
+    public Response<Boolean> eventsMonthCountStatDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            publicEventsService.deleteMonthCountById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("大众赛事-各月办赛数据表-更新")
+    @AnonymousPostMapping("/eventsMonthCountStat/update")
+    public Response<HydResultEventsMonthCountStat> eventsMonthCountStatUpdate(@RequestBody HydResultEventsMonthCountStat eventsMonthCountStat) {
+        return Response.ok(publicEventsService.updateMonthCount(eventsMonthCountStat));
+    }
+
+
+    @ApiOperation("大众赛事-赛事数量TOP5项目表-分页查询")
+    @AnonymousGetMapping("/eventsSportItemTop/list")
+    public Response<PageResult<HydResultEventsSportItemTop>> eventsSportItemTopList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(publicEventsService.queryAllSportItemTop(page, size));
+    }
+
+    @ApiOperation("大众赛事-赛事数量TOP5项目表-根据ID查询详情")
+    @AnonymousGetMapping("/eventsSportItemTop/detail/{id}")
+    public Response<HydResultEventsSportItemTop> eventsSportItemTopUser(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(publicEventsService.findSportItemTopById(id));
+    }
+
+    @ApiOperation("大众赛事-赛事数量TOP5项目表-增加")
+    @AnonymousPostMapping("/eventsSportItemTop/add")
+    public ResponseEntity<HydResultEventsSportItemTop> eventsSportItemTopAdd(
+            @ApiParam(value = "大众赛事-赛事数量TOP5项目表", required = true) @Valid @RequestBody HydResultEventsSportItemTop eventsSportItemTop) {
+        return ResponseEntity.ok(publicEventsService.saveSportItemTop(eventsSportItemTop));
+    }
+
+    @ApiOperation("大众赛事-赛事数量TOP5项目表-删除")
+    @AnonymousDeleteMapping("/eventsSportItemTop/delete/{id}")
+    public Response<Boolean> eventsSportItemTopDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            publicEventsService.deleteSportItemTopById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("大众赛事-赛事数量TOP5项目表-更新")
+    @AnonymousPostMapping("/eventsSportItemTop/update")
+    public Response<HydResultEventsSportItemTop> eventsSportItemTopUpdate(@RequestBody HydResultEventsSportItemTop eventsSportItemTop) {
+        return Response.ok(publicEventsService.updateSportItemTop(eventsSportItemTop));
+    }
+
+
+    @ApiOperation("大众赛事-参赛人数人档表-分页查询")
+    @AnonymousGetMapping("/eventsParticipantLevel/list")
+    public Response<PageResult<HydResultEventsParticipantLevel>> eventsParticipantLevelList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(publicEventsService.queryAllParticipantLevel(page, size));
+    }
+
+    @ApiOperation("大众赛事-参赛人数人档表-根据ID查询详情")
+    @AnonymousGetMapping("/eventsParticipantLevel/detail/{id}")
+    public Response<HydResultEventsParticipantLevel> eventsParticipantLevelUser(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(publicEventsService.findParticipantLevelById(id));
+    }
+
+    @ApiOperation("大众赛事-参赛人数人档表-增加")
+    @AnonymousPostMapping("/eventsParticipantLevel/add")
+    public ResponseEntity<HydResultEventsParticipantLevel> eventsParticipantLevelAdd(
+            @ApiParam(value = "大众赛事-参赛人数人档表", required = true) @Valid @RequestBody HydResultEventsParticipantLevel eventsParticipantLevel) {
+        return ResponseEntity.ok(publicEventsService.saveParticipantLevel(eventsParticipantLevel));
+    }
+
+    @ApiOperation("大众赛事-参赛人数人档表-删除")
+    @AnonymousDeleteMapping("/eventsParticipantLevel/delete/{id}")
+    public Response<Boolean> eventsParticipantLevelDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            publicEventsService.deleteParticipantLevelById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("大众赛事-参赛人数人档表-更新")
+    @AnonymousPostMapping("/eventsParticipantLevel/update")
+    public Response<HydResultEventsParticipantLevel> eventsParticipantLevelUpdate(@RequestBody HydResultEventsParticipantLevel eventsParticipantLevel) {
+        return Response.ok(publicEventsService.updateParticipantLevel(eventsParticipantLevel));
+    }
 }

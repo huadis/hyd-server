@@ -3,10 +3,8 @@ package cn.wuhan.hyd.sports.service.impl;
 import cn.wuhan.hyd.framework.utils.DateUtil;
 import cn.wuhan.hyd.framework.utils.MapUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydExcelPublicEvents;
-import cn.wuhan.hyd.sports.domain.HydExcelPublicEventsHistory;
-import cn.wuhan.hyd.sports.repository.HydExcelPublicEventsHistoryRepo;
-import cn.wuhan.hyd.sports.repository.HydExcelPublicEventsRepo;
+import cn.wuhan.hyd.sports.domain.*;
+import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydExcelPublicEventsService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.domain.Page;
@@ -37,6 +35,16 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     private HydExcelPublicEventsRepo publicEventsRepo;
     @Resource
     private HydExcelPublicEventsHistoryRepo publicEventsHistoryRepo;
+    @Resource
+    private HydResultEventsOverviewStatRepo overviewStatRepo;
+
+    @Resource
+    private HydResultEventsMonthCountStatRepo monthCountStatRepo;
+
+    @Resource
+    private HydResultEventsSportItemTopRepo sportItemTopRepo;
+    @Resource
+    private HydResultEventsParticipantLevelRepo participantLevelRepo;
     @Resource
     private JdbcTemplate jdbcTemplate;
 
@@ -100,6 +108,153 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
             }
         });
         return true;
+    }
+
+    // ------------------------- 大众赛事-总览信息表操作 -------------------------
+    @Override
+    public PageResult<HydResultEventsOverviewStat> queryAllOverview(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<HydResultEventsOverviewStat> pageResult = overviewStatRepo.findAll(pageable);
+        PageResult<HydResultEventsOverviewStat> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return result;
+    }
+
+    @Override
+    public List<HydResultEventsOverviewStat> queryAllOverview() {
+        return overviewStatRepo.findAll();
+    }
+
+    @Override
+    public HydResultEventsOverviewStat saveOverview(HydResultEventsOverviewStat overviewStat) {
+        return overviewStatRepo.save(overviewStat);
+    }
+
+    @Override
+    public void deleteOverviewById(Long id) {
+        overviewStatRepo.deleteById(id);
+    }
+
+    @Override
+    public HydResultEventsOverviewStat updateOverview(HydResultEventsOverviewStat overviewStat) {
+        return overviewStatRepo.save(overviewStat);
+    }
+
+    @Override
+    public HydResultEventsOverviewStat findOverviewById(Long id) {
+        return overviewStatRepo.findById(id).orElse(null);
+    }
+
+
+    // ------------------------- 大众赛事-各月办赛数据表操作 -------------------------
+    @Override
+    public PageResult<HydResultEventsMonthCountStat> queryAllMonthCount(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<HydResultEventsMonthCountStat> pageResult = monthCountStatRepo.findAll(pageable);
+        PageResult<HydResultEventsMonthCountStat> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return result;
+    }
+
+    @Override
+    public List<HydResultEventsMonthCountStat> queryAllMonthCount() {
+        return monthCountStatRepo.findAll();
+    }
+
+    @Override
+    public HydResultEventsMonthCountStat saveMonthCount(HydResultEventsMonthCountStat monthCountStat) {
+        return monthCountStatRepo.save(monthCountStat);
+    }
+
+    @Override
+    public void deleteMonthCountById(Long id) {
+        monthCountStatRepo.deleteById(id);
+    }
+
+    @Override
+    public HydResultEventsMonthCountStat updateMonthCount(HydResultEventsMonthCountStat monthCountStat) {
+        return monthCountStatRepo.save(monthCountStat);
+    }
+
+    @Override
+    public HydResultEventsMonthCountStat findMonthCountById(Long id) {
+        return monthCountStatRepo.findById(id).orElse(null);
+    }
+
+
+    // ------------------------- 大众赛事-赛事数量TOP5项目表操作 -------------------------
+    @Override
+    public PageResult<HydResultEventsSportItemTop> queryAllSportItemTop(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<HydResultEventsSportItemTop> pageResult = sportItemTopRepo.findAll(pageable);
+        PageResult<HydResultEventsSportItemTop> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return result;
+    }
+
+    @Override
+    public List<HydResultEventsSportItemTop> queryAllSportItemTop() {
+        return sportItemTopRepo.findAll();
+    }
+
+    @Override
+    public HydResultEventsSportItemTop saveSportItemTop(HydResultEventsSportItemTop sportItemTop) {
+        return sportItemTopRepo.save(sportItemTop);
+    }
+
+    @Override
+    public void deleteSportItemTopById(Long id) {
+        sportItemTopRepo.deleteById(id);
+    }
+
+    @Override
+    public HydResultEventsSportItemTop updateSportItemTop(HydResultEventsSportItemTop sportItemTop) {
+        return sportItemTopRepo.save(sportItemTop);
+    }
+
+    @Override
+    public HydResultEventsSportItemTop findSportItemTopById(Long id) {
+        return sportItemTopRepo.findById(id).orElse(null);
+    }
+
+
+    // ------------------------- 大众赛事-参赛人数人档表操作 -------------------------
+    @Override
+    public PageResult<HydResultEventsParticipantLevel> queryAllParticipantLevel(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<HydResultEventsParticipantLevel> pageResult = participantLevelRepo.findAll(pageable);
+        PageResult<HydResultEventsParticipantLevel> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return result;
+    }
+
+    @Override
+    public List<HydResultEventsParticipantLevel> queryAllParticipantLevel() {
+        return participantLevelRepo.findAll();
+    }
+
+    @Override
+    public HydResultEventsParticipantLevel saveParticipantLevel(HydResultEventsParticipantLevel participantLevel) {
+        return participantLevelRepo.save(participantLevel);
+    }
+
+    @Override
+    public void deleteParticipantLevelById(Long id) {
+        participantLevelRepo.deleteById(id);
+    }
+
+    @Override
+    public HydResultEventsParticipantLevel updateParticipantLevel(HydResultEventsParticipantLevel participantLevel) {
+        return participantLevelRepo.save(participantLevel);
+    }
+
+    @Override
+    public HydResultEventsParticipantLevel findParticipantLevelById(Long id) {
+        return participantLevelRepo.findById(id).orElse(null);
     }
 
     @Override

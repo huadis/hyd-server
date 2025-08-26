@@ -1,8 +1,7 @@
 package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydExcelPublicEvents;
-import cn.wuhan.hyd.sports.domain.HydExcelPublicEventsHistory;
+import cn.wuhan.hyd.sports.domain.*;
 
 import java.util.List;
 import java.util.Map;
@@ -61,6 +60,62 @@ public interface IHydExcelPublicEventsService {
      * @return 实体对象
      */
     HydExcelPublicEvents findById(Long id);
+
+
+    // ------------------------- 大众赛事-总览信息表操作 -------------------------
+    PageResult<HydResultEventsOverviewStat> queryAllOverview(int page, int size);
+
+    List<HydResultEventsOverviewStat> queryAllOverview();
+
+    HydResultEventsOverviewStat saveOverview(HydResultEventsOverviewStat overviewStat);
+
+    void deleteOverviewById(Long id);
+
+    HydResultEventsOverviewStat updateOverview(HydResultEventsOverviewStat overviewStat);
+
+    HydResultEventsOverviewStat findOverviewById(Long id);
+
+
+    // ------------------------- 大众赛事-各月办赛数据表操作 -------------------------
+    PageResult<HydResultEventsMonthCountStat> queryAllMonthCount(int page, int size);
+
+    List<HydResultEventsMonthCountStat> queryAllMonthCount();
+
+    HydResultEventsMonthCountStat saveMonthCount(HydResultEventsMonthCountStat monthCountStat);
+
+    void deleteMonthCountById(Long id);
+
+    HydResultEventsMonthCountStat updateMonthCount(HydResultEventsMonthCountStat monthCountStat);
+
+    HydResultEventsMonthCountStat findMonthCountById(Long id);
+
+
+    // ------------------------- 大众赛事-赛事数量TOP5项目表操作 -------------------------
+    PageResult<HydResultEventsSportItemTop> queryAllSportItemTop(int page, int size);
+
+    List<HydResultEventsSportItemTop> queryAllSportItemTop();
+
+    HydResultEventsSportItemTop saveSportItemTop(HydResultEventsSportItemTop sportItemTop);
+
+    void deleteSportItemTopById(Long id);
+
+    HydResultEventsSportItemTop updateSportItemTop(HydResultEventsSportItemTop sportItemTop);
+
+    HydResultEventsSportItemTop findSportItemTopById(Long id);
+
+
+    // ------------------------- 大众赛事-参赛人数人档表操作 -------------------------
+    PageResult<HydResultEventsParticipantLevel> queryAllParticipantLevel(int page, int size);
+
+    List<HydResultEventsParticipantLevel> queryAllParticipantLevel();
+
+    HydResultEventsParticipantLevel saveParticipantLevel(HydResultEventsParticipantLevel participantLevel);
+
+    void deleteParticipantLevelById(Long id);
+
+    HydResultEventsParticipantLevel updateParticipantLevel(HydResultEventsParticipantLevel participantLevel);
+
+    HydResultEventsParticipantLevel findParticipantLevelById(Long id);
 
     boolean importExcel(Map<String, List<Map<String, Object>>> sheetMapData);
 
