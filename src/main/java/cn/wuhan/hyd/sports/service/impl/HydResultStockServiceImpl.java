@@ -104,11 +104,6 @@ public class HydResultStockServiceImpl extends HydBaseServiceImpl implements IHy
         if (stocks == null || stocks.isEmpty()) {
             throw new IllegalArgumentException("导入的数据列表不能为空");
         }
-
-        // 限制批量导入的最大数量，防止过大数据量导致内存溢出
-        if (stocks.size() > 1000) {
-            throw new IllegalArgumentException("单次导入最大支持1000条数据");
-        }
         String batchNo = UUIDUtil.getBatchNo();
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydResultStock> queryList = convert(logger, stocks, HydResultStock.class, batchNo);

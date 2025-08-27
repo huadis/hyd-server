@@ -92,11 +92,6 @@ public class HydResultOrderMonthServiceImpl extends HydBaseServiceImpl implement
         if (orderMonths == null || orderMonths.isEmpty()) {
             throw new IllegalArgumentException("导入的数据列表不能为空");
         }
-
-        // 限制批量导入的最大数量，防止过大数据量导致内存溢出
-        if (orderMonths.size() > 1000) {
-            throw new IllegalArgumentException("单次导入最大支持1000条数据");
-        }
         String batchNo = UUIDUtil.getBatchNo();
 
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止

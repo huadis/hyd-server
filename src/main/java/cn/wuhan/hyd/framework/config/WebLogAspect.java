@@ -25,7 +25,6 @@ import java.util.Arrays;
 @Component
 public class WebLogAspect {
 
-
     /**
      * 获取日志对象，构造函数传入当前类，查找日志方便定位
      */
@@ -55,7 +54,9 @@ public class WebLogAspect {
             log.info("RequestURL      :  {}", request.getRequestURL().toString());
             log.info("RequestMethod   :  {}", request.getMethod());
             log.info("RequestIP       :  {}", request.getRemoteAddr());
-            log.info("RequestParam    :  {}", Arrays.toString(joinPoint.getArgs()));
+            if (joinPoint.getArgs().length <= 10) {
+                log.info("RequestParam    :  {}", Arrays.toString(joinPoint.getArgs()));
+            }
         }
     }
 
@@ -63,8 +64,7 @@ public class WebLogAspect {
     @AfterReturning(returning = "result", pointcut = "webLog()")
     public void doAfterReturning(Object result) {
         // 打印响应信息
-        log.info("Response Result : {}", result);
-        log.info("Total toast     : {} ms", System.currentTimeMillis() - startTime.get());
+        log.info("RequestToast       : {} ms", System.currentTimeMillis() - startTime.get());
         log.info("========================================== 结束请求 ==========================================\n");
 
         // 清除 ThreadLocal，避免内存泄漏

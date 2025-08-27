@@ -103,11 +103,6 @@ public class HydResultStadiumDistrictServiceImpl extends HydBaseServiceImpl impl
         if (stadiumDistricts == null || stadiumDistricts.isEmpty()) {
             throw new IllegalArgumentException("导入的数据列表不能为空");
         }
-
-        // 限制批量导入的最大数量，防止过大数据量导致内存溢出
-        if (stadiumDistricts.size() > 1000) {
-            throw new IllegalArgumentException("单次导入最大支持1000条数据");
-        }
         String batchNo = UUIDUtil.getBatchNo();
 
         List<HydResultStadiumDistrict> queryList = new ArrayList<>();

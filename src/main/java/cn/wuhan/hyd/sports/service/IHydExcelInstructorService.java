@@ -190,4 +190,6 @@ public interface IHydExcelInstructorService {
     List<Map<String, Object>> ageGrowthStat();
 
     Map<String, Object> overview();
+
+    List<Map<String, Object>> serviceProject();
 }

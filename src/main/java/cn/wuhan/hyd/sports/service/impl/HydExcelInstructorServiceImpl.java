@@ -333,5 +333,36 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
         return result;
     }
 
-
+    @Override
+    public List<Map<String, Object>> serviceProject() {
+        List<Map<String, Object>> list = instructorInfoRepo.serviceProject();
+        List<Map<String, Object>> currentYearList = instructorInfoRepo.serviceProjectWithCurrentYear();
+        Map<String, Map<String, Integer>> resultMap = new HashMap<>();
+        for (Map<String, Object> tmpMap : list) {
+            String serviceProject = MapUtils.getString(tmpMap, "serviceProject");
+            int personCount = MapUtils.getInteger(tmpMap, "personCount");
+            Map<String, Integer> serviceProjectMap = new HashMap<>();
+            serviceProjectMap.put("total", personCount);
+            serviceProjectMap.put("newCount", 0);
+            resultMap.put(serviceProject, serviceProjectMap);
+        }
+        for (Map<String, Object> tmpMap : currentYearList) {
+            String serviceProject = MapUtils.getString(tmpMap, "serviceProject");
+            int personCount = MapUtils.getInteger(tmpMap, "personCount", 0);
+            Map<String, Integer> serviceProjectMap = resultMap.get(serviceProject);
+            if (serviceProjectMap == null) {
+                serviceProjectMap = new HashMap<>();
+            }
+            serviceProjectMap.put("newCount", personCount);
+        }
+        List<Map<String, Object>> result = new ArrayList<>();
+        resultMap.forEach((k, v) -> {
+            Map<String, Object> tmpMap = new HashMap<>();
+            tmpMap.put("serviceProject", k);
+            tmpMap.put("totalPersonCount", v.get("total"));
+            tmpMap.put("newPersonCount", v.get("newCount"));
+            result.add(tmpMap);
+        });
+        return result;
+    }
 }

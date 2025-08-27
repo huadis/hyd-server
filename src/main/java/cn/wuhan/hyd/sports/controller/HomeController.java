@@ -9,6 +9,7 @@ import cn.wuhan.hyd.sports.service.IHydResultStadiumDistrictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,10 +47,22 @@ public class HomeController {
         List<Map<String, Object>> list1 = stadiumService.stadiumCountByDistrict(year);
         List<HydResultStadiumDistrict> list2 = stadiumDistrictService.countStadiumDistrict(year);
         List<Map<String, Object>> list3 = publicEventsService.districtCountByYear(year);
+        Integer tenantCount = 0;
+        for (Map<String, Object> map : list1) {
+            tenantCount += MapUtils.getInteger(map, "num", 0);
+        }
+        int stadiumCount = 0;
+        for (HydResultStadiumDistrict district : list2) {
+            stadiumCount += Integer.parseInt(district.getStadiumNum());
+        }
+        Integer orgCount = 0;
+        for (Map<String, Object> map : list3) {
+            orgCount += MapUtils.getInteger(map, "num", 0);
+        }
         Map<String, Integer> result = new HashMap<>();
-        result.put("tenantCount", list1.size());
-        result.put("stadiumCount", list2.size());
-        result.put("eventCount", list3.size());
+        result.put("tenantCount", tenantCount);
+        result.put("stadiumCount", stadiumCount);
+        result.put("eventCount", orgCount);
         result.put("orgCount", 70);
         return Response.ok(result);
     }
