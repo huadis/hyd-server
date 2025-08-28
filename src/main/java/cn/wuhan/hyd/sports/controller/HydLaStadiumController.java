@@ -7,6 +7,7 @@ import cn.wuhan.hyd.sports.domain.HydOriginStadium;
 import cn.wuhan.hyd.sports.service.IHydOriginLaStadiumService;
 import cn.wuhan.hyd.sports.service.IHydOriginStadiumItemService;
 import cn.wuhan.hyd.sports.service.IHydOriginStadiumService;
+import cn.wuhan.hyd.sports.service.IHydResultLaStadiumStatService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -39,6 +40,16 @@ public class HydLaStadiumController {
     @Resource
     private IHydOriginLaStadiumService laStadiumService;
 
+    @Resource
+    private IHydResultLaStadiumStatService laStadiumStatService;
+
+    @ApiOperation("手动刷新结果表")
+    @AnonymousGetMapping("/refresh")
+    public Response<Boolean> refresh() {
+        laStadiumStatService.syncResultData();
+        return Response.ok(true);
+    }
+
     /**
      * 所有场馆信息
      */
@@ -66,7 +77,7 @@ public class HydLaStadiumController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(stadiumService.stadiumCountByDistrict(year));
+        return Response.ok(laStadiumStatService.stadiumCountByDistrict(year));
     }
 
     /**
@@ -78,7 +89,7 @@ public class HydLaStadiumController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(stadiumItemService.itemCountTop10BySportName(year));
+        return Response.ok(laStadiumStatService.itemCountTop10BySportName(year));
     }
 
     /**
@@ -90,6 +101,6 @@ public class HydLaStadiumController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(stadiumItemService.itemCountBySportName(year));
+        return Response.ok(laStadiumStatService.itemCountBySportName(year));
     }
 }

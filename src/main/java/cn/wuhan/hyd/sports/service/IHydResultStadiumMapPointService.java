@@ -1,7 +1,7 @@
 package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydResultStadiumMapPoint;
+import cn.wuhan.hyd.sports.domain.HydResultStadiumMapPointHistory;
 import cn.wuhan.hyd.sports.req.HydResultStadiumMapPointReq;
 
 import java.util.List;
@@ -20,14 +20,14 @@ public interface IHydResultStadiumMapPointService {
      * @param size 每页条数
      * @return 实体对象列表
      */
-    PageResult<HydResultStadiumMapPoint> queryAll(int page, int size);
+    PageResult<HydResultStadiumMapPointHistory> queryAll(int page, int size);
 
     /**
      * 查询全部
      *
      * @return 实体对象列表
      */
-    List<HydResultStadiumMapPoint> queryAll();
+    List<HydResultStadiumMapPointHistory> queryAll();
 
 
     /**
@@ -36,7 +36,7 @@ public interface IHydResultStadiumMapPointService {
      * @param stadiumMapPoint 实体对象
      * @return 保存后的实体对象
      */
-    HydResultStadiumMapPoint save(HydResultStadiumMapPoint stadiumMapPoint);
+    HydResultStadiumMapPointHistory save(HydResultStadiumMapPointHistory stadiumMapPoint);
 
     /**
      * 根据ID删除数据
@@ -51,7 +51,7 @@ public interface IHydResultStadiumMapPointService {
      * @param stadiumMapPoint 实体对象
      * @return 更新后的实体对象
      */
-    HydResultStadiumMapPoint update(HydResultStadiumMapPoint stadiumMapPoint);
+    HydResultStadiumMapPointHistory update(HydResultStadiumMapPointHistory stadiumMapPoint);
 
     /**
      * 根据ID查询数据
@@ -59,7 +59,7 @@ public interface IHydResultStadiumMapPointService {
      * @param id 主键ID
      * @return 实体对象
      */
-    HydResultStadiumMapPoint findById(Long id);
+    HydResultStadiumMapPointHistory findById(Long id);
 
     int batchSave(List<HydResultStadiumMapPointReq> stadiumMapPoints);
 }

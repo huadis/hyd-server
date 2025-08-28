@@ -1625,3 +1625,145 @@ CREATE TABLE `hyd_result_events_participant_level` (
     `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='大众赛事-参赛人数人档';
+
+-- ------------- add 2025.8.27 日
+
+CREATE TABLE `hyd_result_la_stadium_district` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `districtName` varchar(255) COMMENT '地区',
+    `stadiumNum` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='校外培训机构-各区场馆数量统计';
+
+
+CREATE TABLE `hyd_result_la_stadium_sport_name` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `sportName` varchar(255) COMMENT '地区',
+    `num` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='校外培训机构-项目类型';
+
+
+CREATE TABLE `hyd_result_la_stadium_sport_name_top` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `sportName` varchar(255) COMMENT '地区',
+    `num` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='校外培训机构-项目类型占比TOP10';
+
+
+CREATE TABLE `hyd_result_instructor_service_project_top` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `serviceProject` varchar(255) COMMENT '服务项目',
+    `personCount` bigint COMMENT '数量',
+    `proportion` decimal(5, 2) COMMENT '占比（%）',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='社会体育指导员-指导项目统计TOP15';
+
+
+
+CREATE TABLE `hyd_result_instructor_usersex` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `gender` varchar(255) COMMENT '性别',
+    `personCount` bigint COMMENT '数量',
+    `proportion` decimal(5, 2) COMMENT '占比（%）',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='社会体育指导员-性别统计';
+
+
+
+CREATE TABLE `hyd_result_instructor_level` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `level` varchar(255) COMMENT '级别',
+    `personCount` bigint COMMENT '数量',
+    `proportion` decimal(5, 2) COMMENT '占比（%）',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='社会体育指导员-级别统计';
+
+
+CREATE TABLE `hyd_result_instructor_region` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `region` varchar(255) COMMENT '地区',
+    `instructorCount` bigint COMMENT '人员数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='社会体育指导员-各区指导人员统计';
+
+
+CREATE TABLE `hyd_result_instructor_overview` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `total` bigint COMMENT '全市人数',
+    `newCount` bigint COMMENT '今年新增',
+    `sexRatio` varchar(50) COMMENT '男女比例',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='社会体育指导员-概览';
+
+CREATE TABLE `hyd_result_instructor_service_project` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `serviceProject` varchar(255) COMMENT '服务项目',
+    `totalPersonCount` bigint COMMENT '人数',
+    `newPersonCount` bigint COMMENT '新增人数',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='社会体育指导员-项目统计';
+
+
+
+CREATE TABLE `hyd_excel_sports_organization` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `sequence` bigint(20) NOT NULL COMMENT '序号',
+    `orgName` varchar(255) COMMENT '组织名称',
+    `address` varchar(512) COMMENT '地址',
+    `districtName` varchar(255) COMMENT '区属',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育组织';
+
+
+CREATE TABLE `hyd_excel_sports_organization_district_stat` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+    `sportName` varchar(255) COMMENT '地区',
+    `districtNum` bigint COMMENT '数量',
+    `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育组织-区属统计';

@@ -118,7 +118,7 @@ public class HydFacilityController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        List<HydResultStadiumMapPoint> stadiumMapPoints = mapPointService.queryAll();
+        List<HydResultStadiumMapPointHistory> stadiumMapPoints = mapPointService.queryAll();
         List<FacilityMapPoint> result = stadiumMapPoints.stream().map(source -> {
             FacilityMapPoint target = new FacilityMapPoint();
             if (source != null) {

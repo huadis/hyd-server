@@ -10,6 +10,7 @@ import cn.wuhan.hyd.sports.domain.HydExcelInstructorAgeGrowth;
 import cn.wuhan.hyd.sports.domain.HydExcelInstructorAgeStats;
 import cn.wuhan.hyd.sports.domain.HydExcelInstructorInfo;
 import cn.wuhan.hyd.sports.service.IHydExcelInstructorService;
+import cn.wuhan.hyd.sports.service.IHydResultInstructorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -44,6 +45,15 @@ public class HydInstructorController {
 
     @Resource
     private IHydExcelInstructorService hydInstructorService;
+    @Resource
+    private IHydResultInstructorService hydResultInstructorService;
+
+    @ApiOperation("手动刷新结果表")
+    @AnonymousGetMapping("/refresh")
+    public Response<Boolean> refresh() {
+        hydResultInstructorService.syncResultData();
+        return Response.ok(true);
+    }
 
     /**
      * 下载指定模板文件
@@ -256,7 +266,7 @@ public class HydInstructorController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(hydInstructorService.serviceProjectTop15());
+        return Response.ok(hydResultInstructorService.serviceProjectTop15(year));
     }
 
     /**
@@ -268,7 +278,7 @@ public class HydInstructorController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(hydInstructorService.genderStat());
+        return Response.ok(hydResultInstructorService.genderStat(year));
     }
 
     /**
@@ -280,7 +290,7 @@ public class HydInstructorController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(hydInstructorService.levelStat());
+        return Response.ok(hydResultInstructorService.levelStat(year));
     }
 
     /**
@@ -292,7 +302,7 @@ public class HydInstructorController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(hydInstructorService.regionInstructorStat());
+        return Response.ok(hydResultInstructorService.regionInstructorStat(year));
     }
 
     /**
@@ -328,7 +338,7 @@ public class HydInstructorController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(hydInstructorService.overview());
+        return Response.ok(hydResultInstructorService.overview(year));
     }
 
     /**
@@ -340,6 +350,6 @@ public class HydInstructorController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(hydInstructorService.serviceProject());
+        return Response.ok(hydResultInstructorService.serviceProject(year));
     }
 }

@@ -99,6 +99,11 @@ public class DataController {
     @Resource
     private IHydExcelPublicEventsService publicEventsService;
 
+    @Resource
+    private IHydResultInstructorService instructorService;
+    @Resource
+    private IHydResultLaStadiumStatService laStadiumStatService;
+
     private final Logger logger = LoggerFactory.getLogger(ImportController.class);
 
     // ----------------------------------- 结果表-消费券总金额 -----------------------------------
@@ -1910,5 +1915,383 @@ public class DataController {
     @AnonymousPostMapping("/eventsParticipantLevel/update")
     public Response<HydResultEventsParticipantLevel> eventsParticipantLevelUpdate(@RequestBody HydResultEventsParticipantLevel eventsParticipantLevel) {
         return Response.ok(publicEventsService.updateParticipantLevel(eventsParticipantLevel));
+    }
+
+
+    // ========================== 社会体育指导员-级别统计（HydResultInstructorLevel） ==========================
+    @ApiOperation("社会体育指导员-级别统计-分页查询")
+    @AnonymousGetMapping("/instructorLevel/list")
+    public Response<PageResult<HydResultInstructorLevel>> instructorLevelList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(instructorService.queryAllLevel(page, size));
+    }
+
+    @ApiOperation("社会体育指导员-级别统计-根据ID查询详情")
+    @AnonymousGetMapping("/instructorLevel/detail/{id}")
+    public Response<HydResultInstructorLevel> instructorLevelDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(instructorService.findLevelById(id));
+    }
+
+    @ApiOperation("社会体育指导员-级别统计-增加")
+    @AnonymousPostMapping("/instructorLevel/add")
+    public ResponseEntity<HydResultInstructorLevel> instructorLevelAdd(
+            @ApiParam(value = "社会体育指导员-级别统计", required = true) @RequestBody HydResultInstructorLevel instructorLevel) {
+        return ResponseEntity.ok(instructorService.save(instructorLevel));
+    }
+
+    @ApiOperation("社会体育指导员-级别统计-删除")
+    @AnonymousDeleteMapping("/instructorLevel/delete/{id}")
+    public Response<Boolean> instructorLevelDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            instructorService.deleteLevelById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("社会体育指导员-级别统计-更新")
+    @AnonymousPostMapping("/instructorLevel/update")
+    public Response<HydResultInstructorLevel> instructorLevelUpdate(@RequestBody HydResultInstructorLevel instructorLevel) {
+        return Response.ok(instructorService.update(instructorLevel));
+    }
+
+
+    // ========================== 社会体育指导员-概览（HydResultInstructorOverview） ==========================
+    @ApiOperation("社会体育指导员-概览-分页查询")
+    @AnonymousGetMapping("/instructorOverview/list")
+    public Response<PageResult<HydResultInstructorOverview>> instructorOverviewList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(instructorService.queryAllOverview(page, size));
+    }
+
+    @ApiOperation("社会体育指导员-概览-根据ID查询详情")
+    @AnonymousGetMapping("/instructorOverview/detail/{id}")
+    public Response<HydResultInstructorOverview> instructorOverviewDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(instructorService.findOverviewById(id));
+    }
+
+    @ApiOperation("社会体育指导员-概览-增加")
+    @AnonymousPostMapping("/instructorOverview/add")
+    public ResponseEntity<HydResultInstructorOverview> instructorOverviewAdd(
+            @ApiParam(value = "社会体育指导员-概览", required = true) @RequestBody HydResultInstructorOverview instructorOverview) {
+        return ResponseEntity.ok(instructorService.save(instructorOverview));
+    }
+
+    @ApiOperation("社会体育指导员-概览-删除")
+    @AnonymousDeleteMapping("/instructorOverview/delete/{id}")
+    public Response<Boolean> instructorOverviewDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            instructorService.deleteOverviewById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("社会体育指导员-概览-更新")
+    @AnonymousPostMapping("/instructorOverview/update")
+    public Response<HydResultInstructorOverview> instructorOverviewUpdate(@RequestBody HydResultInstructorOverview instructorOverview) {
+        return Response.ok(instructorService.update(instructorOverview));
+    }
+
+
+    // ========================== 社会体育指导员-各区指导人员统计（HydResultInstructorRegion） ==========================
+    @ApiOperation("社会体育指导员-各区指导人员统计-分页查询")
+    @AnonymousGetMapping("/instructorRegion/list")
+    public Response<PageResult<HydResultInstructorRegion>> instructorRegionList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(instructorService.queryAllRegion(page, size));
+    }
+
+    @ApiOperation("社会体育指导员-各区指导人员统计-根据ID查询详情")
+    @AnonymousGetMapping("/instructorRegion/detail/{id}")
+    public Response<HydResultInstructorRegion> instructorRegionDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(instructorService.findRegionById(id));
+    }
+
+    @ApiOperation("社会体育指导员-各区指导人员统计-增加")
+    @AnonymousPostMapping("/instructorRegion/add")
+    public ResponseEntity<HydResultInstructorRegion> instructorRegionAdd(
+            @ApiParam(value = "社会体育指导员-各区指导人员统计", required = true) @RequestBody HydResultInstructorRegion instructorRegion) {
+        return ResponseEntity.ok(instructorService.save(instructorRegion));
+    }
+
+    @ApiOperation("社会体育指导员-各区指导人员统计-删除")
+    @AnonymousDeleteMapping("/instructorRegion/delete/{id}")
+    public Response<Boolean> instructorRegionDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            instructorService.deleteRegionById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("社会体育指导员-各区指导人员统计-更新")
+    @AnonymousPostMapping("/instructorRegion/update")
+    public Response<HydResultInstructorRegion> instructorRegionUpdate(@RequestBody HydResultInstructorRegion instructorRegion) {
+        return Response.ok(instructorService.update(instructorRegion));
+    }
+
+
+    // ========================== 社会体育指导员-项目统计（HydResultInstructorServiceProject） ==========================
+    @ApiOperation("社会体育指导员-项目统计-分页查询")
+    @AnonymousGetMapping("/instructorServiceProject/list")
+    public Response<PageResult<HydResultInstructorServiceProject>> instructorServiceProjectList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(instructorService.queryAllServiceProject(page, size));
+    }
+
+    @ApiOperation("社会体育指导员-项目统计-根据ID查询详情")
+    @AnonymousGetMapping("/instructorServiceProject/detail/{id}")
+    public Response<HydResultInstructorServiceProject> instructorServiceProjectDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(instructorService.findServiceProjectById(id));
+    }
+
+    @ApiOperation("社会体育指导员-项目统计-增加")
+    @AnonymousPostMapping("/instructorServiceProject/add")
+    public ResponseEntity<HydResultInstructorServiceProject> instructorServiceProjectAdd(
+            @ApiParam(value = "社会体育指导员-项目统计", required = true) @RequestBody HydResultInstructorServiceProject instructorServiceProject) {
+        return ResponseEntity.ok(instructorService.save(instructorServiceProject));
+    }
+
+    @ApiOperation("社会体育指导员-项目统计-删除")
+    @AnonymousDeleteMapping("/instructorServiceProject/delete/{id}")
+    public Response<Boolean> instructorServiceProjectDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            instructorService.deleteServiceProjectById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("社会体育指导员-项目统计-更新")
+    @AnonymousPostMapping("/instructorServiceProject/update")
+    public Response<HydResultInstructorServiceProject> instructorServiceProjectUpdate(@RequestBody HydResultInstructorServiceProject instructorServiceProject) {
+        return Response.ok(instructorService.update(instructorServiceProject));
+    }
+
+
+    // ========================== 社会体育指导员-指导项目统计TOP15（HydResultInstructorServiceProjectTop） ==========================
+    @ApiOperation("社会体育指导员-指导项目统计TOP15-分页查询")
+    @AnonymousGetMapping("/instructorServiceProjectTop/list")
+    public Response<PageResult<HydResultInstructorServiceProjectTop>> instructorServiceProjectTopList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(instructorService.queryAllServiceProjectTop(page, size));
+    }
+
+    @ApiOperation("社会体育指导员-指导项目统计TOP15-根据ID查询详情")
+    @AnonymousGetMapping("/instructorServiceProjectTop/detail/{id}")
+    public Response<HydResultInstructorServiceProjectTop> instructorServiceProjectTopDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(instructorService.findServiceProjectTopById(id));
+    }
+
+    @ApiOperation("社会体育指导员-指导项目统计TOP15-增加")
+    @AnonymousPostMapping("/instructorServiceProjectTop/add")
+    public ResponseEntity<HydResultInstructorServiceProjectTop> instructorServiceProjectTopAdd(
+            @ApiParam(value = "社会体育指导员-指导项目统计TOP15", required = true) @RequestBody HydResultInstructorServiceProjectTop instructorServiceProjectTop) {
+        return ResponseEntity.ok(instructorService.save(instructorServiceProjectTop));
+    }
+
+    @ApiOperation("社会体育指导员-指导项目统计TOP15-删除")
+    @AnonymousDeleteMapping("/instructorServiceProjectTop/delete/{id}")
+    public Response<Boolean> instructorServiceProjectTopDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            instructorService.deleteServiceProjectTopById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("社会体育指导员-指导项目统计TOP15-更新")
+    @AnonymousPostMapping("/instructorServiceProjectTop/update")
+    public Response<HydResultInstructorServiceProjectTop> instructorServiceProjectTopUpdate(@RequestBody HydResultInstructorServiceProjectTop instructorServiceProjectTop) {
+        return Response.ok(instructorService.update(instructorServiceProjectTop));
+    }
+
+
+    // ========================== 社会体育指导员-性别统计（HydResultInstructorUserSex） ==========================
+    @ApiOperation("社会体育指导员-性别统计-分页查询")
+    @AnonymousGetMapping("/instructorUserSex/list")
+    public Response<PageResult<HydResultInstructorUserSex>> instructorUserSexList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(instructorService.queryAllUserSex(page, size));
+    }
+
+    @ApiOperation("社会体育指导员-性别统计-根据ID查询详情")
+    @AnonymousGetMapping("/instructorUserSex/detail/{id}")
+    public Response<HydResultInstructorUserSex> instructorUserSexDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(instructorService.findUserSexById(id));
+    }
+
+    @ApiOperation("社会体育指导员-性别统计-增加")
+    @AnonymousPostMapping("/instructorUserSex/add")
+    public ResponseEntity<HydResultInstructorUserSex> instructorUserSexAdd(
+            @ApiParam(value = "社会体育指导员-性别统计", required = true) @RequestBody HydResultInstructorUserSex instructorUserSex) {
+        return ResponseEntity.ok(instructorService.save(instructorUserSex));
+    }
+
+    @ApiOperation("社会体育指导员-性别统计-删除")
+    @AnonymousDeleteMapping("/instructorUserSex/delete/{id}")
+    public Response<Boolean> instructorUserSexDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            instructorService.deleteUserSexById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("社会体育指导员-性别统计-更新")
+    @AnonymousPostMapping("/instructorUserSex/update")
+    public Response<HydResultInstructorUserSex> instructorUserSexUpdate(@RequestBody HydResultInstructorUserSex instructorUserSex) {
+        return Response.ok(instructorService.update(instructorUserSex));
+    }
+
+
+    // ========================== 校外培训机构-各区场馆数量统计（HydResultLaStadiumDistrict） ==========================
+    @ApiOperation("校外培训机构-各区场馆数量统计-分页查询")
+    @AnonymousGetMapping("/laStadiumDistrict/list")
+    public Response<PageResult<HydResultLaStadiumDistrict>> laStadiumDistrictList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(laStadiumStatService.queryAllDistrictStat(page, size));
+    }
+
+    @ApiOperation("校外培训机构-各区场馆数量统计-根据ID查询详情")
+    @AnonymousGetMapping("/laStadiumDistrict/detail/{id}")
+    public Response<HydResultLaStadiumDistrict> laStadiumDistrictDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(laStadiumStatService.getDistrictStatById(id));
+    }
+
+    @ApiOperation("校外培训机构-各区场馆数量统计-增加")
+    @AnonymousPostMapping("/laStadiumDistrict/add")
+    public ResponseEntity<HydResultLaStadiumDistrict> laStadiumDistrictAdd(
+            @ApiParam(value = "校外培训机构-各区场馆数量统计", required = true) @RequestBody HydResultLaStadiumDistrict laStadiumDistrict) {
+        return ResponseEntity.ok(laStadiumStatService.saveDistrictStat(laStadiumDistrict));
+    }
+
+    @ApiOperation("校外培训机构-各区场馆数量统计-删除")
+    @AnonymousDeleteMapping("/laStadiumDistrict/delete/{id}")
+    public Response<Boolean> laStadiumDistrictDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            laStadiumStatService.deleteDistrictStatById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("校外培训机构-各区场馆数量统计-更新")
+    @AnonymousPostMapping("/laStadiumDistrict/update")
+    public Response<HydResultLaStadiumDistrict> laStadiumDistrictUpdate(@RequestBody HydResultLaStadiumDistrict laStadiumDistrict) {
+        return Response.ok(laStadiumStatService.updateDistrictStat(laStadiumDistrict));
+    }
+
+
+    // ========================== 校外培训机构-项目类型统计（HydResultLaStadiumSportName） ==========================
+    @ApiOperation("校外培训机构-项目类型统计-分页查询")
+    @AnonymousGetMapping("/laStadiumSportName/list")
+    public Response<PageResult<HydResultLaStadiumSportName>> laStadiumSportNameList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(laStadiumStatService.queryAllSportNameStat(page, size));
+    }
+
+    @ApiOperation("校外培训机构-项目类型统计-根据ID查询详情")
+    @AnonymousGetMapping("/laStadiumSportName/detail/{id}")
+    public Response<HydResultLaStadiumSportName> laStadiumSportNameDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(laStadiumStatService.getSportNameStatById(id));
+    }
+
+    @ApiOperation("校外培训机构-项目类型统计-增加")
+    @AnonymousPostMapping("/laStadiumSportName/add")
+    public ResponseEntity<HydResultLaStadiumSportName> laStadiumSportNameAdd(
+            @ApiParam(value = "校外培训机构-项目类型统计", required = true) @RequestBody HydResultLaStadiumSportName laStadiumSportName) {
+        return ResponseEntity.ok(laStadiumStatService.saveSportNameStat(laStadiumSportName));
+    }
+
+    @ApiOperation("校外培训机构-项目类型统计-删除")
+    @AnonymousDeleteMapping("/laStadiumSportName/delete/{id}")
+    public Response<Boolean> laStadiumSportNameDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            laStadiumStatService.deleteSportNameStatById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("校外培训机构-项目类型统计-更新")
+    @AnonymousPostMapping("/laStadiumSportName/update")
+    public Response<HydResultLaStadiumSportName> laStadiumSportNameUpdate(@RequestBody HydResultLaStadiumSportName laStadiumSportName) {
+        return Response.ok(laStadiumStatService.updateSportNameStat(laStadiumSportName));
+    }
+
+
+    // ========================== 校外培训机构-项目类型占比TOP10统计（HydResultLaStadiumSportNameTop） ==========================
+    @ApiOperation("校外培训机构-项目类型占比TOP10统计-分页查询")
+    @AnonymousGetMapping("/laStadiumSportNameTop/list")
+    public Response<PageResult<HydResultLaStadiumSportNameTop>> laStadiumSportNameTopList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(laStadiumStatService.queryAllSportNameTopStat(page, size));
+    }
+
+    @ApiOperation("校外培训机构-项目类型占比TOP10统计-根据ID查询详情")
+    @AnonymousGetMapping("/laStadiumSportNameTop/detail/{id}")
+    public Response<HydResultLaStadiumSportNameTop> laStadiumSportNameTopDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(laStadiumStatService.getSportNameTopStatById(id));
+    }
+
+    @ApiOperation("校外培训机构-项目类型占比TOP10统计-增加")
+    @AnonymousPostMapping("/laStadiumSportNameTop/add")
+    public ResponseEntity<HydResultLaStadiumSportNameTop> laStadiumSportNameTopAdd(
+            @ApiParam(value = "校外培训机构-项目类型占比TOP10统计", required = true) @RequestBody HydResultLaStadiumSportNameTop laStadiumSportNameTop) {
+        return ResponseEntity.ok(laStadiumStatService.saveSportNameTopStat(laStadiumSportNameTop));
+    }
+
+    @ApiOperation("校外培训机构-项目类型占比TOP10统计-删除")
+    @AnonymousDeleteMapping("/laStadiumSportNameTop/delete/{id}")
+    public Response<Boolean> laStadiumSportNameTopDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            laStadiumStatService.deleteSportNameTopStatById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("校外培训机构-项目类型占比TOP10统计-更新")
+    @AnonymousPostMapping("/laStadiumSportNameTop/update")
+    public Response<HydResultLaStadiumSportNameTop> laStadiumSportNameTopUpdate(@RequestBody HydResultLaStadiumSportNameTop laStadiumSportNameTop) {
+        return Response.ok(laStadiumStatService.updateSportNameTopStat(laStadiumSportNameTop));
     }
 }

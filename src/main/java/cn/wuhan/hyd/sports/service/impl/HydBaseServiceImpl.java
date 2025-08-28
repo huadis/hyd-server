@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -149,5 +150,54 @@ public class HydBaseServiceImpl {
             // 格式错误时返回0和无效标识
             return BigDecimal.ZERO;
         }
+    }
+
+    /**
+     * 从Map中获取BigDecimal（支持自定义默认值）
+     *
+     * @param map          目标Map
+     * @param key          键
+     * @param defaultValue 默认值（键不存在/值异常时返回）
+     * @return BigDecimal值
+     */
+    public static BigDecimal getBigDecimalFromMap(Map<String, Object> map, String key, BigDecimal defaultValue) {
+        // 1. 校验Map和键
+        if (map == null || !map.containsKey(key)) {
+            return defaultValue;
+        }
+
+        Object value = map.get(key);
+        if (value == null) {
+            return defaultValue;
+        }
+
+        // 2. 类型转换（支持BigDecimal、Number、String）
+        try {
+            if (value instanceof BigDecimal) {
+                return (BigDecimal) value;
+            } else if (value instanceof Number) {
+                // 处理Long、Double、Integer等Number子类
+                return new BigDecimal(value.toString());
+            } else if (value instanceof String) {
+                // 处理字符串格式的数值（需确保格式合法，如"123.45"）
+                return new BigDecimal((String) value);
+            } else {
+                // 不支持的类型，返回默认值
+                return defaultValue;
+            }
+        } catch (Exception e) {
+            // 转换失败（如String不是合法数值），返回默认值
+            return defaultValue;
+        }
+    }
+
+    /**
+     * 从Map中获取BigDecimal（支持多种数值类型转换）
+     * @param map 目标Map
+     * @param key 键
+     * @return BigDecimal值（若键不存在/值为null/类型不支持，返回BigDecimal.ZERO）
+     */
+    public static BigDecimal getBigDecimalFromMap(Map<String, Object> map, String key) {
+        return getBigDecimalFromMap(map, key, BigDecimal.ZERO);
     }
 }
