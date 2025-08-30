@@ -22,6 +22,6 @@ public interface HydExcelIndustryScaleTrendRepo extends JpaRepository<HydExcelIn
             "    growthRate \n" +
             "FROM \n" +
             "    hyd_excel_industry_scale_trend \n" +
-            "ORDER BY statisticalYear desc ", nativeQuery = true)
+            "ORDER BY statisticalYear asc ", nativeQuery = true)
     List<Map<String,Object>> stat(String year);
 }

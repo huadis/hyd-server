@@ -107,6 +107,7 @@ public class HydExcelSportsOrgServiceImpl implements IHydExcelSportsOrgService {
                 saveBatch(sportsOrganizations);
             }
         });
+        syncResultData();
         return true;
     }
 

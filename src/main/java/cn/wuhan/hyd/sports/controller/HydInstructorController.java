@@ -14,11 +14,12 @@ import cn.wuhan.hyd.sports.service.IHydResultInstructorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +32,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +51,8 @@ public class HydInstructorController {
     private IHydExcelInstructorService hydInstructorService;
     @Resource
     private IHydResultInstructorService hydResultInstructorService;
+    private static final Logger log = LoggerFactory.getLogger(HydInstructorController.class);
+
 
     @ApiOperation("手动刷新结果表")
     @AnonymousGetMapping("/refresh")
@@ -124,7 +129,11 @@ public class HydInstructorController {
         }
 
         try {
+            log.info("开始执行excel文件读取");
+            Instant startTotal = Instant.now();
             Map<String, List<Map<String, Object>>> sheetMapData = ExcelUtils.parseExcelData(file);
+            long time1 = Duration.between(startTotal, Instant.now()).toMillis();
+            log.info("excel文件读取耗时：{}ms", time1);
             boolean flag = hydInstructorService.importExcel(sheetMapData);
             hydResultInstructorService.syncResultData();
             return new ResponseEntity<>("文件上传成功", HttpStatus.OK);

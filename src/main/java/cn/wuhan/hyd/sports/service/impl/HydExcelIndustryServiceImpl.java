@@ -5,6 +5,8 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydExcelIndustryService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +56,9 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
     private HydExcelIndustryTrainingParticipationRateRepo industryTrainingParticipationRateRepo;
     @Resource
     private HydExcelIndustryTrainingParticipationRateHistoryRepo industryTrainingParticipationRateHistoryRepo;
+
+    private static final Logger log = LoggerFactory.getLogger(IHydExcelIndustryService.class);
+
 
     @Override
     public PageResult<HydExcelIndustryCoreIndicators> queryAllIndustryCoreIndicators(int page, int size) {
@@ -419,20 +426,111 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
             }
         });
         // 批量保存
+        Instant startTotal = Instant.now();
+        log.info("开始执行批量保存操作，总共有{}个数据集需要保存", 14);
+
+        // 1. 保存核心指标
+        Instant start1 = Instant.now();
         industryCoreIndicatorsRepo.saveAll(coreIndicators);
+        long time1 = Duration.between(start1, Instant.now()).toMillis();
+        log.info("1. 核心指标数据保存完成，条数：{}，耗时：{}ms",
+                coreIndicators.size(), time1);
+
+        // 2. 保存核心指标历史
+        Instant start2 = Instant.now();
         industryCoreIndicatorsHistoryRepo.saveAll(coreIndicatorsHistories);
+        long time2 = Duration.between(start2, Instant.now()).toMillis();
+        log.info("2. 核心指标历史数据保存完成，条数：{}，耗时：{}ms",
+                coreIndicatorsHistories.size(), time2);
+
+        // 3. 保存行业规模趋势
+        Instant start3 = Instant.now();
         industryScaleTrendRepo.saveAll(scaleTrends);
+        long time3 = Duration.between(start3, Instant.now()).toMillis();
+        log.info("3. 行业规模趋势数据保存完成，条数：{}，耗时：{}ms",
+                scaleTrends.size(), time3);
+
+        // 4. 保存行业规模趋势历史
+        Instant start4 = Instant.now();
         industryScaleTrendHistoryRepo.saveAll(scaleTrendHistories);
+        long time4 = Duration.between(start4, Instant.now()).toMillis();
+        log.info("4. 行业规模趋势历史数据保存完成，条数：{}，耗时：{}ms",
+                scaleTrendHistories.size(), time4);
+
+        // 5. 保存实体数量占比
+        Instant start5 = Instant.now();
         industryEntityCountRatioRepo.saveAll(entityCountRatios);
+        long time5 = Duration.between(start5, Instant.now()).toMillis();
+        log.info("5. 实体数量占比数据保存完成，条数：{}，耗时：{}ms",
+                entityCountRatios.size(), time5);
+
+        // 6. 保存实体数量占比历史
+        Instant start6 = Instant.now();
         industryEntityCountRatioHistoryRepo.saveAll(entityCountRatioHistories);
+        long time6 = Duration.between(start6, Instant.now()).toMillis();
+        log.info("6. 实体数量占比历史数据保存完成，条数：{}，耗时：{}ms",
+                entityCountRatioHistories.size(), time6);
+
+        // 7. 保存增长值趋势
+        Instant start7 = Instant.now();
         industryGrowthValueTrendRepo.saveAll(growthValueTrends);
+        long time7 = Duration.between(start7, Instant.now()).toMillis();
+        log.info("7. 增长值趋势数据保存完成，条数：{}，耗时：{}ms",
+                growthValueTrends.size(), time7);
+
+        // 8. 保存增长值趋势历史
+        Instant start8 = Instant.now();
         industryGrowthValueTrendHistoryRepo.saveAll(growthValueTrendHistories);
+        long time8 = Duration.between(start8, Instant.now()).toMillis();
+        log.info("8. 增长值趋势历史数据保存完成，条数：{}，耗时：{}ms",
+                growthValueTrendHistories.size(), time8);
+
+        // 9. 保存培训参与率
+        Instant start9 = Instant.now();
         industryTrainingParticipationRateRepo.saveAll(trainingParticipationRates);
+        long time9 = Duration.between(start9, Instant.now()).toMillis();
+        log.info("9. 培训参与率数据保存完成，条数：{}，耗时：{}ms",
+                trainingParticipationRates.size(), time9);
+
+        // 10. 保存培训参与率历史
+        Instant start10 = Instant.now();
         industryTrainingParticipationRateHistoryRepo.saveAll(trainingParticipationRateHistories);
+        long time10 = Duration.between(start10, Instant.now()).toMillis();
+        log.info("10. 培训参与率历史数据保存完成，条数：{}，耗时：{}ms",
+                trainingParticipationRateHistories.size(), time10);
+
+        // 11. 保存商品采购率
+        Instant start11 = Instant.now();
         industryGoodsPurchaseRateRepo.saveAll(goodsPurchaseRates);
+        long time11 = Duration.between(start11, Instant.now()).toMillis();
+        log.info("11. 商品采购率数据保存完成，条数：{}，耗时：{}ms",
+                goodsPurchaseRates.size(), time11);
+
+        // 12. 保存商品采购率历史
+        Instant start12 = Instant.now();
         industryGoodsPurchaseRateHistoryRepo.saveAll(goodsPurchaseRateHistories);
+        long time12 = Duration.between(start12, Instant.now()).toMillis();
+        log.info("12. 商品采购率历史数据保存完成，条数：{}，耗时：{}ms",
+                goodsPurchaseRateHistories.size(), time12);
+
+        // 13. 保存从业人员数量
+        Instant start13 = Instant.now();
         industryEmployeeCountRepo.saveAll(employeeCounts);
+        long time13 = Duration.between(start13, Instant.now()).toMillis();
+        log.info("13. 从业人员数量数据保存完成，条数：{}，耗时：{}ms",
+                employeeCounts.size(), time13);
+
+        // 14. 保存从业人员数量历史
+        Instant start14 = Instant.now();
         industryEmployeeCountHistoryRepo.saveAll(employeeCountHistories);
+        long time14 = Duration.between(start14, Instant.now()).toMillis();
+        log.info("14. 从业人员数量历史数据保存完成，条数：{}，耗时：{}ms",
+                employeeCountHistories.size(), time14);
+
+        // 总耗时统计
+        long totalTime = Duration.between(startTotal, Instant.now()).toMillis();
+        log.info("所有批量保存操作完成，总耗时：{}ms，平均每条操作耗时：{}ms",
+                totalTime, totalTime / 14);
         return true;
     }
 
