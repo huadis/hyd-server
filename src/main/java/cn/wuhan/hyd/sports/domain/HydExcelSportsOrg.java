@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -21,11 +22,13 @@ import java.util.Objects;
 @Getter
 @Setter
 @Table(name = "hyd_excel_sports_organization")
-public class HydExcelSportsOrganization implements Serializable {
+public class HydExcelSportsOrg implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "主键ID", hidden = true)
     private Long id;
 
     @Column(name = "sequence", nullable = false)
@@ -78,7 +81,7 @@ public class HydExcelSportsOrganization implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        HydExcelSportsOrganization that = (HydExcelSportsOrganization) o;
+        HydExcelSportsOrg that = (HydExcelSportsOrg) o;
         return Objects.equals(id, that.id);
     }
 

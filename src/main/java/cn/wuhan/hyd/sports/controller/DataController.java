@@ -98,11 +98,12 @@ public class DataController {
     private IHydYktService yktService;
     @Resource
     private IHydExcelPublicEventsService publicEventsService;
-
     @Resource
     private IHydResultInstructorService instructorService;
     @Resource
     private IHydResultLaStadiumStatService laStadiumStatService;
+    @Resource
+    private IHydExcelSportsOrgDistrictStatService sportsOrgDistrictStatService;
 
     private final Logger logger = LoggerFactory.getLogger(ImportController.class);
 
@@ -2293,5 +2294,46 @@ public class DataController {
     @AnonymousPostMapping("/laStadiumSportNameTop/update")
     public Response<HydResultLaStadiumSportNameTop> laStadiumSportNameTopUpdate(@RequestBody HydResultLaStadiumSportNameTop laStadiumSportNameTop) {
         return Response.ok(laStadiumStatService.updateSportNameTopStat(laStadiumSportNameTop));
+    }
+
+    // ==========================  ==========================
+    @ApiOperation("体育组织-区属统计-分页查询")
+    @AnonymousGetMapping("/sportsOrgDistrictStat/list")
+    public Response<PageResult<HydExcelSportsOrgDistrictStat>> sportsOrgDistrictStatList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(sportsOrgDistrictStatService.queryAll(page, size));
+    }
+
+    @ApiOperation("体育组织-区属统计-根据ID查询详情")
+    @AnonymousGetMapping("/sportsOrgDistrictStat/detail/{id}")
+    public Response<HydExcelSportsOrgDistrictStat> sportsOrgDistrictStatDetail(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        return Response.ok(sportsOrgDistrictStatService.findById(id));
+    }
+
+    @ApiOperation("体育组织-区属统计-增加")
+    @AnonymousPostMapping("/sportsOrgDistrictStat/add")
+    public ResponseEntity<HydExcelSportsOrgDistrictStat> sportsOrgDistrictStatAdd(
+            @ApiParam(value = "体育组织-区属统计", required = true) @RequestBody HydExcelSportsOrgDistrictStat sportsOrgDistrictStat) {
+        return ResponseEntity.ok(sportsOrgDistrictStatService.save(sportsOrgDistrictStat));
+    }
+
+    @ApiOperation("体育组织-区属统计-删除")
+    @AnonymousDeleteMapping("/sportsOrgDistrictStat/delete/{id}")
+    public Response<Boolean> sportsOrgDistrictStatDelete(
+            @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable Long id) {
+        try {
+            sportsOrgDistrictStatService.deleteById(id);
+            return Response.ok(true);
+        } catch (Exception e) {
+            return Response.fail(e.getMessage());
+        }
+    }
+
+    @ApiOperation("体育组织-区属统计-更新")
+    @AnonymousPostMapping("/sportsOrgDistrictStat/update")
+    public Response<HydExcelSportsOrgDistrictStat> sportsOrgDistrictStatUpdate(@RequestBody HydExcelSportsOrgDistrictStat sportsOrgDistrictStat) {
+        return Response.ok(sportsOrgDistrictStatService.save(sportsOrgDistrictStat));
     }
 }

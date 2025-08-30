@@ -2,10 +2,12 @@ package cn.wuhan.hyd.sports.controller;
 
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousPostMapping;
+import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.framework.utils.ExcelUtils;
-import cn.wuhan.hyd.sports.service.IHydExcelSportsOrganizationService;
+import cn.wuhan.hyd.sports.service.IHydExcelSportsOrgService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,7 +40,14 @@ import java.util.Map;
 public class HydSportsOrgController {
 
     @Resource
-    private IHydExcelSportsOrganizationService organizationService;
+    private IHydExcelSportsOrgService sportsOrgService;
+
+    @ApiOperation("刷新结果集")
+    @AnonymousGetMapping("/refresh")
+    public Response<Boolean> refresh() {
+        sportsOrgService.syncResultData();
+        return Response.ok(true);
+    }
 
     /**
      * 下载指定模板文件
@@ -106,10 +117,22 @@ public class HydSportsOrgController {
 
         try {
             Map<String, List<Map<String, Object>>> sheetMapData = ExcelUtils.parseExcelData(file);
-            boolean flag = organizationService.importExcel(sheetMapData);
+            boolean flag = sportsOrgService.importExcel(sheetMapData);
             return new ResponseEntity<>("文件上传成功", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("文件上传或处理失败", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    /**
+     * 体育组织区域统计
+     */
+    @ApiOperation("体育组织区域统计")
+    @AnonymousGetMapping("/districtCountByYear")
+    public Response<List<Map<String, Object>>> districtCountByYear(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(sportsOrgService.districtCountByYear(year));
     }
 }

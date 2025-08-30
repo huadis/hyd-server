@@ -18,6 +18,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -125,6 +126,7 @@ public class HydInstructorController {
         try {
             Map<String, List<Map<String, Object>>> sheetMapData = ExcelUtils.parseExcelData(file);
             boolean flag = hydInstructorService.importExcel(sheetMapData);
+            hydResultInstructorService.syncResultData();
             return new ResponseEntity<>("文件上传成功", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("文件上传或处理失败", HttpStatus.INTERNAL_SERVER_ERROR);

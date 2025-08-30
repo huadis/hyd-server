@@ -1759,7 +1759,7 @@ CREATE TABLE `hyd_excel_sports_organization` (
 
 CREATE TABLE `hyd_excel_sports_organization_district_stat` (
     `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    `sportName` varchar(255) COMMENT '地区',
+    `districtName` varchar(255) COMMENT '地区',
     `districtNum` bigint COMMENT '数量',
     `batchNo` varchar(50) COMMENT '批次号，用于标识数据批次',
     `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

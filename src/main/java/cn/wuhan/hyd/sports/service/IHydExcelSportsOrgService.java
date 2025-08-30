@@ -1,7 +1,7 @@
 package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydExcelSportsOrganization;
+import cn.wuhan.hyd.sports.domain.HydExcelSportsOrg;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,9 @@ import java.util.Map;
  * 开发人员：@author huadi <br>
  * 开发时间: 2025年08月28日 <br>
  */
-public interface IHydExcelSportsOrganizationService {
+public interface IHydExcelSportsOrgService {
+
+    void syncResultData();
 
     /**
      * 分页查询体育组织
@@ -20,41 +22,41 @@ public interface IHydExcelSportsOrganizationService {
      * @param size 每页条数
      * @return 分页结果
      */
-    PageResult<HydExcelSportsOrganization> queryAll(int page, int size);
+    PageResult<HydExcelSportsOrg> queryAll(int page, int size);
 
     /**
      * 查询所有体育组织
      * @return 体育组织列表
      */
-    List<HydExcelSportsOrganization> queryAll();
+    List<HydExcelSportsOrg> queryAll();
 
     /**
      * 根据ID查询体育组织详情
      * @param id 主键ID
      * @return 体育组织详情
      */
-    HydExcelSportsOrganization findById(Long id);
+    HydExcelSportsOrg findById(Long id);
 
     /**
      * 新增体育组织
      * @param sportsOrganization 体育组织信息
      * @return 保存后的体育组织信息
      */
-    HydExcelSportsOrganization save(HydExcelSportsOrganization sportsOrganization);
+    HydExcelSportsOrg save(HydExcelSportsOrg sportsOrganization);
 
     /**
      * 批量新增体育组织
      * @param sportsOrganizations 体育组织列表
      * @return 保存后的体育组织列表
      */
-    List<HydExcelSportsOrganization> saveBatch(List<HydExcelSportsOrganization> sportsOrganizations);
+    List<HydExcelSportsOrg> saveBatch(List<HydExcelSportsOrg> sportsOrganizations);
 
     /**
      * 更新体育组织
      * @param sportsOrganization 体育组织信息
      * @return 更新后的体育组织信息
      */
-    HydExcelSportsOrganization update(HydExcelSportsOrganization sportsOrganization);
+    HydExcelSportsOrg update(HydExcelSportsOrg sportsOrganization);
 
     /**
      * 根据ID删除体育组织
@@ -63,4 +65,6 @@ public interface IHydExcelSportsOrganizationService {
     void deleteById(Long id);
 
     boolean importExcel(Map<String, List<Map<String, Object>>> sheetMapData);
+
+    List<Map<String, Object>> districtCountByYear(String year);
 }

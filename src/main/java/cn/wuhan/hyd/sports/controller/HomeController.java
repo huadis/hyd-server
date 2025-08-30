@@ -4,6 +4,7 @@ import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.sports.domain.HydResultStadiumDistrict;
 import cn.wuhan.hyd.sports.service.IHydExcelPublicEventsService;
+import cn.wuhan.hyd.sports.service.IHydExcelSportsOrgService;
 import cn.wuhan.hyd.sports.service.IHydOriginStadiumService;
 import cn.wuhan.hyd.sports.service.IHydResultStadiumDistrictService;
 import io.swagger.annotations.Api;
@@ -37,6 +38,8 @@ public class HomeController {
     private IHydResultStadiumDistrictService stadiumDistrictService;
     @Resource
     private IHydExcelPublicEventsService publicEventsService;
+    @Resource
+    private IHydExcelSportsOrgService sportsOrgService;
 
     @ApiOperation("数据总览")
     @AnonymousGetMapping("/dataOverview")
@@ -47,6 +50,8 @@ public class HomeController {
         List<Map<String, Object>> list1 = stadiumService.stadiumCountByDistrict(year);
         List<HydResultStadiumDistrict> list2 = stadiumDistrictService.countStadiumDistrict(year);
         List<Map<String, Object>> list3 = publicEventsService.districtCountByYear(year);
+        // 体育组织
+        List<Map<String, Object>> list4 = sportsOrgService.districtCountByYear(year);
         Integer tenantCount = 0;
         for (Map<String, Object> map : list1) {
             tenantCount += MapUtils.getInteger(map, "num", 0);
@@ -55,15 +60,19 @@ public class HomeController {
         for (HydResultStadiumDistrict district : list2) {
             stadiumCount += Integer.parseInt(district.getStadiumNum());
         }
-        Integer orgCount = 0;
+        Integer eventCount = 0;
         for (Map<String, Object> map : list3) {
-            orgCount += MapUtils.getInteger(map, "num", 0);
+            eventCount += MapUtils.getInteger(map, "num", 0);
+        }
+        Integer orgCount = 0;
+        for (Map<String, Object> map : list4) {
+            orgCount += MapUtils.getInteger(map, "districtNum", 0);
         }
         Map<String, Integer> result = new HashMap<>();
         result.put("tenantCount", tenantCount);
         result.put("stadiumCount", stadiumCount);
-        result.put("eventCount", orgCount);
-        result.put("orgCount", 70);
+        result.put("eventCount", eventCount);
+        result.put("orgCount", orgCount);
         return Response.ok(result);
     }
 
