@@ -89,6 +89,10 @@ public class HydExcelPublicEventsHistory implements Serializable {
     @ApiModelProperty(value = "赛事级别（国际级、国家级、省级、市级、区级、街道级、社区级）")
     private String eventLevel;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

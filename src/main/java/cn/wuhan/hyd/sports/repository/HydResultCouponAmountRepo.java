@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultCouponAmount;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,8 @@ public interface HydResultCouponAmountRepo extends JpaRepository<HydResultCoupon
 
     @Query(value = "SELECT * FROM hyd_result_coupon_amount WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
     HydResultCouponAmount findLatestCouponAmount(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_coupon_amount WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

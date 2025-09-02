@@ -115,7 +115,7 @@ public interface HydExcelPublicEventsHistoryRepo extends JpaRepository<HydExcelP
             "ORDER BY statisticalYear DESC, participantLevel DESC;", nativeQuery = true)
     List<Map<String, Object>> participantCountStat();
 
-    @Query(value = "SELECT district, count(*) as num from hyd_excel_public_events_history WHERE eventYear = ?1 and district is not null AND district != '' GROUP BY district order by num", nativeQuery = true)
+    @Query(value = "SELECT district, count(*) as num from hyd_excel_public_events_history WHERE eventYear = ?1 and district is not null AND district != '' GROUP BY district order by num desc", nativeQuery = true)
     List<Map<String, Object>> districtCountByYear(String year);
 
     @Query(value = "SELECT " +

@@ -54,7 +54,7 @@ public class HomeController {
         List<Map<String, Object>> list4 = sportsOrgService.districtCountByYear(year);
         Integer tenantCount = 0;
         for (Map<String, Object> map : list1) {
-            tenantCount += MapUtils.getInteger(map, "num", 0);
+            tenantCount += MapUtils.getInteger(map, "stadiumNum", 0);
         }
         int stadiumCount = 0;
         for (HydResultStadiumDistrict district : list2) {

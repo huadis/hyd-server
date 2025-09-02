@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultUserRepurchase;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -28,4 +29,8 @@ public interface HydResultUserRepurchaseRepo extends JpaRepository<HydResultUser
             "FROM hyd_result_user_repurchase WHERE YEAR(createdTime) = ?1 " +
             "ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
     Map<String, Object> countStadiumUserRepurchaseStat(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_user_repurchase WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

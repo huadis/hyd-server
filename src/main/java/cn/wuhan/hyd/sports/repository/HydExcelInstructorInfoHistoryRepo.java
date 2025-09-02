@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydExcelInstructorInfoHistory;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -85,4 +86,8 @@ public interface HydExcelInstructorInfoHistoryRepo extends JpaRepository<HydExce
 
     @Query(value = "SELECT serviceProject, COUNT(id) AS personCount FROM hyd_excel_instructor_info_history where certifyTime is not null and certifyTime != '' and STR_TO_DATE(certifyTime, '%Y-%m-%d') BETWEEN '2025-01-01' AND '2025-12-31' GROUP BY serviceProject ORDER BY personCount DESC", nativeQuery = true)
     List<Map<String, Object>> serviceProjectWithCurrentYear();
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_excel_instructor_info_history WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

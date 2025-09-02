@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultCouponStadiumTop;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +22,8 @@ public interface HydResultCouponStadiumTopRepo extends JpaRepository<HydResultCo
             "couponAmount " +
             "FROM hyd_result_coupon_stadium_top ", nativeQuery = true)
     List<Map<String, Object>> stadiumTop5();
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_coupon_stadium_top WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

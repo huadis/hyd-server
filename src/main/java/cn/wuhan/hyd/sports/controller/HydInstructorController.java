@@ -129,12 +129,15 @@ public class HydInstructorController {
         }
 
         try {
-            log.info("开始执行excel文件读取");
-            Instant startTotal = Instant.now();
+            log.info("开始执行Excel文件读取");
+            Instant start1 = Instant.now();
             Map<String, List<Map<String, Object>>> sheetMapData = ExcelUtils.parseExcelData(file);
-            long time1 = Duration.between(startTotal, Instant.now()).toMillis();
-            log.info("excel文件读取耗时：{}ms", time1);
+            long time1 = Duration.between(start1, Instant.now()).toMillis();
+            log.info("Excel文件读取耗时：{}ms", time1);
+            Instant start2 = Instant.now();
             boolean flag = hydInstructorService.importExcel(sheetMapData);
+            long time2 = Duration.between(start2, Instant.now()).toMillis();
+            log.info("Excel文件数据保存：{}ms, 成功：{}", time2, flag);
             hydResultInstructorService.syncResultData();
             return new ResponseEntity<>("文件上传成功", HttpStatus.OK);
         } catch (Exception e) {

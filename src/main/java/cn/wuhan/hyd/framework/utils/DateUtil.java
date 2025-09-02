@@ -195,4 +195,9 @@ public class DateUtil extends DateUtils {
         LocalDate now = LocalDate.now();
         return now.getMonthValue();
     }
+
+    public static String getTodayStr() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        return LocalDate.now().format(formatter);
+    }
 }

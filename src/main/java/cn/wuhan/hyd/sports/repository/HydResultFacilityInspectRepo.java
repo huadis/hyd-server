@@ -3,6 +3,8 @@ package cn.wuhan.hyd.sports.repository;
 import cn.wuhan.hyd.sports.domain.HydResultFacilityInspect;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -12,4 +14,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface HydResultFacilityInspectRepo extends JpaRepository<HydResultFacilityInspect, Long>, JpaSpecificationExecutor<HydResultFacilityInspect> {
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_facility_inspect WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultOrderStadium;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +22,8 @@ public interface HydResultOrderStadiumRepo extends JpaRepository<HydResultOrderS
             "orderAmount " +
             "FROM hyd_result_order_stadium WHERE YEAR(createdTime) = ?1 ORDER BY orderAmount DESC limit 5", nativeQuery = true)
     List<Map<String, Object>> stadiumTop5(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_order_stadium WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

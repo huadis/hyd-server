@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultStock;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,8 @@ public interface HydResultStockRepo extends JpaRepository<HydResultStock, Long> 
 
     @Query(value = "SELECT * FROM hyd_result_stock WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC", nativeQuery = true)
     List<HydResultStock> list(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_stock WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydExcelIndustryTrainingParticipationRate;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +25,8 @@ public interface HydExcelIndustryTrainingParticipationRateRepo extends JpaReposi
             "WHERE statisticalYear = ?1 " +
             "ORDER BY growthRate DESC;", nativeQuery = true)
     List<Map<String, Object>> stat(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_excel_industry_training_participation_rate WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

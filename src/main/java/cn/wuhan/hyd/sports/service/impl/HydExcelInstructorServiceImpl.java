@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.wuhan.hyd.framework.utils.MapUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
+import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydExcelInstructorService;
@@ -177,6 +178,7 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
 
     @Transactional(rollbackFor = Exception.class)
     public boolean importExcel(Map<String, List<Map<String, Object>>> sheetMapData) {
+        String batchNo = UUIDUtil.getBatchNo();
         try {
             // 2. 多线程并行处理不同sheet
             CompletableFuture<Void> summaryFuture = CompletableFuture.runAsync(() ->
@@ -184,7 +186,7 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
                                     HydExcelInstructorInfo.class,
                                     HydExcelInstructorInfoHistory.class,
                                     instructorInfoRepo,
-                                    infoHistoryRepo),
+                                    infoHistoryRepo, batchNo),
                     executor
             );
 
@@ -193,7 +195,7 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
                                     HydExcelInstructorAgeStats.class,
                                     HydExcelInstructorAgeStatsHistory.class,
                                     instructorAgeStatsRepo,
-                                    ageStatsHistoryRepo),
+                                    ageStatsHistoryRepo, batchNo),
                     executor
             );
 
@@ -202,7 +204,7 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
                                     HydExcelInstructorAgeGrowth.class,
                                     HydExcelInstructorAgeGrowthHistory.class,
                                     instructorAgeGrowthRepo,
-                                    ageGrowthHistoryRepo),
+                                    ageGrowthHistoryRepo, batchNo),
                     executor
             );
 
@@ -223,21 +225,39 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
                                      Class<T> mainClazz,
                                      Class<H> historyClazz,
                                      JpaRepository<T, Long> mainRepo,
-                                     JpaRepository<H, Long> historyRepo) {
+                                     JpaRepository<H, Long> historyRepo,
+                                     String batchNo) {
         if (dataList == null || dataList.isEmpty()) {
             return;
         }
-
-        int batchSize = 500; // 每批插入数量（根据数据库性能调整）
+        // 清空表
+        mainRepo.deleteAll();
+        int batchSize = 1000; // 每批插入数量（根据数据库性能调整）
         int totalSize = dataList.size();
         List<T> mainBatch = new ArrayList<>(batchSize);
         List<H> historyBatch = new ArrayList<>(batchSize);
-
         for (int i = 0; i < totalSize; i++) {
             Map<String, Object> dataMap = dataList.get(i);
             T mainEntity = MapUtil.map2Object(mainClazz, dataMap);
             H historyEntity = MapUtil.map2Object(historyClazz, dataMap);
-
+            if (mainEntity instanceof HydExcelInstructorInfo) {
+                ((HydExcelInstructorInfo) mainEntity).setBatchNo(batchNo);
+            }
+            if (historyEntity instanceof HydExcelInstructorInfoHistory) {
+                ((HydExcelInstructorInfoHistory) historyEntity).setBatchNo(batchNo);
+            }
+            if (mainEntity instanceof HydExcelInstructorAgeStats) {
+                ((HydExcelInstructorAgeStats) mainEntity).setBatchNo(batchNo);
+            }
+            if (historyEntity instanceof HydExcelInstructorAgeStatsHistory) {
+                ((HydExcelInstructorAgeStatsHistory) historyEntity).setBatchNo(batchNo);
+            }
+            if (mainEntity instanceof HydExcelInstructorAgeGrowth) {
+                ((HydExcelInstructorAgeGrowth) mainEntity).setBatchNo(batchNo);
+            }
+            if (historyEntity instanceof HydExcelInstructorAgeGrowthHistory) {
+                ((HydExcelInstructorAgeGrowthHistory) historyEntity).setBatchNo(batchNo);
+            }
             mainBatch.add(mainEntity);
             historyBatch.add(historyEntity);
 

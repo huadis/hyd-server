@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydExcelIndustryEmployeeCount;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +25,8 @@ public interface HydExcelIndustryEmployeeCountRepo extends JpaRepository<HydExce
             "WHERE statisticalYear = ?1 " +
             "ORDER BY personCount DESC;", nativeQuery = true)
     List<Map<String,Object>> stat(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_excel_industry_employee_count WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

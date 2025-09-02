@@ -50,6 +50,10 @@ public class HydExcelIndustryGrowthValueTrend implements Serializable {
     @ApiModelProperty(value = "数据来源/备注")
     private String dataSource;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

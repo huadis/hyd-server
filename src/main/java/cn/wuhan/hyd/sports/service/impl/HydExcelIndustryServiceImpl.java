@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.wuhan.hyd.framework.utils.MapUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
+import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydExcelIndustryService;
@@ -17,7 +18,6 @@ import javax.annotation.Resource;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -363,6 +363,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
     @Override
     public boolean importExcel(Map<String, List<Map<String, Object>>> sheetMapData) {
+        String batchNo = UUIDUtil.getBatchNo();
         List<HydExcelIndustryCoreIndicators> coreIndicators = new ArrayList<>();
         List<HydExcelIndustryScaleTrend> scaleTrends = new ArrayList<>();
         List<HydExcelIndustryEntityCountRatio> entityCountRatios = new ArrayList<>();
@@ -379,48 +380,82 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
         List<HydExcelIndustryGoodsPurchaseRateHistory> goodsPurchaseRateHistories = new ArrayList<>();
         List<HydExcelIndustryEmployeeCountHistory> employeeCountHistories = new ArrayList<>();
         sheetMapData.forEach((key, list) -> {
-            Map<String, Object> rowData = new HashMap<>();
             switch (key) {
                 case "核心指标总表":
                     list.forEach(m -> {
-                        coreIndicators.add(MapUtil.map2Object(HydExcelIndustryCoreIndicators.class, m));
-                        coreIndicatorsHistories.add(MapUtil.map2Object(HydExcelIndustryCoreIndicatorsHistory.class, m));
+                        HydExcelIndustryCoreIndicators obj = MapUtil.map2Object(HydExcelIndustryCoreIndicators.class, m);
+                        obj.setBatchNo(batchNo);
+                        coreIndicators.add(obj);
+
+                        HydExcelIndustryCoreIndicatorsHistory historyObj = MapUtil.map2Object(HydExcelIndustryCoreIndicatorsHistory.class, m);
+                        historyObj.setBatchNo(batchNo);
+                        coreIndicatorsHistories.add(historyObj);
                     });
                     break;
                 case "总规模（年度趋势）表":
                     list.forEach(m -> {
-                        scaleTrends.add(MapUtil.map2Object(HydExcelIndustryScaleTrend.class, m));
-                        scaleTrendHistories.add(MapUtil.map2Object(HydExcelIndustryScaleTrendHistory.class, m));
+                        HydExcelIndustryScaleTrend obj = MapUtil.map2Object(HydExcelIndustryScaleTrend.class, m);
+                        obj.setBatchNo(batchNo);
+                        scaleTrends.add(obj);
+
+                        HydExcelIndustryScaleTrendHistory historyObj = MapUtil.map2Object(HydExcelIndustryScaleTrendHistory.class, m);
+                        historyObj.setBatchNo(batchNo);
+                        scaleTrendHistories.add(historyObj);
                     });
                     break;
                 case "场主体数量（分类占比）表":
                     list.forEach(m -> {
-                        entityCountRatios.add(MapUtil.map2Object(HydExcelIndustryEntityCountRatio.class, m));
-                        entityCountRatioHistories.add(MapUtil.map2Object(HydExcelIndustryEntityCountRatioHistory.class, m));
+                        HydExcelIndustryEntityCountRatio obj = MapUtil.map2Object(HydExcelIndustryEntityCountRatio.class, m);
+                        obj.setBatchNo(batchNo);
+                        entityCountRatios.add(obj);
+
+                        HydExcelIndustryEntityCountRatioHistory historyObj = MapUtil.map2Object(HydExcelIndustryEntityCountRatioHistory.class, m);
+                        historyObj.setBatchNo(batchNo);
+                        entityCountRatioHistories.add(historyObj);
                     });
                     break;
                 case "总增速和增加值（年度趋势）表":
                     list.forEach(m -> {
-                        growthValueTrends.add(MapUtil.map2Object(HydExcelIndustryGrowthValueTrend.class, m));
-                        growthValueTrendHistories.add(MapUtil.map2Object(HydExcelIndustryGrowthValueTrendHistory.class, m));
+                        HydExcelIndustryGrowthValueTrend obj = MapUtil.map2Object(HydExcelIndustryGrowthValueTrend.class, m);
+                        obj.setBatchNo(batchNo);
+                        growthValueTrends.add(obj);
+
+                        HydExcelIndustryGrowthValueTrendHistory historyObj = MapUtil.map2Object(HydExcelIndustryGrowthValueTrendHistory.class, m);
+                        historyObj.setBatchNo(batchNo);
+                        growthValueTrendHistories.add(historyObj);
                     });
                     break;
                 case "居民体育培训项目参与率表":
                     list.forEach(m -> {
-                        trainingParticipationRates.add(MapUtil.map2Object(HydExcelIndustryTrainingParticipationRate.class, m));
-                        trainingParticipationRateHistories.add(MapUtil.map2Object(HydExcelIndustryTrainingParticipationRateHistory.class, m));
+                        HydExcelIndustryTrainingParticipationRate obj = MapUtil.map2Object(HydExcelIndustryTrainingParticipationRate.class, m);
+                        obj.setBatchNo(batchNo);
+                        trainingParticipationRates.add(obj);
+
+                        HydExcelIndustryTrainingParticipationRateHistory historyObj = MapUtil.map2Object(HydExcelIndustryTrainingParticipationRateHistory.class, m);
+                        historyObj.setBatchNo(batchNo);
+                        trainingParticipationRateHistories.add(historyObj);
                     });
                     break;
                 case "居民体育用品购买率表":
                     list.forEach(m -> {
-                        goodsPurchaseRates.add(MapUtil.map2Object(HydExcelIndustryGoodsPurchaseRate.class, m));
-                        goodsPurchaseRateHistories.add(MapUtil.map2Object(HydExcelIndustryGoodsPurchaseRateHistory.class, m));
+                        HydExcelIndustryGoodsPurchaseRate obj = MapUtil.map2Object(HydExcelIndustryGoodsPurchaseRate.class, m);
+                        obj.setBatchNo(batchNo);
+                        goodsPurchaseRates.add(obj);
+
+                        HydExcelIndustryGoodsPurchaseRateHistory historyObj = MapUtil.map2Object(HydExcelIndustryGoodsPurchaseRateHistory.class, m);
+                        historyObj.setBatchNo(batchNo);
+                        goodsPurchaseRateHistories.add(historyObj);
                     });
                     break;
                 case "从业人员数量（分类统计）表":
                     list.forEach(m -> {
-                        employeeCounts.add(MapUtil.map2Object(HydExcelIndustryEmployeeCount.class, m));
-                        employeeCountHistories.add(MapUtil.map2Object(HydExcelIndustryEmployeeCountHistory.class, m));
+                        HydExcelIndustryEmployeeCount obj = MapUtil.map2Object(HydExcelIndustryEmployeeCount.class, m);
+                        obj.setBatchNo(batchNo);
+                        employeeCounts.add(obj);
+
+                        HydExcelIndustryEmployeeCountHistory historyObj = MapUtil.map2Object(HydExcelIndustryEmployeeCountHistory.class, m);
+                        historyObj.setBatchNo(batchNo);
+                        employeeCountHistories.add(historyObj);
                     });
                     break;
             }
@@ -431,6 +466,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 1. 保存核心指标
         Instant start1 = Instant.now();
+        industryCoreIndicatorsRepo.deleteAll();
         industryCoreIndicatorsRepo.saveAll(coreIndicators);
         long time1 = Duration.between(start1, Instant.now()).toMillis();
         log.info("1. 核心指标数据保存完成，条数：{}，耗时：{}ms",
@@ -438,6 +474,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 2. 保存核心指标历史
         Instant start2 = Instant.now();
+        //industryCoreIndicatorsHistoryRepo.deleteAll();
         industryCoreIndicatorsHistoryRepo.saveAll(coreIndicatorsHistories);
         long time2 = Duration.between(start2, Instant.now()).toMillis();
         log.info("2. 核心指标历史数据保存完成，条数：{}，耗时：{}ms",
@@ -445,6 +482,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 3. 保存行业规模趋势
         Instant start3 = Instant.now();
+        industryScaleTrendRepo.deleteAll();
         industryScaleTrendRepo.saveAll(scaleTrends);
         long time3 = Duration.between(start3, Instant.now()).toMillis();
         log.info("3. 行业规模趋势数据保存完成，条数：{}，耗时：{}ms",
@@ -452,6 +490,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 4. 保存行业规模趋势历史
         Instant start4 = Instant.now();
+        //industryScaleTrendHistoryRepo.deleteAll();
         industryScaleTrendHistoryRepo.saveAll(scaleTrendHistories);
         long time4 = Duration.between(start4, Instant.now()).toMillis();
         log.info("4. 行业规模趋势历史数据保存完成，条数：{}，耗时：{}ms",
@@ -459,6 +498,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 5. 保存实体数量占比
         Instant start5 = Instant.now();
+        industryEntityCountRatioRepo.deleteAll();
         industryEntityCountRatioRepo.saveAll(entityCountRatios);
         long time5 = Duration.between(start5, Instant.now()).toMillis();
         log.info("5. 实体数量占比数据保存完成，条数：{}，耗时：{}ms",
@@ -466,6 +506,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 6. 保存实体数量占比历史
         Instant start6 = Instant.now();
+        //industryEntityCountRatioHistoryRepo.deleteAll();
         industryEntityCountRatioHistoryRepo.saveAll(entityCountRatioHistories);
         long time6 = Duration.between(start6, Instant.now()).toMillis();
         log.info("6. 实体数量占比历史数据保存完成，条数：{}，耗时：{}ms",
@@ -473,6 +514,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 7. 保存增长值趋势
         Instant start7 = Instant.now();
+        industryGrowthValueTrendRepo.deleteAll();
         industryGrowthValueTrendRepo.saveAll(growthValueTrends);
         long time7 = Duration.between(start7, Instant.now()).toMillis();
         log.info("7. 增长值趋势数据保存完成，条数：{}，耗时：{}ms",
@@ -480,6 +522,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 8. 保存增长值趋势历史
         Instant start8 = Instant.now();
+        //industryGrowthValueTrendHistoryRepo.deleteAll();
         industryGrowthValueTrendHistoryRepo.saveAll(growthValueTrendHistories);
         long time8 = Duration.between(start8, Instant.now()).toMillis();
         log.info("8. 增长值趋势历史数据保存完成，条数：{}，耗时：{}ms",
@@ -487,6 +530,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 9. 保存培训参与率
         Instant start9 = Instant.now();
+        industryTrainingParticipationRateRepo.deleteAll();
         industryTrainingParticipationRateRepo.saveAll(trainingParticipationRates);
         long time9 = Duration.between(start9, Instant.now()).toMillis();
         log.info("9. 培训参与率数据保存完成，条数：{}，耗时：{}ms",
@@ -494,6 +538,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 10. 保存培训参与率历史
         Instant start10 = Instant.now();
+        //industryTrainingParticipationRateHistoryRepo.deleteAll();
         industryTrainingParticipationRateHistoryRepo.saveAll(trainingParticipationRateHistories);
         long time10 = Duration.between(start10, Instant.now()).toMillis();
         log.info("10. 培训参与率历史数据保存完成，条数：{}，耗时：{}ms",
@@ -501,6 +546,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 11. 保存商品采购率
         Instant start11 = Instant.now();
+        industryGoodsPurchaseRateRepo.deleteAll();
         industryGoodsPurchaseRateRepo.saveAll(goodsPurchaseRates);
         long time11 = Duration.between(start11, Instant.now()).toMillis();
         log.info("11. 商品采购率数据保存完成，条数：{}，耗时：{}ms",
@@ -508,6 +554,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 12. 保存商品采购率历史
         Instant start12 = Instant.now();
+        //industryGoodsPurchaseRateHistoryRepo.deleteAll();
         industryGoodsPurchaseRateHistoryRepo.saveAll(goodsPurchaseRateHistories);
         long time12 = Duration.between(start12, Instant.now()).toMillis();
         log.info("12. 商品采购率历史数据保存完成，条数：{}，耗时：{}ms",
@@ -515,6 +562,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 13. 保存从业人员数量
         Instant start13 = Instant.now();
+        industryEmployeeCountRepo.deleteAll();
         industryEmployeeCountRepo.saveAll(employeeCounts);
         long time13 = Duration.between(start13, Instant.now()).toMillis();
         log.info("13. 从业人员数量数据保存完成，条数：{}，耗时：{}ms",
@@ -522,6 +570,7 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
 
         // 14. 保存从业人员数量历史
         Instant start14 = Instant.now();
+        //industryEmployeeCountHistoryRepo.deleteAll();
         industryEmployeeCountHistoryRepo.saveAll(employeeCountHistories);
         long time14 = Duration.between(start14, Instant.now()).toMillis();
         log.info("14. 从业人员数量历史数据保存完成，条数：{}，耗时：{}ms",

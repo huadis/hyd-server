@@ -21,6 +21,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +36,8 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     @Resource
     private HydExcelPublicEventsHistoryRepo publicEventsHistoryRepo;
     @Resource
+    private HydExcelPublicEventsRepo publicEventsRepo;
+    @Resource
     private HydResultEventsOverviewStatRepo overviewStatRepo;
     @Resource
     private HydResultEventsMonthCountStatRepo monthCountStatRepo;
@@ -42,6 +47,8 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     private HydResultEventsParticipantLevelRepo participantLevelRepo;
     @Resource
     private JdbcTemplate jdbcTemplate;
+    @Resource
+    private Executor executor;
 
     public void syncResultData() {
         syncOverviewStatData();
@@ -51,12 +58,12 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     }
 
     public void syncOverviewStatData() {
-        List<Map<String, Object>> totalList = publicEventsHistoryRepo.countAll();
-        List<Map<String, Object>> participantCountList = publicEventsHistoryRepo.totalParticipantCount();
-        List<Map<String, Object>> internationalList = publicEventsHistoryRepo.internationalEventCount();
-        List<Map<String, Object>> nationalList = publicEventsHistoryRepo.nationalEventCount();
-        List<Map<String, Object>> provinceList = publicEventsHistoryRepo.provinceCount();
-        List<Map<String, Object>> cityList = publicEventsHistoryRepo.cityCount();
+        List<Map<String, Object>> totalList = publicEventsRepo.countAll();
+        List<Map<String, Object>> participantCountList = publicEventsRepo.totalParticipantCount();
+        List<Map<String, Object>> internationalList = publicEventsRepo.internationalEventCount();
+        List<Map<String, Object>> nationalList = publicEventsRepo.nationalEventCount();
+        List<Map<String, Object>> provinceList = publicEventsRepo.provinceCount();
+        List<Map<String, Object>> cityList = publicEventsRepo.cityCount();
 
         // 2. 2. 预处理：将List<Map>转为“年份→统计值”的Map（Key：年份字符串，Value：统计值）
         Map<String, Object> yearToTotal = convertListToYearMap(totalList, "total"); // 年份→总赛事场次
@@ -121,7 +128,7 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     }
 
     public void syncMonthCountStatData() {
-        List<Map<String, Object>> list = publicEventsHistoryRepo.monthStat();
+        List<Map<String, Object>> list = publicEventsRepo.monthStat();
         List<HydResultEventsMonthCountStat> result = new ArrayList<>();
         for (Map<String, Object> map : list) {
             String statisticalYear = MapUtils.getString(map, "statisticalYear");
@@ -137,7 +144,7 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     }
 
     public void syncSportItemTopData() {
-        List<Map<String, Object>> list = publicEventsHistoryRepo.sportItemTop5();
+        List<Map<String, Object>> list = publicEventsRepo.sportItemTop5();
         List<HydResultEventsSportItemTop> result = new ArrayList<>();
         for (Map<String, Object> map : list) {
             String statisticalYear = MapUtils.getString(map, "statisticalYear");
@@ -153,7 +160,7 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     }
 
     public void syncParticipantLevelData() {
-        List<Map<String, Object>> list = publicEventsHistoryRepo.participantCountStat();
+        List<Map<String, Object>> list = publicEventsRepo.participantCountStat();
         List<HydResultEventsParticipantLevel> result = new ArrayList<>();
         for (Map<String, Object> map : list) {
             String statisticalYear = MapUtils.getString(map, "statisticalYear");
@@ -170,63 +177,92 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
 
 
     @Override
-    public PageResult<HydExcelPublicEventsHistory> queryAll(int page, int size) {
+    public PageResult<HydExcelPublicEvents> queryAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<HydExcelPublicEventsHistory> pageResult = publicEventsHistoryRepo.findAll(pageable);
-        PageResult<HydExcelPublicEventsHistory> result = new PageResult<>();
+        Page<HydExcelPublicEvents> pageResult = publicEventsRepo.findAll(pageable);
+        PageResult<HydExcelPublicEvents> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
         result.setContent(pageResult.getContent());
         return result;
     }
 
     @Override
-    public List<HydExcelPublicEventsHistory> queryAll() {
-        return publicEventsHistoryRepo.findAll();
+    public List<HydExcelPublicEvents> queryAll() {
+        return publicEventsRepo.findAll();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HydExcelPublicEventsHistory save(HydExcelPublicEventsHistory publicEvents) {
-        return publicEventsHistoryRepo.save(publicEvents);
+    public HydExcelPublicEvents save(HydExcelPublicEvents publicEvents) {
+        return publicEventsRepo.save(publicEvents);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(Long id) {
-        publicEventsHistoryRepo.deleteById(id);
+        publicEventsRepo.deleteById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HydExcelPublicEventsHistory update(HydExcelPublicEventsHistory publicEvents) {
+    public HydExcelPublicEvents update(HydExcelPublicEvents publicEvents) {
         if (publicEvents.getId() == null) {
             throw new IllegalArgumentException("更新操作必须提供ID");
         }
         findById(publicEvents.getId());
-        return publicEventsHistoryRepo.save(publicEvents);
+        return publicEventsRepo.save(publicEvents);
     }
 
     @Override
-    public HydExcelPublicEventsHistory findById(Long id) {
-        return publicEventsHistoryRepo.findById(id)
+    public HydExcelPublicEvents findById(Long id) {
+        return publicEventsRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("大众赛事-体育赛事信息表，ID：" + id));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean importExcel(Map<String, List<Map<String, Object>>> sheetMapData) {
+        List<HydExcelPublicEvents> publicEvents = new ArrayList<>();
         List<HydExcelPublicEventsHistory> publicEventsHistories = new ArrayList<>();
-        sheetMapData.forEach((name, list) -> {
-            if (CollectionUtils.isNotEmpty(list)) {
-                // 批量保存
-                list.forEach(m -> {
-                    publicEventsHistories.add(MapUtil.map2Object(HydExcelPublicEventsHistory.class, m));
-                });
-                batchInsertHistoryWithJdbc(publicEventsHistories);
-            }
-        });
-        syncResultData();
-        return true;
+        try {
+            publicEventsRepo.deleteAll();
+            CompletableFuture<Void> mainFuture = CompletableFuture.runAsync(new Runnable() {
+                @Override
+                public void run() {
+                    sheetMapData.forEach((name, list) -> {
+                        if (CollectionUtils.isNotEmpty(list)) {
+                            // 批量保存
+                            list.forEach(m -> {
+                                publicEvents.add(MapUtil.map2Object(HydExcelPublicEvents.class, m));
+                            });
+                            publicEventsRepo.saveAll(publicEvents);
+                        }
+                    });
+                }
+            }, executor);
+            CompletableFuture<Void> historyFuture = CompletableFuture.runAsync(new Runnable() {
+                @Override
+                public void run() {
+                    sheetMapData.forEach((name, list) -> {
+                        if (CollectionUtils.isNotEmpty(list)) {
+                            // 批量保存
+                            list.forEach(m -> {
+                                publicEventsHistories.add(MapUtil.map2Object(HydExcelPublicEventsHistory.class, m));
+                            });
+                            batchInsertHistoryWithJdbc(publicEventsHistories);
+                        }
+                    });
+                }
+            }, executor);
+            // 3. 等待所有线程完成
+            CompletableFuture.allOf(mainFuture, historyFuture).get();
+            syncResultData();
+            return true;
+        } catch (InterruptedException | ExecutionException e) {
+            // 异常时事务回滚
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Excel导入失败", e);
+        }
     }
 
     // ------------------------- 大众赛事-总览信息表操作 -------------------------

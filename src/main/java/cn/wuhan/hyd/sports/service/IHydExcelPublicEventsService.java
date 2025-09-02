@@ -22,14 +22,14 @@ public interface IHydExcelPublicEventsService {
      * @param size 每页条数
      * @return 实体对象列表
      */
-    PageResult<HydExcelPublicEventsHistory> queryAll(int page, int size);
+    PageResult<HydExcelPublicEvents> queryAll(int page, int size);
 
     /**
      * 查询全部
      *
      * @return 实体对象列表
      */
-    List<HydExcelPublicEventsHistory> queryAll();
+    List<HydExcelPublicEvents> queryAll();
 
 
     /**
@@ -38,7 +38,7 @@ public interface IHydExcelPublicEventsService {
      * @param publicEvents 实体对象
      * @return 保存后的实体对象
      */
-    HydExcelPublicEventsHistory save(HydExcelPublicEventsHistory publicEvents);
+    HydExcelPublicEvents save(HydExcelPublicEvents publicEvents);
 
     /**
      * 根据ID删除数据
@@ -53,7 +53,7 @@ public interface IHydExcelPublicEventsService {
      * @param publicEvents 实体对象
      * @return 更新后的实体对象
      */
-    HydExcelPublicEventsHistory update(HydExcelPublicEventsHistory publicEvents);
+    HydExcelPublicEvents update(HydExcelPublicEvents publicEvents);
 
     /**
      * 根据ID查询数据
@@ -61,7 +61,7 @@ public interface IHydExcelPublicEventsService {
      * @param id 主键ID
      * @return 实体对象
      */
-    HydExcelPublicEventsHistory findById(Long id);
+    HydExcelPublicEvents findById(Long id);
 
 
     // ------------------------- 大众赛事-总览信息表操作 -------------------------

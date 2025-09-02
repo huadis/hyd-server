@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -31,4 +32,8 @@ public interface HydResultOrderRepo extends JpaRepository<HydResultOrder, Long> 
             "sum(orderAmount) orderAmountSum " +
             "FROM hyd_result_order ", nativeQuery = true)
     Long sumOrderAmount();
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_order WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

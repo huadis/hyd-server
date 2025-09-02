@@ -75,6 +75,10 @@ public class HydExcelInstructorInfoHistory implements Serializable {
     @ApiModelProperty(value = "上传时间")
     private String uploadTime;
 
+    @Column(name = "batchNo")
+    @ApiModelProperty(value = "批次号")
+    private String batchNo;
+
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;

@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydExcelIndustryScaleTrend;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +25,8 @@ public interface HydExcelIndustryScaleTrendRepo extends JpaRepository<HydExcelIn
             "    hyd_excel_industry_scale_trend \n" +
             "ORDER BY statisticalYear asc ", nativeQuery = true)
     List<Map<String,Object>> stat(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_excel_industry_scale_trend WHERE batchNo != ?1", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo);
 }

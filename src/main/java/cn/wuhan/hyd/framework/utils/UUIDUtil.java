@@ -10,6 +10,11 @@ import java.util.UUID;
 public class UUIDUtil {
 
     public static String getBatchNo() {
+        return "BATCH_" + DateUtil.getTodayStr();
+
+    }
+
+    public static String getUUID() {
         return "BATCH_" + UUID.randomUUID().toString().replace("-", "").substring(0, 16);
     }
 }
