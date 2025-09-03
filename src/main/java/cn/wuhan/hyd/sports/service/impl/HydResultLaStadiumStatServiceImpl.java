@@ -220,6 +220,24 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
     private void syncSportName() {
         // 1. 从原始数据仓库查询统计结果
         List<Map<String, Object>> list = stadiumItemService.itemCountTop10BySportName("");
+        List<HydResultLaStadiumSportNameTop> laStadiumSportNameTops = new ArrayList<>();
+
+        // 2. 映射原始数据到统计实体
+        list.forEach(map -> {
+            HydResultLaStadiumSportNameTop e = new HydResultLaStadiumSportNameTop();
+            e.setSportName(MapUtils.getString(map, "sportName"));
+            e.setNum(MapUtils.getLong(map, "num"));
+            laStadiumSportNameTops.add(e);
+        });
+
+        // 3. 清空旧数据并保存新数据
+        sportNameTopRepo.deleteAll();
+        sportNameTopRepo.saveAll(laStadiumSportNameTops);
+    }
+
+    private void syncSportNameTop() {
+        // 1. 从原始数据仓库查询统计结果
+        List<Map<String, Object>> list = stadiumItemService.itemCountBySportName("");
         List<HydResultLaStadiumSportName> laStadiumSportNames = new ArrayList<>();
 
         // 2. 映射原始数据到统计实体
@@ -233,23 +251,5 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
         // 3. 清空旧数据并保存新数据
         sportNameRepo.deleteAll();
         sportNameRepo.saveAll(laStadiumSportNames);
-    }
-
-    private void syncSportNameTop() {
-        // 1. 从原始数据仓库查询统计结果
-        List<Map<String, Object>> list = stadiumItemService.itemCountBySportName("");
-        List<HydResultLaStadiumSportNameTop> laStadiumSportNames = new ArrayList<>();
-
-        // 2. 映射原始数据到统计实体
-        list.forEach(map -> {
-            HydResultLaStadiumSportNameTop e = new HydResultLaStadiumSportNameTop();
-            e.setSportName(MapUtils.getString(map, "sportName"));
-            e.setNum(MapUtils.getLong(map, "num"));
-            laStadiumSportNames.add(e);
-        });
-
-        // 3. 清空旧数据并保存新数据
-        sportNameTopRepo.deleteAll();
-        sportNameTopRepo.saveAll(laStadiumSportNames);
     }
 }

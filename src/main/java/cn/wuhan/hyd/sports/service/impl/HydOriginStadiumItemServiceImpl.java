@@ -140,12 +140,12 @@ public class HydOriginStadiumItemServiceImpl extends HydBaseServiceImpl implemen
     }
 
     public List<Map<String, Object>> itemCountTop10BySportName(String year) {
-        return stadiumItemRepo.itemCountTop10BySportName(year);
+        return stadiumItemHistoryRepo.itemCountTop10BySportName(year);
     }
 
     public List<Map<String, Object>> itemCountBySportName(String year) {
         // 1. 第一步：查询所有sportName的完整统计结果
-        List<Map<String, Object>> allSportStats = stadiumItemRepo.itemCountBySportName(year);
+        List<Map<String, Object>> allSportStats = stadiumItemHistoryRepo.itemCountBySportName(year);
         if (CollectionUtils.isEmpty(allSportStats)) {
             return new ArrayList<>();  // 无数据时返回空列表
         }

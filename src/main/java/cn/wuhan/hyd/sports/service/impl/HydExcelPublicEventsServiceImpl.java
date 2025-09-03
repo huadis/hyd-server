@@ -3,6 +3,7 @@ package cn.wuhan.hyd.sports.service.impl;
 import cn.wuhan.hyd.framework.utils.DateUtil;
 import cn.wuhan.hyd.framework.utils.MapUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
+import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydExcelPublicEventsService;
@@ -92,12 +93,12 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
                     HydResultEventsOverviewStat stat = new HydResultEventsOverviewStat();
                     stat.setStatisticalYear(Integer.parseInt(yearInt));
                     // 3.1 年份对应的各维度统计值（注意：从Map取数时需转为Long，避免类型转换错误）
-                    stat.setTotal(MapUtils.getLong(yearToTotal, year)); // 总赛事场次
-                    stat.setParticipantCount(MapUtils.getLong(yearToParticipant, year)); // 总参与人数
-                    stat.setInternationalCount(MapUtils.getLong(yearToInternational, year)); // 国际赛事
-                    stat.setNationalCount(MapUtils.getLong(yearToNational, year)); // 国家级赛事
-                    stat.setProvinceCount(MapUtils.getLong(yearToProvince, year)); // 省级赛事
-                    stat.setCityCount(MapUtils.getLong(yearToCity, year)); // 市级赛事
+                    stat.setTotal(MapUtils.getLong(yearToTotal, year, 0L)); // 总赛事场次
+                    stat.setParticipantCount(MapUtils.getLong(yearToParticipant, year, 0L)); // 总参与人数
+                    stat.setInternationalCount(MapUtils.getLong(yearToInternational, year, 0L)); // 国际赛事
+                    stat.setNationalCount(MapUtils.getLong(yearToNational, year, 0L)); // 国家级赛事
+                    stat.setProvinceCount(MapUtils.getLong(yearToProvince, year, 0L)); // 省级赛事
+                    stat.setCityCount(MapUtils.getLong(yearToCity, year, 0L)); // 市级赛事
                     return stat;
                 })
                 .collect(Collectors.toList());
@@ -222,10 +223,17 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean importExcel(Map<String, List<Map<String, Object>>> sheetMapData) {
+        String batchNo = UUIDUtil.getBatchNo();
         List<HydExcelPublicEvents> publicEvents = new ArrayList<>();
         List<HydExcelPublicEventsHistory> publicEventsHistories = new ArrayList<>();
         try {
-            publicEventsRepo.deleteAll();
+
+            CompletableFuture<Void> deleteFuture = CompletableFuture.runAsync(new Runnable() {
+                @Override
+                public void run() {
+                    publicEventsRepo.deleteAll();
+                }
+            }, executor);
             CompletableFuture<Void> mainFuture = CompletableFuture.runAsync(new Runnable() {
                 @Override
                 public void run() {
@@ -233,7 +241,9 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
                         if (CollectionUtils.isNotEmpty(list)) {
                             // 批量保存
                             list.forEach(m -> {
-                                publicEvents.add(MapUtil.map2Object(HydExcelPublicEvents.class, m));
+                                HydExcelPublicEvents events = MapUtil.map2Object(HydExcelPublicEvents.class, m);
+                                events.setBatchNo(batchNo);
+                                publicEvents.add(events);
                             });
                             publicEventsRepo.saveAll(publicEvents);
                         }
@@ -247,15 +257,17 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
                         if (CollectionUtils.isNotEmpty(list)) {
                             // 批量保存
                             list.forEach(m -> {
-                                publicEventsHistories.add(MapUtil.map2Object(HydExcelPublicEventsHistory.class, m));
+                                HydExcelPublicEventsHistory eventsHistory = MapUtil.map2Object(HydExcelPublicEventsHistory.class, m);
+                                eventsHistory.setBatchNo(batchNo);
+                                publicEventsHistories.add(eventsHistory);
                             });
-                            batchInsertHistoryWithJdbc(publicEventsHistories);
+                            publicEventsHistoryRepo.saveAll(publicEventsHistories);
                         }
                     });
                 }
             }, executor);
             // 3. 等待所有线程完成
-            CompletableFuture.allOf(mainFuture, historyFuture).get();
+            CompletableFuture.allOf(deleteFuture, mainFuture, historyFuture).get();
             syncResultData();
             return true;
         } catch (InterruptedException | ExecutionException e) {
@@ -437,12 +449,12 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
 
     @Override
     public List<Map<String, Object>> currentMouthEvents(String year) {
-        return publicEventsHistoryRepo.currentMouthEvents(year + "年", DateUtil.getCurrentMonth() + "月");
+        return publicEventsRepo.currentMouthEvents(year + "年", DateUtil.getCurrentMonth() + "月");
     }
 
     @Override
     public List<Map<String, Object>> districtCountByYear(String year) {
-        return publicEventsHistoryRepo.districtCountByYear(year + "年");
+        return publicEventsRepo.districtCountByYear(year + "年");
     }
 
     /**

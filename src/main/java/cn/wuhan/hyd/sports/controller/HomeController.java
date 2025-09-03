@@ -3,10 +3,7 @@ package cn.wuhan.hyd.sports.controller;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.sports.domain.HydResultStadiumDistrict;
-import cn.wuhan.hyd.sports.service.IHydExcelPublicEventsService;
-import cn.wuhan.hyd.sports.service.IHydExcelSportsOrgService;
-import cn.wuhan.hyd.sports.service.IHydOriginStadiumService;
-import cn.wuhan.hyd.sports.service.IHydResultStadiumDistrictService;
+import cn.wuhan.hyd.sports.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -33,7 +30,7 @@ import java.util.Map;
 public class HomeController {
 
     @Resource
-    private IHydOriginStadiumService stadiumService;
+    private IHydResultLaStadiumStatService laStadiumStatService;
     @Resource
     private IHydResultStadiumDistrictService stadiumDistrictService;
     @Resource
@@ -47,7 +44,7 @@ public class HomeController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        List<Map<String, Object>> list1 = stadiumService.stadiumCountByDistrict(year);
+        List<Map<String, Object>> list1 = laStadiumStatService.stadiumCountByDistrict(year);
         List<HydResultStadiumDistrict> list2 = stadiumDistrictService.countStadiumDistrict(year);
         List<Map<String, Object>> list3 = publicEventsService.districtCountByYear(year);
         // 体育组织

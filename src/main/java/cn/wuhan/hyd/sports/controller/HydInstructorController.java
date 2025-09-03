@@ -141,6 +141,7 @@ public class HydInstructorController {
             hydResultInstructorService.syncResultData();
             return new ResponseEntity<>("文件上传成功", HttpStatus.OK);
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             return new ResponseEntity<>("文件上传或处理失败", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

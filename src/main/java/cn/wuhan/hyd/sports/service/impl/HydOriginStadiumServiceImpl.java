@@ -36,46 +36,46 @@ public class HydOriginStadiumServiceImpl extends HydBaseServiceImpl implements I
     private HydOriginStadiumHistoryRepo stadiumHistoryRepo;
 
     @Override
-    public PageResult<HydOriginStadium> queryAll(int page, int size) {
+    public PageResult<HydOriginStadiumHistory> queryAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<HydOriginStadium> pageResult = stadiumRepo.findAll(pageable);
-        PageResult<HydOriginStadium> result = new PageResult<>();
+        Page<HydOriginStadiumHistory> pageResult = stadiumHistoryRepo.findAll(pageable);
+        PageResult<HydOriginStadiumHistory> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
         result.setContent(pageResult.getContent());
         return result;
     }
 
     @Override
-    public List<HydOriginStadium> queryAll() {
-        return stadiumRepo.findAll();
+    public List<HydOriginStadiumHistory> queryAll() {
+        return stadiumHistoryRepo.findAll();
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HydOriginStadium save(HydOriginStadium hydOriginStadium) {
-        return stadiumRepo.save(hydOriginStadium);
+    public HydOriginStadiumHistory save(HydOriginStadiumHistory hydOriginStadium) {
+        return stadiumHistoryRepo.save(hydOriginStadium);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(String id) {
-        stadiumRepo.deleteById(id);
+        stadiumHistoryRepo.deleteById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HydOriginStadium update(HydOriginStadium stadium) {
+    public HydOriginStadiumHistory update(HydOriginStadiumHistory stadium) {
         if (stadium.getId() == null) {
             throw new IllegalArgumentException("更新操作必须提供ID");
         }
         // 验证租户是否存在
         findById(stadium.getId());
-        return stadiumRepo.save(stadium);
+        return stadiumHistoryRepo.save(stadium);
     }
 
     @Override
-    public HydOriginStadium findById(String id) {
-        return stadiumRepo.findById(id)
+    public HydOriginStadiumHistory findById(String id) {
+        return stadiumHistoryRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("培训场馆表实体类，ID: " + id));
     }
 
@@ -137,6 +137,6 @@ public class HydOriginStadiumServiceImpl extends HydBaseServiceImpl implements I
 
     @Override
     public List<Map<String, Object>> stadiumCountByDistrict(String year) {
-        return stadiumRepo.stadiumCountByDistrict(year);
+        return stadiumHistoryRepo.stadiumCountByDistrict(year);
     }
 }

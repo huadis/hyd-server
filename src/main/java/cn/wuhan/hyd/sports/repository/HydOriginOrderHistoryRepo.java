@@ -16,19 +16,19 @@ import java.util.Map;
 @Repository
 public interface HydOriginOrderHistoryRepo extends JpaRepository<HydOriginOrderHistory, String> {
 
-    @Query(value = "select district, count(*) num from (SELECT a.*, b.districtName as district from hyd_origin_order_history a, hyd_origin_tenant_history b WHERE a.tenantId = b.id) c GROUP BY c.district", nativeQuery = true)
+    @Query(value = "select district, count(*) num from ( SELECT b.districtName as district FROM (select DISTINCT tenantId from hyd_origin_order_history) AS a, hyd_origin_tenant_history b WHERE a.tenantId = b.id and b.districtName is not null and b.districtName != '' ) c GROUP BY c.district order by num desc", nativeQuery = true)
     List<Map<String, Object>> districtStatCount();
 
 
-    @Query(value = "select studentGender as gender, count(*) num from hyd_origin_order_history GROUP BY gender", nativeQuery = true)
+    @Query(value = "select studentGender as gender, count(*) num from hyd_origin_order_history where studentGender is not null and studentGender != '' GROUP BY gender", nativeQuery = true)
     List<Map<String, Object>> genderStatCount();
 
 
-    @Query(value = "select project, count(*) num from (SELECT a.*, b.stadiumItemName as project from hyd_origin_order_history a, hyd_origin_stadium_item_history b WHERE a.stadiumItemId = b.id) c GROUP BY c.project", nativeQuery = true)
+    @Query(value = "select project, count(*) num from (SELECT b.stadiumItemName as project FROM (select DISTINCT stadiumItemId from hyd_origin_order_history) AS a, hyd_origin_stadium_item_history b WHERE a.stadiumItemId = b.id and b.stadiumItemName is not null and b.stadiumItemName != '' ) c GROUP BY c.project order by num desc", nativeQuery = true)
     List<Map<String, Object>> projectStatCount();
 
 
-    @Query(value = "select course, count(*) num from (SELECT a.*, b.courseName as course from hyd_origin_order_history a, hyd_origin_training_course_history b WHERE a.courseId = b.id) c GROUP BY c.course", nativeQuery = true)
+    @Query(value = "select course, count(*) num from (SELECT b.courseName as course FROM (select DISTINCT courseId from hyd_origin_order_history) AS a, hyd_origin_training_course_history b WHERE a.courseId = b.id and b.courseName is not null and b.courseName != '' ) c GROUP BY c.course order by num desc", nativeQuery = true)
     List<Map<String, Object>> courseStatCount();
 
     @Query(value = "\n" +
@@ -59,7 +59,7 @@ public interface HydOriginOrderHistoryRepo extends JpaRepository<HydOriginOrderH
             "    END;", nativeQuery = true)
     List<Map<String, Object>> userAgeStatCount();
 
-    @Query(value = "select stadium, count(*) num from (SELECT a.*, b.stadiumName as stadium from hyd_origin_order_history a, hyd_origin_stadium_history b WHERE a.stadiumId = b.id) c GROUP BY c.stadium", nativeQuery = true)
+    @Query(value = "select stadium, count(*) num from (SELECT b.stadiumName as stadium FROM (select DISTINCT stadiumId from hyd_origin_order_history) AS a, hyd_origin_stadium_history b WHERE a.stadiumId = b.id and b.stadiumName is not null and b.stadiumName != '' ) c GROUP BY c.stadium order by num desc", nativeQuery = true)
     List<Map<String, Object>> stadiumStatCount();
 
     @Query(value = "select DISTINCT b.* from hyd_origin_order_history a, hyd_origin_stadium_history b where a.stadiumId = b.id", nativeQuery = true)

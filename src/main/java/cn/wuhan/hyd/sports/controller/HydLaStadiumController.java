@@ -4,6 +4,7 @@ import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.sports.domain.HydOriginLaStadium;
 import cn.wuhan.hyd.sports.domain.HydOriginStadium;
+import cn.wuhan.hyd.sports.domain.HydOriginStadiumHistory;
 import cn.wuhan.hyd.sports.service.IHydOriginLaStadiumService;
 import cn.wuhan.hyd.sports.service.IHydOriginStadiumItemService;
 import cn.wuhan.hyd.sports.service.IHydOriginStadiumService;
@@ -55,7 +56,7 @@ public class HydLaStadiumController {
      */
     @ApiOperation("所有场馆信息")
     @AnonymousGetMapping("/stadiums")
-    public Response<List<HydOriginStadium>> stadiums() {
+    public Response<List<HydOriginStadiumHistory>> stadiums() {
         return Response.ok(stadiumService.queryAll());
     }
 

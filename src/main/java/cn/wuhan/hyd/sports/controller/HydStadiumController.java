@@ -3,6 +3,7 @@ package cn.wuhan.hyd.sports.controller;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.sports.domain.HydOriginStadium;
+import cn.wuhan.hyd.sports.domain.HydOriginStadiumHistory;
 import cn.wuhan.hyd.sports.domain.HydResultOrderMonth;
 import cn.wuhan.hyd.sports.domain.HydResultStadiumDistrict;
 import cn.wuhan.hyd.sports.resp.OrderMonthTrendResp;
@@ -62,7 +63,7 @@ public class HydStadiumController {
      */
     @ApiOperation("所有场馆信息")
     @AnonymousGetMapping("/stadiums")
-    public Response<List<HydOriginStadium>> stadiums() {
+    public Response<List<HydOriginStadiumHistory>> stadiums() {
         return Response.ok(stadiumService.queryAll());
     }
 

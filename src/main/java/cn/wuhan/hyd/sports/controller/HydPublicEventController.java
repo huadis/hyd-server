@@ -7,7 +7,6 @@ import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.framework.utils.ExcelUtils;
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydExcelPublicEvents;
-import cn.wuhan.hyd.sports.domain.HydExcelPublicEventsHistory;
 import cn.wuhan.hyd.sports.service.IHydExcelPublicEventsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -135,6 +134,7 @@ public class HydPublicEventController {
             log.info("Excel文件数据保存：{}ms, 成功：{}", time2, flag);
             return new ResponseEntity<>("文件上传成功", HttpStatus.OK);
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             return new ResponseEntity<>("文件上传或处理失败", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -1257,7 +1257,7 @@ public class DataController {
 
     @ApiOperation("原始表-培训场馆-分页查询")
     @AnonymousGetMapping("/originStadium/list")
-    public Response<PageResult<HydOriginStadium>> originStadiumList(
+    public Response<PageResult<HydOriginStadiumHistory>> originStadiumList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
             @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
         return Response.ok(stadiumService.queryAll(page, size));
@@ -1265,15 +1265,15 @@ public class DataController {
 
     @ApiOperation("原始表-培训场馆-根据ID查询详情")
     @AnonymousGetMapping("/originStadium/detail/{id}")
-    public Response<HydOriginStadium> originStadiumUser(
+    public Response<HydOriginStadiumHistory> originStadiumUser(
             @ApiParam(value = "主键ID", required = true, example = "1") @PathVariable String id) {
         return Response.ok(stadiumService.findById(id));
     }
 
     @ApiOperation("原始表-培训场馆-增加")
     @AnonymousPostMapping("/originStadium/add")
-    public ResponseEntity<HydOriginStadium> originStadiumAdd(
-            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginStadium originStadium) {
+    public ResponseEntity<HydOriginStadiumHistory> originStadiumAdd(
+            @ApiParam(value = "结果表-消费券总金额", required = true) @Valid @RequestBody HydOriginStadiumHistory originStadium) {
         return ResponseEntity.ok(stadiumService.save(originStadium));
     }
 
@@ -1291,7 +1291,7 @@ public class DataController {
 
     @ApiOperation("原始表-培训场馆-更新")
     @AnonymousPostMapping("/originStadium/update")
-    public Response<HydOriginStadium> originStadiumUpdate(@RequestBody HydOriginStadium originStadium) {
+    public Response<HydOriginStadiumHistory> originStadiumUpdate(@RequestBody HydOriginStadiumHistory originStadium) {
         return Response.ok(stadiumService.update(originStadium));
     }
 

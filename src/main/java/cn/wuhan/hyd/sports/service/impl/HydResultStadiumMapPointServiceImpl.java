@@ -35,46 +35,46 @@ public class HydResultStadiumMapPointServiceImpl extends HydBaseServiceImpl impl
     private HydResultStadiumMapPointHistoryRepo stadiumMapPointHistoryRepo;
 
     @Override
-    public PageResult<HydResultStadiumMapPointHistory> queryAll(int page, int size) {
+    public PageResult<HydResultStadiumMapPoint> queryAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<HydResultStadiumMapPointHistory> pageResult = stadiumMapPointHistoryRepo.findAll(pageable);
-        PageResult<HydResultStadiumMapPointHistory> result = new PageResult<>();
+        Page<HydResultStadiumMapPoint> pageResult = stadiumMapPointRepo.findAll(pageable);
+        PageResult<HydResultStadiumMapPoint> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
         result.setContent(pageResult.getContent());
         return result;
     }
 
     @Override
-    public List<HydResultStadiumMapPointHistory> queryAll() {
-        return stadiumMapPointHistoryRepo.findAll();
+    public List<HydResultStadiumMapPoint> queryAll() {
+        return stadiumMapPointRepo.findAll();
     }
 
     @Override
     @Transactional
-    public HydResultStadiumMapPointHistory save(HydResultStadiumMapPointHistory hydResultCouponStadiumTop) {
-        return stadiumMapPointHistoryRepo.save(hydResultCouponStadiumTop);
+    public HydResultStadiumMapPoint save(HydResultStadiumMapPoint hydResultCouponStadiumTop) {
+        return stadiumMapPointRepo.save(hydResultCouponStadiumTop);
     }
 
     @Override
     @Transactional
     public void deleteById(Long id) {
-        stadiumMapPointHistoryRepo.deleteById(id);
+        stadiumMapPointRepo.deleteById(id);
     }
 
     @Override
     @Transactional
-    public HydResultStadiumMapPointHistory update(HydResultStadiumMapPointHistory couponStadiumTop) {
+    public HydResultStadiumMapPoint update(HydResultStadiumMapPoint couponStadiumTop) {
         if (couponStadiumTop.getId() == null) {
             throw new IllegalArgumentException("更新操作必须提供ID");
         }
         // 先校验数据是否存在
         findById(couponStadiumTop.getId());
-        return stadiumMapPointHistoryRepo.save(couponStadiumTop);
+        return stadiumMapPointRepo.save(couponStadiumTop);
     }
 
     @Override
-    public HydResultStadiumMapPointHistory findById(Long id) {
-        return stadiumMapPointHistoryRepo.findById(id)
+    public HydResultStadiumMapPoint findById(Long id) {
+        return stadiumMapPointRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("未找到ID为" + id + "的记录"));
     }
 
