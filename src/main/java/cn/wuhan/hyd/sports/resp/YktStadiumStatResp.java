@@ -16,6 +16,6 @@ public class YktStadiumStatResp implements Serializable {
     @ApiModelProperty(value = "培训场馆名称，如武汉体育中心")
     private String stadium;
 
-    @ApiModelProperty(value = "场馆销售统计数量（如订单数、报名人数）")
-    private Long num;
+    @ApiModelProperty(value = "场馆销售金额统计")
+    private Integer orderAmount;
 }

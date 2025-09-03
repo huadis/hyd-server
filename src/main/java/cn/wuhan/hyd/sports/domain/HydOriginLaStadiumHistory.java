@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
- * 功能说明：校外
+ * 功能说明：校外培训机构表
  * 开发人员：@author huadi <br>
  * 开发时间: 2025年08月15日 <br>
  */

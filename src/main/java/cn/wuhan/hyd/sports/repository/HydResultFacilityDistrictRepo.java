@@ -22,7 +22,7 @@ public interface HydResultFacilityDistrictRepo extends JpaRepository<HydResultFa
      * @param year 年份
      * @return 设施全貌
      */
-    @Query(value = "SELECT * FROM hyd_result_facility_district WHERE YEAR(createdTime) = ?1 AND facilityTypeName = ?2 ORDER BY createdTime DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_facility_district WHERE YEAR(createdTime) = ?1 AND facilityTypeName = ?2 ORDER BY CAST(facilityNum AS UNSIGNED) DESC", nativeQuery = true)
     List<HydResultFacilityDistrict> districtDistribution(String year, String typeName);
 
     @Modifying

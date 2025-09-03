@@ -24,11 +24,11 @@ public interface HydOriginOrderHistoryRepo extends JpaRepository<HydOriginOrderH
     List<Map<String, Object>> genderStatCount();
 
 
-    @Query(value = "select project, count(*) num from (SELECT b.stadiumItemName as project FROM (select DISTINCT stadiumItemId from hyd_origin_order_history) AS a, hyd_origin_stadium_item_history b WHERE a.stadiumItemId = b.id and b.stadiumItemName is not null and b.stadiumItemName != '' ) c GROUP BY c.project order by num desc", nativeQuery = true)
+    @Query(value = "select project, count(*) num from (SELECT b.stadiumItemName as project FROM hyd_origin_order_history a, hyd_origin_stadium_item_history b WHERE a.stadiumItemId = b.id and b.stadiumItemName is not null and b.stadiumItemName != '' ) c GROUP BY c.project order by num desc", nativeQuery = true)
     List<Map<String, Object>> projectStatCount();
 
 
-    @Query(value = "select course, count(*) num from (SELECT b.courseName as course FROM (select DISTINCT courseId from hyd_origin_order_history) AS a, hyd_origin_training_course_history b WHERE a.courseId = b.id and b.courseName is not null and b.courseName != '' ) c GROUP BY c.course order by num desc", nativeQuery = true)
+    @Query(value = "select course, count(*) num from (SELECT b.courseName as course FROM hyd_origin_order_history a, hyd_origin_training_course_history b WHERE a.courseId = b.id and b.courseName is not null and b.courseName != '' ) c GROUP BY c.course order by num desc", nativeQuery = true)
     List<Map<String, Object>> courseStatCount();
 
     @Query(value = "\n" +
@@ -59,7 +59,7 @@ public interface HydOriginOrderHistoryRepo extends JpaRepository<HydOriginOrderH
             "    END;", nativeQuery = true)
     List<Map<String, Object>> userAgeStatCount();
 
-    @Query(value = "select stadium, count(*) num from (SELECT b.stadiumName as stadium FROM (select DISTINCT stadiumId from hyd_origin_order_history) AS a, hyd_origin_stadium_history b WHERE a.stadiumId = b.id and b.stadiumName is not null and b.stadiumName != '' ) c GROUP BY c.stadium order by num desc", nativeQuery = true)
+    @Query(value = "select stadium, sum(orderAmount) as orderAmount from (SELECT a.orderAmount, b.stadiumName as stadium FROM  hyd_origin_order_history AS a, hyd_origin_stadium_history b WHERE a.stadiumId = b.id and b.stadiumName is not null and b.stadiumName != '' ) c GROUP BY c.stadium order by orderAmount desc", nativeQuery = true)
     List<Map<String, Object>> stadiumStatCount();
 
     @Query(value = "select DISTINCT b.* from hyd_origin_order_history a, hyd_origin_stadium_history b where a.stadiumId = b.id", nativeQuery = true)

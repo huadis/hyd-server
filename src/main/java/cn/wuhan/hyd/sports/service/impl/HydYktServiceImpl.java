@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 功能说明：  <br>
+ * 功能说明： 青少年技能培训 <br>
  * 开发人员：@author huadi <br>
  * 开发时间: 2025年08月24日 <br>
  */
@@ -365,7 +365,7 @@ public class HydYktServiceImpl implements IHydYktService {
         list.forEach(map -> {
             HydResultOrderYktStadiumStat e = new HydResultOrderYktStadiumStat();
             e.setStadium(MapUtils.getString(map, "stadium"));
-            e.setNum(MapUtils.getLong(map, "num"));
+            e.setOrderAmount(MapUtils.getInteger(map, "orderAmount"));
             stadiumStats.add(e);
         });
         yktStadiumStatRepo.deleteAll();

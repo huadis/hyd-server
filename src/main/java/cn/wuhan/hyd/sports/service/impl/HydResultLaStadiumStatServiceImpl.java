@@ -4,12 +4,9 @@ import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultLaStadiumDistrict;
 import cn.wuhan.hyd.sports.domain.HydResultLaStadiumSportName;
 import cn.wuhan.hyd.sports.domain.HydResultLaStadiumSportNameTop;
-import cn.wuhan.hyd.sports.repository.HydResultLaStadiumDistrictRepo;
-import cn.wuhan.hyd.sports.repository.HydResultLaStadiumSportNameRepo;
-import cn.wuhan.hyd.sports.repository.HydResultLaStadiumSportNameTopRepo;
-import cn.wuhan.hyd.sports.service.IHydOriginStadiumItemService;
-import cn.wuhan.hyd.sports.service.IHydOriginStadiumService;
+import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydResultLaStadiumStatService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,10 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.math.BigInteger;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 功能说明： 校外培训机构-场馆统计统一服务实现（含各区数量、项目类型、项目类型占比TOP10） <br>
@@ -38,10 +34,9 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
     @Resource
     private HydResultLaStadiumSportNameTopRepo sportNameTopRepo;
     @Resource
-    private IHydOriginStadiumService stadiumService;
-
+    private HydOriginLaStadiumHistoryRepo laStadiumHistoryRepo;
     @Resource
-    private IHydOriginStadiumItemService stadiumItemService;
+    private HydOriginTrainingActivityItemHistoryRepo trainingActivityItemHistoryRepo;
 
     // ========================== 数据同步方法（参考模板syncResultData逻辑） ==========================
     public void syncResultData() {
@@ -201,7 +196,7 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
 
     private void syncStadiumDistricts() {
         // 1. 从原始数据仓库查询统计结果
-        List<Map<String, Object>> list = stadiumService.stadiumCountByDistrict("");
+        List<Map<String, Object>> list = laStadiumHistoryRepo.stadiumCountByDistrict("");
         List<HydResultLaStadiumDistrict> stadiumDistricts = new ArrayList<>();
 
         // 2. 映射原始数据到统计实体
@@ -219,7 +214,7 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
 
     private void syncSportName() {
         // 1. 从原始数据仓库查询统计结果
-        List<Map<String, Object>> list = stadiumItemService.itemCountTop10BySportName("");
+        List<Map<String, Object>> list = trainingActivityItemHistoryRepo.itemCountTop10BySportName("");
         List<HydResultLaStadiumSportNameTop> laStadiumSportNameTops = new ArrayList<>();
 
         // 2. 映射原始数据到统计实体
@@ -237,11 +232,11 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
 
     private void syncSportNameTop() {
         // 1. 从原始数据仓库查询统计结果
-        List<Map<String, Object>> list = stadiumItemService.itemCountBySportName("");
+        List<Map<String, Object>> list = trainingActivityItemHistoryRepo.itemCountBySportName("");
         List<HydResultLaStadiumSportName> laStadiumSportNames = new ArrayList<>();
 
         // 2. 映射原始数据到统计实体
-        list.forEach(map -> {
+        countOtherStat(list).forEach(map -> {
             HydResultLaStadiumSportName e = new HydResultLaStadiumSportName();
             e.setSportName(MapUtils.getString(map, "sportName"));
             e.setNum(MapUtils.getLong(map, "num"));
@@ -251,5 +246,77 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
         // 3. 清空旧数据并保存新数据
         sportNameRepo.deleteAll();
         sportNameRepo.saveAll(laStadiumSportNames);
+    }
+
+    private List<Map<String, Object>> countOtherStat(List<Map<String, Object>> allSportStats) {
+        if (CollectionUtils.isEmpty(allSportStats)) {
+            return new ArrayList<>();  // 无数据时返回空列表
+        }
+
+        // 2. 第二步：按数量降序排序（数量相同按 sportName 升序）
+        List<Map<String, Object>> sortedStats = allSportStats.stream()
+                .sorted((map1, map2) -> {
+                    // 提取两个 map 中的数量和名称（假设 map 的 key 为 "sportName" 和 "num"）
+                    int num1 = MapUtils.getInteger(map1, "num");
+                    int num2 = MapUtils.getInteger(map2, "num");
+                    String name1 = map1.get("sportName").toString();
+                    String name2 = map2.get("sportName").toString();
+
+                    // 先按数量降序
+                    if (num1 != num2) {
+                        return Integer.compare(num2, num1); // 降序用 num2 - num1
+                    }
+                    // 数量相同则按名称升序
+                    return name1.compareTo(name2);
+                })
+                .collect(Collectors.toList());
+
+        // 3. 第三步：筛选 Top5 和剩余数据，聚合 “其他”
+        List<Map<String, Object>> finalResult = new ArrayList<>();
+        int totalSize = sortedStats.size();
+
+        // 3.1 截取 Top5（若总数量不足 5，取全部）
+        int top5EndIndex = Math.min(totalSize, 5);
+        for (int i = 0; i < top5EndIndex; i++) {
+            Map<String, Object> statMap = sortedStats.get(i);
+            // 转换为结果 Map（保持 key 为 "sportName" 和 "num"，值类型适配 Object）
+            Map<String, Object> resultMap = new HashMap<>();
+            resultMap.put("sportName", statMap.get("sportName"));
+            resultMap.put("num", statMap.get("num"));
+            finalResult.add(resultMap);
+        }
+
+        // 3.2 若有第 6 条及之后的数据，聚合为 “其他”
+        if (totalSize > 5) {
+            // 计算 “其他” 的总数量（累加第 6 条到最后一条的 num）
+            int othersTotalNum = sortedStats.subList(5, totalSize).stream()
+                    .mapToInt(map -> MapUtils.getInteger(map, "num"))
+                    .sum();
+            // 添加 “其他” 条目
+            Map<String, Object> othersMap = new HashMap<>();
+            othersMap.put("sportName", "其他");
+            othersMap.put("num", othersTotalNum);
+            finalResult.add(othersMap);
+        }
+
+        // 4. 确保 “其他” 始终排在最后
+        finalResult.sort((map1, map2) -> {
+            String name1 = map1.get("sportName").toString();
+            String name2 = map2.get("sportName").toString();
+
+            // 标记 “其他” 为 1，Top5 为 0，按 0→1 排序
+            int flag1 = "其他".equals(name1) ? 1 : 0;
+            int flag2 = "其他".equals(name2) ? 1 : 0;
+            if (flag1 != flag2) {
+                return Integer.compare(flag1, flag2);
+            }
+
+            // Top5 内部按数量降序
+            BigInteger num1 = (BigInteger) map1.get("num");
+            BigInteger num2 = (BigInteger) map2.get("num");
+            // 注意：降序排列，所以是 num2.compareTo(num1)
+            return num2.compareTo(num1);
+        });
+        return finalResult;
     }
 }

@@ -125,8 +125,8 @@ public interface HydExcelPublicEventsRepo extends JpaRepository<HydExcelPublicEv
             "FROM " +
             "    hyd_excel_public_events " +
             "WHERE " +
-            "    eventYear = ?1 and eventMonth = ?2 " +
+            "    eventYear = ?1 " +
             "ORDER BY " +
-            "    eventMonth desc ;", nativeQuery = true)
+            "    sequence desc limit 20;", nativeQuery = true)
     List<Map<String, Object>> currentMouthEvents(String year, String month);
 }

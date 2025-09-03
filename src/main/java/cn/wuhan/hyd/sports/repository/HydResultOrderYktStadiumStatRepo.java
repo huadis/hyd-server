@@ -15,6 +15,6 @@ import java.util.List;
 @Repository
 public interface HydResultOrderYktStadiumStatRepo extends JpaRepository<HydResultOrderYktStadiumStat, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_order_ykt_stadium_stat WHERE YEAR(createdTime) = ?1 ORDER BY num DESC LIMIT 10", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_order_ykt_stadium_stat WHERE YEAR(createdTime) = ?1 ORDER BY orderAmount DESC LIMIT 10", nativeQuery = true)
     List<HydResultOrderYktStadiumStat> stadiumTop10(String year);
 }

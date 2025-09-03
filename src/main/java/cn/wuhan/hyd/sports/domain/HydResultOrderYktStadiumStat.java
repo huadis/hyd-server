@@ -34,10 +34,10 @@ public class HydResultOrderYktStadiumStat implements Serializable {
     @ApiModelProperty(value = "培训场馆名称，如武汉体育中心")
     private String stadium;
 
-    @Column(name = "num")
-    @ExcelField(name = "场馆销售数量")
-    @ApiModelProperty(value = "场馆销售统计数量（如订单数、报名人数）")
-    private Long num;
+    @Column(name = "orderAmount")
+    @ExcelField(name = "消费券总金额")
+    @ApiModelProperty(value = "消费券总金额")
+    private Integer orderAmount;
 
     @Column(name = "batchNo")
     @ExcelField(name = "批次号")
