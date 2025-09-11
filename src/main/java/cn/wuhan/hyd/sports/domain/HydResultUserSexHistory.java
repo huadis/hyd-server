@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.domain;
 
+import cn.wuhan.hyd.framework.annotation.ExcelField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +40,10 @@ public class HydResultUserSexHistory implements Serializable {
     @Column(name = "batchNo")
     @ApiModelProperty(value = "批次号")
     private String batchNo;
+
+    @Column(name = "statisticalYear")
+    @ApiModelProperty(value = "统计年度")
+    private Integer statisticalYear;
 
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)

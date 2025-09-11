@@ -2,10 +2,8 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
-import cn.wuhan.hyd.sports.domain.HydOriginTrainingCourse;
 import cn.wuhan.hyd.sports.domain.HydOriginTrainingCourseHistory;
 import cn.wuhan.hyd.sports.repository.HydOriginTrainingCourseHistoryRepo;
-import cn.wuhan.hyd.sports.repository.HydOriginTrainingCourseRepo;
 import cn.wuhan.hyd.sports.req.HydOriginTrainingCourseReq;
 import cn.wuhan.hyd.sports.service.IHydOriginTrainingCourseService;
 import org.slf4j.Logger;
@@ -27,55 +25,52 @@ import java.util.List;
 @Service
 public class HydOriginTrainingCourseServiceImpl extends HydBaseServiceImpl implements IHydOriginTrainingCourseService {
 
-    private final Logger logger = LoggerFactory.getLogger(IHydOriginTrainingCourseService.class);
-
-    @Resource
-    private HydOriginTrainingCourseRepo trainingCourseRepo;
+    private final Logger logger = LoggerFactory.getLogger(HydOriginTrainingCourseServiceImpl.class);
     @Resource
     private HydOriginTrainingCourseHistoryRepo trainingCourseHistoryRepo;
 
     @Override
-    public PageResult<HydOriginTrainingCourse> queryAll(int page, int size) {
+    public PageResult<HydOriginTrainingCourseHistory> queryAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<HydOriginTrainingCourse> pageResult = trainingCourseRepo.findAll(pageable);
-        PageResult<HydOriginTrainingCourse> result = new PageResult<>();
+        Page<HydOriginTrainingCourseHistory> pageResult = trainingCourseHistoryRepo.findAll(pageable);
+        PageResult<HydOriginTrainingCourseHistory> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
         result.setContent(pageResult.getContent());
         return result;
     }
 
     @Override
-    public List<HydOriginTrainingCourse> queryAll() {
-        return trainingCourseRepo.findAll();
+    public List<HydOriginTrainingCourseHistory> queryAll() {
+        return trainingCourseHistoryRepo.findAll();
     }
 
     @Override
-    public HydOriginTrainingCourse findById(String id) {
-        return trainingCourseRepo.findById(id)
+    public HydOriginTrainingCourseHistory findById(String id) {
+        return trainingCourseHistoryRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("培训课程不存在，ID：" + id));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HydOriginTrainingCourse save(HydOriginTrainingCourse hydOriginTrainingCourse) {
-        return trainingCourseRepo.save(hydOriginTrainingCourse);
+    public HydOriginTrainingCourseHistory save(HydOriginTrainingCourseHistory hydOriginTrainingCourse) {
+        return trainingCourseHistoryRepo.save(hydOriginTrainingCourse);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(String id) {
-        trainingCourseRepo.deleteById(id);
+        trainingCourseHistoryRepo.deleteById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HydOriginTrainingCourse update(HydOriginTrainingCourse trainingCourse) {
+    public HydOriginTrainingCourseHistory update(HydOriginTrainingCourseHistory trainingCourse) {
         if (trainingCourse.getId() == null) {
             throw new IllegalArgumentException("更新操作必须提供ID");
         }
         // 先校验数据是否存在
         findById(trainingCourse.getId());
-        return trainingCourseRepo.save(trainingCourse);
+        return trainingCourseHistoryRepo.save(trainingCourse);
     }
 
     @Override
@@ -87,25 +82,10 @@ public class HydOriginTrainingCourseServiceImpl extends HydBaseServiceImpl imple
         }
         String batchNo = UUIDUtil.getBatchNo();
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydOriginTrainingCourse> queryList = convert(logger, trainingCourses, HydOriginTrainingCourse.class, batchNo);
-        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydOriginTrainingCourseHistory> historyList = convert(logger, trainingCourses, HydOriginTrainingCourseHistory.class, batchNo);
 
         try {
-            // 4. 清空查询表：日志记录操作意图，便于问题追溯
-            logger.info("【批量保存】开始清空HydOriginTrainingCourse表，批次号：{}", batchNo);
-            trainingCourseRepo.deleteAll();
-
-            // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
-            int querySaveCount = saveAndLog(
-                    logger,
-                    queryList,
-                    trainingCourseRepo::saveAll,
-                    "HydOriginTrainingCourse",
-                    batchNo
-            );
-
-            // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
+            // 保存历史表：复用时间统计逻辑，避免代码冗余
             int historySaveCount = saveAndLog(
                     logger,
                     historyList,
@@ -114,19 +94,18 @@ public class HydOriginTrainingCourseServiceImpl extends HydBaseServiceImpl imple
                     batchNo
             );
 
-            // 7. 校验保存结果：确保双表保存数量一致，避免数据不一致
-            if (querySaveCount != historySaveCount || querySaveCount != trainingCourses.size()) {
+            // 校验保存结果：确保双表保存数量一致，避免数据不一致
+            if (historySaveCount != trainingCourses.size()) {
                 throw new RuntimeException(
-                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
-                                batchNo, trainingCourses.size(), querySaveCount, historySaveCount)
+                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，历史表保存量：%d",
+                                batchNo, trainingCourses.size(), historySaveCount)
                 );
             }
 
-            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
-            return querySaveCount; // 返回实际保存数量，而非固定100，更具业务意义
-
+            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, historySaveCount);
+            return historySaveCount;
         } catch (Exception e) {
-            // 8. 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
+            // 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
             logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：",
                     batchNo, trainingCourses.size(), e);
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);

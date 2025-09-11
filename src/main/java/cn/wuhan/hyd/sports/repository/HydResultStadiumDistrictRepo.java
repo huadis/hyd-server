@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultStadiumDistrict;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -22,4 +23,8 @@ public interface HydResultStadiumDistrictRepo extends JpaRepository<HydResultSta
      */
     @Query(value = "SELECT * FROM hyd_result_stadium_district WHERE YEAR(createdTime) = ?1 and districtName is not null and districtName != '' order by CAST(stadiumNum AS UNSIGNED) desc", nativeQuery = true)
     List<HydResultStadiumDistrict> countStadiumDistrict(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_stadium_district WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, Integer statisticalYear);
 }

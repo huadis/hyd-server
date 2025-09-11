@@ -32,6 +32,6 @@ public interface HydResultUserAgeRepo extends JpaRepository<HydResultUserAge, Lo
     Map<String, Object> countStadiumUserAgeStat(String year);
 
     @Modifying
-    @Query(value = "DELETE FROM hyd_result_user_age WHERE batchNo != ?1", nativeQuery = true)
-    int deleteByNotBatchNo(String batchNo);
+    @Query(value = "DELETE FROM hyd_result_user_age WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, Integer statisticalYear);
 }

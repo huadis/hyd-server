@@ -18,6 +18,6 @@ public interface HydResultCouponAmountRepo extends JpaRepository<HydResultCoupon
     HydResultCouponAmount findLatestCouponAmount(String year);
 
     @Modifying
-    @Query(value = "DELETE FROM hyd_result_coupon_amount WHERE batchNo != ?1", nativeQuery = true)
-    int deleteByNotBatchNo(String batchNo);
+    @Query(value = "DELETE FROM hyd_result_coupon_amount WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, Integer statisticalYear);
 }

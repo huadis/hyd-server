@@ -34,7 +34,7 @@ public interface IHydResultStockService {
      *
      * @return 实体对象列表
      */
-    List<HydResultStock> queryAll(String year);
+    List<HydResultStock> queryAll(String year, String groupName);
 
 
     /**
@@ -67,6 +67,8 @@ public interface IHydResultStockService {
      * @return 实体对象
      */
     HydResultStock findById(Long id);
+
+    List<String> allGroupName(String year);
 
     int batchSave(List<HydResultStockReq> stocks);
 }

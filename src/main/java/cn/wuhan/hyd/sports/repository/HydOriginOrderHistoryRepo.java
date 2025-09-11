@@ -16,10 +16,17 @@ import java.util.Map;
 @Repository
 public interface HydOriginOrderHistoryRepo extends JpaRepository<HydOriginOrderHistory, String> {
 
-    @Query(value = "select district, count(*) num from ( SELECT b.districtName as district FROM (select DISTINCT tenantId from hyd_origin_order_history) AS a, hyd_origin_tenant_history b WHERE a.tenantId = b.id and b.districtName is not null and b.districtName != '' ) c GROUP BY c.district order by num desc", nativeQuery = true)
+    /**
+     * 各区机构数量
+     * @return
+     */
+    @Query(value = "SELECT s.districtName, s.district, COUNT(DISTINCT s.id) as num FROM hyd_origin_stadium_history s INNER JOIN hyd_origin_order_history o ON s.id=o.stadiumId GROUP BY s.districtName, s.district ORDER BY num DESC", nativeQuery = true)
     List<Map<String, Object>> districtStatCount();
 
-
+    /**
+     * 学生男女比例
+     * @return
+     */
     @Query(value = "select studentGender as gender, count(*) num from hyd_origin_order_history where studentGender is not null and studentGender != '' GROUP BY gender", nativeQuery = true)
     List<Map<String, Object>> genderStatCount();
 
@@ -28,35 +35,35 @@ public interface HydOriginOrderHistoryRepo extends JpaRepository<HydOriginOrderH
     List<Map<String, Object>> projectStatCount();
 
 
-    @Query(value = "select course, count(*) num from (SELECT b.courseName as course FROM hyd_origin_order_history a, hyd_origin_training_course_history b WHERE a.courseId = b.id and b.courseName is not null and b.courseName != '' ) c GROUP BY c.course order by num desc", nativeQuery = true)
+    @Query(value = "SELECT c.courseName as course, COUNT(DISTINCT o.id) as num FROM `hyd_origin_training_course_history` `c` INNER JOIN `hyd_origin_order_history` `o` ON `c`.`id`=`o`.`courseId` GROUP BY `c`.`id` ORDER BY `num` DESC LIMIT 5", nativeQuery = true)
     List<Map<String, Object>> courseStatCount();
 
-    @Query(value = "\n" +
-            "SELECT \n" +
-            "    age_group AS ageGroup,\n" +
-            "    COUNT(*) AS num\n" +
-            "FROM (\n" +
-            "    SELECT \n" +
-            "        CASE \n" +
-            "            WHEN userAge >= 0 AND userAge < 5 THEN '0-5岁'\n" +
-            "            WHEN userAge >= 5 AND userAge < 10 THEN '5-10岁'\n" +
-            "            WHEN userAge >= 10 AND userAge < 15 THEN '10-15岁'\n" +
-            "            WHEN userAge >= 15 AND userAge < 20 THEN '15-20岁'\n" +
-            "            WHEN userAge >= 20 THEN '20岁以上'\n" +
-            "            ELSE '未知'\n" +
-            "        END AS age_group\n" +
-            "    FROM hyd_origin_order_history\n" +
-            ") AS age_groups\n" +
-            "GROUP BY age_group\n" +
-            "ORDER BY \n" +
-            "    CASE age_group\n" +
-            "        WHEN '0-5岁' THEN 1\n" +
-            "        WHEN '5-10岁' THEN 2\n" +
-            "        WHEN '10-15岁' THEN 3\n" +
-            "        WHEN '15-20岁' THEN 4\n" +
-            "        WHEN '20岁以上' THEN 5\n" +
-            "        WHEN '未知' THEN 6\n" +
-            "    END;", nativeQuery = true)
+    /*@Query(value = "SELECT " +
+            "    age_group AS ageGroup, " +
+            "    COUNT(*) AS num " +
+            "FROM ( " +
+            "    SELECT " +
+            "        CASE " +
+            "            WHEN studentAge >= 0 AND studentAge < 5 THEN '0-5岁' " +
+            "            WHEN studentAge >= 5 AND studentAge < 10 THEN '5-10岁' " +
+            "            WHEN studentAge >= 10 AND studentAge < 15 THEN '10-15岁' " +
+            "            WHEN studentAge >= 15 AND studentAge < 20 THEN '15-20岁' " +
+            "            WHEN studentAge >= 20 THEN '20岁以上' " +
+            "            ELSE '未知' " +
+            "        END AS age_group " +
+            "    FROM hyd_origin_order_history " +
+            ") AS age_groups " +
+            "GROUP BY age_group " +
+            "ORDER BY " +
+            "    CASE age_group " +
+            "        WHEN '0-5岁' THEN 1 " +
+            "        WHEN '5-10岁' THEN 2 " +
+            "        WHEN '10-15岁' THEN 3 " +
+            "        WHEN '15-20岁' THEN 4 " +
+            "        WHEN '20岁以上' THEN 5 " +
+            "        WHEN '未知' THEN 6 " +
+            "    END;", nativeQuery = true)*/
+    @Query(value = "SELECT concat(studentAge, '岁') as ageGroup, COUNT(*) as num FROM `hyd_origin_order_history` GROUP BY `studentAge` ORDER BY `studentAge` ASC", nativeQuery = true)
     List<Map<String, Object>> userAgeStatCount();
 
     @Query(value = "select stadium, sum(orderAmount) as orderAmount from (SELECT a.orderAmount, b.stadiumName as stadium FROM  hyd_origin_order_history AS a, hyd_origin_stadium_history b WHERE a.stadiumId = b.id and b.stadiumName is not null and b.stadiumName != '' ) c GROUP BY c.stadium order by orderAmount desc", nativeQuery = true)

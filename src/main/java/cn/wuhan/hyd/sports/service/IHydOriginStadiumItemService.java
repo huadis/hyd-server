@@ -1,7 +1,7 @@
 package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydOriginStadiumItem;
+import cn.wuhan.hyd.sports.domain.HydOriginStadiumItemHistory;
 import cn.wuhan.hyd.sports.req.HydOriginStadiumItemReq;
 
 import java.util.List;
@@ -20,14 +20,14 @@ public interface IHydOriginStadiumItemService {
      * @param size 每页条数
      * @return 实体对象列表
      */
-    PageResult<HydOriginStadiumItem> queryAll(int page, int size);
+    PageResult<HydOriginStadiumItemHistory> queryAll(int page, int size);
 
     /**
      * 查询全部
      *
      * @return 实体对象列表
      */
-    List<HydOriginStadiumItem> queryAll();
+    List<HydOriginStadiumItemHistory> queryAll();
 
 
     /**
@@ -36,7 +36,7 @@ public interface IHydOriginStadiumItemService {
      * @param hydOriginStadiumItem 实体对象
      * @return 保存后的实体对象
      */
-    HydOriginStadiumItem save(HydOriginStadiumItem hydOriginStadiumItem);
+    HydOriginStadiumItemHistory save(HydOriginStadiumItemHistory hydOriginStadiumItem);
 
     /**
      * 根据ID删除数据
@@ -51,7 +51,7 @@ public interface IHydOriginStadiumItemService {
      * @param hydOriginStadiumItem 实体对象
      * @return 更新后的实体对象
      */
-    HydOriginStadiumItem update(HydOriginStadiumItem hydOriginStadiumItem);
+    HydOriginStadiumItemHistory update(HydOriginStadiumItemHistory hydOriginStadiumItem);
 
     /**
      * 根据ID查询数据
@@ -59,7 +59,7 @@ public interface IHydOriginStadiumItemService {
      * @param id 主键ID
      * @return 实体对象
      */
-    HydOriginStadiumItem findById(String id);
+    HydOriginStadiumItemHistory findById(String id);
 
     int batchSave(List<HydOriginStadiumItemReq> items);
 }

@@ -291,7 +291,7 @@ public class HydYktServiceImpl implements IHydYktService {
 
     @Override
     public List<Map<String, Object>> stadiumsByOrder() {
-        return originOrderRepo.stadiumsByOrder();
+        return originOrderHistoryRepo.stadiumsByOrder();
     }
 
     public void syncDistrict() {
@@ -299,6 +299,7 @@ public class HydYktServiceImpl implements IHydYktService {
         List<HydResultOrderYktDistrictStat> districtStats = new ArrayList<>();
         list.forEach(map -> {
             HydResultOrderYktDistrictStat e = new HydResultOrderYktDistrictStat();
+            e.setDistrictName(MapUtils.getString(map, "districtName"));
             e.setDistrict(MapUtils.getString(map, "district"));
             e.setNum(MapUtils.getLong(map, "num"));
             districtStats.add(e);

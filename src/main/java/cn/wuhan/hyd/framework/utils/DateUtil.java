@@ -200,4 +200,13 @@ public class DateUtil extends DateUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         return LocalDate.now().format(formatter);
     }
+
+    public static Integer getPreviousDayYear() {
+        // 1. 获取当前系统日期（不含时间）
+        LocalDate currentDate = LocalDate.now();
+        // 2. 计算前一天的日期（minusDays(1)：减1天）
+        LocalDate previousDay = currentDate.minusDays(1);
+        // 3. 提取前一天的年份, 2026年1月1日，返回2025
+        return previousDay.getYear();
+    }
 }

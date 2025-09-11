@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultCouponUser;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -22,4 +23,8 @@ public interface HydResultCouponUserRepo extends JpaRepository<HydResultCouponUs
             "femaleNum " +
             "FROM hyd_result_coupon_user WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC limit 1", nativeQuery = true)
     Map<String, Object> latestCouponUser(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_coupon_user WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, Integer statisticalYear);
 }

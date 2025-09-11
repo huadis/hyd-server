@@ -24,7 +24,7 @@ public interface HydExcelInstructorInfoRepo extends JpaRepository<HydExcelInstru
             "COUNT(id) AS personCount, " +
             "ROUND(COUNT(id) / (SELECT COUNT(id) FROM hyd_excel_instructor_info) * 100, 2) AS proportion " +
             " FROM " +
-            "hyd_excel_instructor_info GROUP BY serviceProject " +
+            "hyd_excel_instructor_info WHERE serviceProject is not null and serviceProject != '' GROUP BY serviceProject " +
             "ORDER BY personCount DESC LIMIT 15", nativeQuery = true)
     List<Map<String, Object>> serviceProjectTop15();
 
@@ -81,10 +81,10 @@ public interface HydExcelInstructorInfoRepo extends JpaRepository<HydExcelInstru
     /**
      * 指导项目top15
      */
-    @Query(value = "SELECT serviceProject, COUNT(id) AS personCount FROM hyd_excel_instructor_info GROUP BY serviceProject ORDER BY personCount DESC", nativeQuery = true)
+    @Query(value = "SELECT serviceProject, COUNT(id) AS personCount FROM hyd_excel_instructor_info WHERE serviceProject is not null and serviceProject != '' GROUP BY serviceProject ORDER BY personCount DESC", nativeQuery = true)
     List<Map<String, Object>> serviceProject();
 
-    @Query(value = "SELECT serviceProject, COUNT(id) AS personCount FROM hyd_excel_instructor_info where certifyTime is not null and certifyTime != '' and STR_TO_DATE(certifyTime, '%Y-%m-%d') BETWEEN '2025-01-01' AND '2025-12-31' GROUP BY serviceProject ORDER BY personCount DESC", nativeQuery = true)
+    @Query(value = "SELECT serviceProject, COUNT(id) AS personCount FROM hyd_excel_instructor_info WHERE serviceProject is not null and serviceProject != '' and certifyTime is not null and certifyTime != '' and STR_TO_DATE(certifyTime, '%Y-%m-%d') BETWEEN DATE_FORMAT(CURDATE(), '%Y-01-01') AND DATE_FORMAT(CURDATE(), '%Y-12-31') GROUP BY serviceProject ORDER BY personCount DESC", nativeQuery = true)
     List<Map<String, Object>> serviceProjectWithCurrentYear();
 
 

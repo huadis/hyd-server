@@ -1,7 +1,7 @@
 package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydOriginOrder;
+import cn.wuhan.hyd.sports.domain.HydOriginOrderHistory;
 import cn.wuhan.hyd.sports.req.HydOriginOrderReq;
 
 import java.util.List;
@@ -21,14 +21,14 @@ public interface IHydOriginOrderService {
      * @param size 每页条数
      * @return 实体对象列表
      */
-    PageResult<HydOriginOrder> queryAll(int page, int size);
+    PageResult<HydOriginOrderHistory> queryAll(int page, int size);
 
     /**
      * 查询全部
      *
      * @return 实体对象列表
      */
-    List<HydOriginOrder> queryAll();
+    List<HydOriginOrderHistory> queryAll();
 
 
     /**
@@ -37,7 +37,7 @@ public interface IHydOriginOrderService {
      * @param hydOriginOrder 实体对象
      * @return 保存后的实体对象
      */
-    HydOriginOrder save(HydOriginOrder hydOriginOrder);
+    HydOriginOrderHistory save(HydOriginOrderHistory hydOriginOrder);
 
     /**
      * 根据ID删除数据
@@ -52,7 +52,7 @@ public interface IHydOriginOrderService {
      * @param hydOriginOrder 实体对象
      * @return 更新后的实体对象
      */
-    HydOriginOrder update(HydOriginOrder hydOriginOrder);
+    HydOriginOrderHistory update(HydOriginOrderHistory hydOriginOrder);
 
     /**
      * 根据ID查询数据
@@ -60,7 +60,7 @@ public interface IHydOriginOrderService {
      * @param id 主键ID
      * @return 实体对象
      */
-    HydOriginOrder findById(String id);
+    HydOriginOrderHistory findById(String id);
 
     Map<String, Object> orderStat();
 

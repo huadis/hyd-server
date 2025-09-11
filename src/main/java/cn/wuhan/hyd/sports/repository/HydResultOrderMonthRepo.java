@@ -20,6 +20,6 @@ public interface HydResultOrderMonthRepo extends JpaRepository<HydResultOrderMon
     List<HydResultOrderMonth> list(String year);
 
     @Modifying
-    @Query(value = "DELETE FROM hyd_result_order_month WHERE batchNo != ?1", nativeQuery = true)
-    int deleteByNotBatchNo(String batchNo);
+    @Query(value = "DELETE FROM hyd_result_order_month WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, Integer statisticalYear);
 }

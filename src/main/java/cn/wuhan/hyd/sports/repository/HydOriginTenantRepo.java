@@ -14,17 +14,4 @@ import java.util.List;
 @Repository
 public interface HydOriginTenantRepo extends JpaRepository<HydOriginTenant, String> {
 
-    /**
-     * 根据省份编码查询租户
-     * @param province 省份编码
-     * @return 租户列表
-     */
-    List<HydOriginTenant> findByProvince(String province);
-
-    /**
-     * 根据名称模糊查询
-     * @param tenantName 租户名称
-     * @return 租户列表
-     */
-    List<HydOriginTenant> findByTenantNameLike(String tenantName);
 }

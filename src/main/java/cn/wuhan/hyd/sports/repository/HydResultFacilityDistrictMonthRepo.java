@@ -26,6 +26,6 @@ public interface HydResultFacilityDistrictMonthRepo extends JpaRepository<HydRes
     List<HydResultFacilityDistrictMonth> inspectMaintenance(String year);
 
     @Modifying
-    @Query(value = "DELETE FROM hyd_result_facility_district_month WHERE batchNo != ?1", nativeQuery = true)
-    int deleteByNotBatchNo(String batchNo);
+    @Query(value = "DELETE FROM hyd_result_facility_district_month WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, Integer statisticalYear);
 }

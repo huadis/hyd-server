@@ -16,10 +16,13 @@ import java.util.List;
 @Repository
 public interface HydResultStockRepo extends JpaRepository<HydResultStock, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_stock WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC", nativeQuery = true)
-    List<HydResultStock> list(String year);
+    @Query(value = "SELECT * FROM hyd_result_stock WHERE YEAR(createdTime) = ?1 AND groupName = ?2 ORDER BY createdTime DESC", nativeQuery = true)
+    List<HydResultStock> list(String year, String groupName);
 
     @Modifying
-    @Query(value = "DELETE FROM hyd_result_stock WHERE batchNo != ?1", nativeQuery = true)
-    int deleteByNotBatchNo(String batchNo);
+    @Query(value = "DELETE FROM hyd_result_stock WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, Integer statisticalYear);
+
+    @Query(value = "select DISTINCT groupName from hyd_result_stock WHERE YEAR(createdTime) = ?1 and groupName is not null and groupName != '' order by id", nativeQuery = true)
+    List<String> allGroupName(String year);
 }

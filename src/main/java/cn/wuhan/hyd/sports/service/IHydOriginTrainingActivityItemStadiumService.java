@@ -1,7 +1,7 @@
 package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydOriginTrainingActivityItemStadium;
+import cn.wuhan.hyd.sports.domain.HydOriginTrainingActivityItemStadiumHistory;
 import cn.wuhan.hyd.sports.req.HydOriginTrainingActivityItemStadiumReq;
 
 import java.util.List;
@@ -20,14 +20,14 @@ public interface IHydOriginTrainingActivityItemStadiumService {
      * @param size 每页条数
      * @return 实体对象列表
      */
-    PageResult<HydOriginTrainingActivityItemStadium> queryAll(int page, int size);
+    PageResult<HydOriginTrainingActivityItemStadiumHistory> queryAll(int page, int size);
 
     /**
      * 查询全部
      *
      * @return 实体对象列表
      */
-    List<HydOriginTrainingActivityItemStadium> queryAll();
+    List<HydOriginTrainingActivityItemStadiumHistory> queryAll();
 
     /**
      * 新增数据
@@ -35,7 +35,7 @@ public interface IHydOriginTrainingActivityItemStadiumService {
      * @param hydOriginTrainingActivityItemStadium 实体对象
      * @return 保存后的实体对象
      */
-    HydOriginTrainingActivityItemStadium save(HydOriginTrainingActivityItemStadium hydOriginTrainingActivityItemStadium);
+    HydOriginTrainingActivityItemStadiumHistory save(HydOriginTrainingActivityItemStadiumHistory hydOriginTrainingActivityItemStadium);
 
     /**
      * 根据ID删除数据
@@ -50,7 +50,7 @@ public interface IHydOriginTrainingActivityItemStadiumService {
      * @param hydOriginTrainingActivityItemStadium 实体对象
      * @return 更新后的实体对象
      */
-    HydOriginTrainingActivityItemStadium update(HydOriginTrainingActivityItemStadium hydOriginTrainingActivityItemStadium);
+    HydOriginTrainingActivityItemStadiumHistory update(HydOriginTrainingActivityItemStadiumHistory hydOriginTrainingActivityItemStadium);
 
     /**
      * 根据ID查询数据
@@ -58,7 +58,7 @@ public interface IHydOriginTrainingActivityItemStadiumService {
      * @param id 主键ID
      * @return 实体对象
      */
-    HydOriginTrainingActivityItemStadium findById(String id);
+    HydOriginTrainingActivityItemStadiumHistory findById(String id);
 
     int batchSave(List<HydOriginTrainingActivityItemStadiumReq> items);
 }

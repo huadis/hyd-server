@@ -2,10 +2,8 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
-import cn.wuhan.hyd.sports.domain.HydOriginTrainingActivityItem;
 import cn.wuhan.hyd.sports.domain.HydOriginTrainingActivityItemHistory;
 import cn.wuhan.hyd.sports.repository.HydOriginTrainingActivityItemHistoryRepo;
-import cn.wuhan.hyd.sports.repository.HydOriginTrainingActivityItemRepo;
 import cn.wuhan.hyd.sports.req.HydOriginTrainingActivityItemReq;
 import cn.wuhan.hyd.sports.service.IHydOriginTrainingActivityItemService;
 import org.slf4j.Logger;
@@ -30,53 +28,51 @@ public class HydOriginTrainingActivityItemServiceImpl extends HydBaseServiceImpl
     private final Logger logger = LoggerFactory.getLogger(IHydOriginTrainingActivityItemService.class);
 
     @Resource
-    private HydOriginTrainingActivityItemRepo trainingActivityItemRepo;
-    @Resource
     private HydOriginTrainingActivityItemHistoryRepo trainingActivityItemHistoryRepo;
 
     @Override
-    public PageResult<HydOriginTrainingActivityItem> queryAll(int page, int size) {
+    public PageResult<HydOriginTrainingActivityItemHistory> queryAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<HydOriginTrainingActivityItem> pageResult = trainingActivityItemRepo.findAll(pageable);
-        PageResult<HydOriginTrainingActivityItem> result = new PageResult<>();
+        Page<HydOriginTrainingActivityItemHistory> pageResult = trainingActivityItemHistoryRepo.findAll(pageable);
+        PageResult<HydOriginTrainingActivityItemHistory> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
         result.setContent(pageResult.getContent());
         return result;
     }
 
     @Override
-    public List<HydOriginTrainingActivityItem> queryAll() {
-        return trainingActivityItemRepo.findAll();
+    public List<HydOriginTrainingActivityItemHistory> queryAll() {
+        return trainingActivityItemHistoryRepo.findAll();
     }
 
     @Override
-    public HydOriginTrainingActivityItem findById(String id) {
-        return trainingActivityItemRepo.findById(id)
+    public HydOriginTrainingActivityItemHistory findById(String id) {
+        return trainingActivityItemHistoryRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("培训活动支持的项目不存在，ID：" + id));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HydOriginTrainingActivityItem save(HydOriginTrainingActivityItem hydOriginTrainingActivityItem) {
+    public HydOriginTrainingActivityItemHistory save(HydOriginTrainingActivityItemHistory hydOriginTrainingActivityItem) {
         findById(hydOriginTrainingActivityItem.getId());
-        return trainingActivityItemRepo.save(hydOriginTrainingActivityItem);
+        return trainingActivityItemHistoryRepo.save(hydOriginTrainingActivityItem);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(String id) {
-        trainingActivityItemRepo.deleteById(id);
+        trainingActivityItemHistoryRepo.deleteById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HydOriginTrainingActivityItem update(HydOriginTrainingActivityItem trainingActivityItem) {
+    public HydOriginTrainingActivityItemHistory update(HydOriginTrainingActivityItemHistory trainingActivityItem) {
         if (trainingActivityItem.getId() == null) {
             throw new IllegalArgumentException("更新操作必须提供ID");
         }
         // 先校验数据是否存在
         findById(trainingActivityItem.getId());
-        return trainingActivityItemRepo.save(trainingActivityItem);
+        return trainingActivityItemHistoryRepo.save(trainingActivityItem);
     }
 
     @Override
@@ -88,25 +84,10 @@ public class HydOriginTrainingActivityItemServiceImpl extends HydBaseServiceImpl
         }
         String batchNo = UUIDUtil.getBatchNo();
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydOriginTrainingActivityItem> queryList = convert(logger, trainingActivityItems, HydOriginTrainingActivityItem.class, batchNo);
-        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydOriginTrainingActivityItemHistory> historyList = convert(logger, trainingActivityItems, HydOriginTrainingActivityItemHistory.class, batchNo);
 
         try {
-            // 4. 清空查询表：日志记录操作意图，便于问题追溯
-            logger.info("【批量保存】开始清空HydOriginTrainingActivityItem表，批次号：{}", batchNo);
-            trainingActivityItemRepo.deleteAll();
-
-            // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
-            int querySaveCount = saveAndLog(
-                    logger,
-                    queryList,
-                    trainingActivityItemRepo::saveAll,
-                    "HydOriginTrainingActivityItem",
-                    batchNo
-            );
-
-            // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
+            // 保存历史表：复用时间统计逻辑，避免代码冗余
             int historySaveCount = saveAndLog(
                     logger,
                     historyList,
@@ -115,21 +96,19 @@ public class HydOriginTrainingActivityItemServiceImpl extends HydBaseServiceImpl
                     batchNo
             );
 
-            // 7. 校验保存结果：确保双表保存数量一致，避免数据不一致
-            if (querySaveCount != historySaveCount || querySaveCount != trainingActivityItems.size()) {
+            // 校验保存结果：确保双表保存数量一致，避免数据不一致
+            if (historySaveCount != trainingActivityItems.size()) {
                 throw new RuntimeException(
-                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
-                                batchNo, trainingActivityItems.size(), querySaveCount, historySaveCount)
+                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，历史表保存量：%d",
+                                batchNo, trainingActivityItems.size(), historySaveCount)
                 );
             }
 
-            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
-            return querySaveCount; // 返回实际保存数量，而非固定100，更具业务意义
-
+            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, historySaveCount);
+            return historySaveCount;
         } catch (Exception e) {
-            // 8. 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
-            logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：",
-                    batchNo, trainingActivityItems.size(), e);
+            // 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
+            logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：", batchNo, trainingActivityItems.size(), e);
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
     }

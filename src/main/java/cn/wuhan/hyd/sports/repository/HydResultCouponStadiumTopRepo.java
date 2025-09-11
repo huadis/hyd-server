@@ -24,6 +24,6 @@ public interface HydResultCouponStadiumTopRepo extends JpaRepository<HydResultCo
     List<Map<String, Object>> stadiumTop5();
 
     @Modifying
-    @Query(value = "DELETE FROM hyd_result_coupon_stadium_top WHERE batchNo != ?1", nativeQuery = true)
-    int deleteByNotBatchNo(String batchNo);
+    @Query(value = "DELETE FROM hyd_result_coupon_stadium_top WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, Integer statisticalYear);
 }

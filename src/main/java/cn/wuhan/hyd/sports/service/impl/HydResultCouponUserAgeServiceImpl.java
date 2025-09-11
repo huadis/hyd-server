@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.service.impl;
 
+import cn.wuhan.hyd.framework.utils.DateUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.HydResultCouponUserAge;
@@ -126,6 +127,7 @@ public class HydResultCouponUserAgeServiceImpl extends HydBaseServiceImpl implem
         age.setBt51and60Num(calculateSingleAverage(bt51and60, couponUserAges.size()).toString());
         age.setOver60Num(calculateSingleAverage(over60, couponUserAges.size()).toString());
         age.setBatchNo(batchNo);
+        age.setStatisticalYear(DateUtil.getPreviousDayYear());
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydResultCouponUserAge> queryList = new ArrayList<>();
         queryList.add(age);
@@ -135,7 +137,7 @@ public class HydResultCouponUserAgeServiceImpl extends HydBaseServiceImpl implem
         try {
             // 4. 清空查询表：日志记录操作意图，便于问题追溯
             logger.info("【批量保存】开始清空HydResultCouponUserAge表，批次号：{}", batchNo);
-            couponUserAgeRepo.deleteAll();
+            couponUserAgeRepo.deleteByNotBatchNo(batchNo, DateUtil.getPreviousDayYear());
 
             // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
             int querySaveCount = saveAndLog(

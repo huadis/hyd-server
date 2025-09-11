@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.service.impl;
 
+import cn.wuhan.hyd.framework.utils.DateUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.HydResultStock;
@@ -55,8 +56,8 @@ public class HydResultStockServiceImpl extends HydBaseServiceImpl implements IHy
      * @return 实体对象列表
      */
     @Override
-    public List<HydResultStock> queryAll(String year) {
-        return stockRepo.list(year);
+    public List<HydResultStock> queryAll(String year, String groupName) {
+        return stockRepo.list(year, groupName);
     }
 
     @Override
@@ -88,6 +89,11 @@ public class HydResultStockServiceImpl extends HydBaseServiceImpl implements IHy
                 .orElseThrow(() -> new IllegalArgumentException("未找到ID为" + id + "的记录"));
     }
 
+    @Override
+    public List<String> allGroupName(String year) {
+        return stockRepo.allGroupName(year);
+    }
+
     /**
      * 批量保存 消费券领用券
      *
@@ -110,7 +116,7 @@ public class HydResultStockServiceImpl extends HydBaseServiceImpl implements IHy
         try {
             // 4. 清空查询表：日志记录操作意图，便于问题追溯
             logger.info("【批量保存】开始清空HydResultStock表，批次号：{}", batchNo);
-            stockRepo.deleteByNotBatchNo(batchNo);
+            stockRepo.deleteByNotBatchNo(batchNo, DateUtil.getPreviousDayYear());
 
             // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
             int querySaveCount = saveAndLog(

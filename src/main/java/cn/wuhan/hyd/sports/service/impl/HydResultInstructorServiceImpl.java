@@ -367,7 +367,6 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     private void syncServiceProject() {
         List<Map<String, Object>> list = instructorService.serviceProject();
         List<HydResultInstructorServiceProject> projectStats = new ArrayList<>();
-
         list.forEach(map -> {
             HydResultInstructorServiceProject e = new HydResultInstructorServiceProject();
             e.setServiceProject(MapUtils.getString(map, "serviceProject")); // 服务项目ID

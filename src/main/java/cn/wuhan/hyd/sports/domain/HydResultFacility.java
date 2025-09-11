@@ -32,6 +32,10 @@ public class HydResultFacility implements Serializable {
     @ApiModelProperty(value = "设施类型名称")
     private String facilityTypeName;
 
+    @Column(name = "facilityNum")
+    @ApiModelProperty(value = "设施数量")
+    private String facilityNum;
+
     @Column(name = "facilityPercentage")
     @ApiModelProperty(value = "设施占比（%）")
     private Double facilityPercentage;
@@ -39,6 +43,10 @@ public class HydResultFacility implements Serializable {
     @Column(name = "batchNo")
     @ApiModelProperty(value = "批次号")
     private String batchNo;
+
+    @Column(name = "statisticalYear")
+    @ApiModelProperty(value = "统计年度")
+    private Integer statisticalYear;
 
     @Column(name = "createdTime", updatable = false)
     @ApiModelProperty(value = "创建时间", hidden = true)

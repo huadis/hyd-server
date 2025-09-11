@@ -31,6 +31,6 @@ public interface HydResultUserRepurchaseRepo extends JpaRepository<HydResultUser
     Map<String, Object> countStadiumUserRepurchaseStat(String year);
 
     @Modifying
-    @Query(value = "DELETE FROM hyd_result_user_repurchase WHERE batchNo != ?1", nativeQuery = true)
-    int deleteByNotBatchNo(String batchNo);
+    @Query(value = "DELETE FROM hyd_result_user_repurchase WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, Integer statisticalYear);
 }

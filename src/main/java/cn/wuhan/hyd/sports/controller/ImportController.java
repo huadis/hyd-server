@@ -99,7 +99,7 @@ public class ImportController {
 
     // ------------------------------------- 体育基础设施 -------------------------------------
 
-    @ApiOperation(value = "1. 体育基础设施-健身点位年数据-批量导入", position = 1)
+    @ApiOperation(value = "1. 体育基础设施-健身点位年数据-批量导入")
     @AnonymousPostMapping("/facilityYear")
     public Response<Boolean> facilityYearImport(@RequestBody List<HydResultFacilityYearReq> facilityYears) {
         logger.info("体育基础设施-健身点位年数据-批量导入, 条数 : {}", facilityYears.size());
@@ -112,7 +112,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "2. 体育基础设施-设施全貌-批量导入", position = 2)
+    @ApiOperation(value = "2. 体育基础设施-设施全貌-批量导入")
     @AnonymousPostMapping("/facility")
     public Response<Boolean> facilityImport(@RequestBody List<HydResultFacilityReq> facilities) {
         logger.info("体育基础设施-设施全貌-批量导入, 条数 : {}", facilities.size());
@@ -125,7 +125,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "3. 体育基础设施-设施各区分布-批量导入", position = 3)
+    @ApiOperation(value = "3. 体育基础设施-设施各区分布-批量导入")
     @AnonymousPostMapping("/facilityDistrict")
     public Response<Boolean> facilityDistrictImport(@RequestBody List<HydResultFacilityDistrictReq> facilityDistricts) {
         logger.info("体育基础设施-设施各区分布-批量导入, 条数 : {}", facilityDistricts.size());
@@ -139,7 +139,7 @@ public class ImportController {
     }
 
     @ApiOperationSupport(order = 4)
-    @ApiOperation(value = "4. 体育基础设施-电子地图点位信息-批量导入", position = 4)
+    @ApiOperation(value = "4. 体育基础设施-电子地图点位信息-批量导入")
     @AnonymousPostMapping("/stadiumMapPointImport")
     public Response<Boolean> stadiumMapPointImport(@RequestBody List<HydResultStadiumMapPointReq> stadiumMapPoints) {
         logger.info("体育基础设施-电子地图点位信息-批量导入, 条数 : {}", stadiumMapPoints.size());
@@ -153,7 +153,7 @@ public class ImportController {
     }
 
     @ApiOperationSupport(order = 5)
-    @ApiOperation(value = "5. 体育基础设施-电子地图-批量导入", position = 5)
+    @ApiOperation(value = "5. 体育基础设施-电子地图-批量导入")
     @AnonymousPostMapping("/stadiumMap")
     public Response<Boolean> stadiumMapImport(@RequestBody List<HydResultStadiumMapReq> stadiumMaps) {
         logger.info("体育基础设施-电子地图-批量导入, 条数 : {}", stadiumMaps.size());
@@ -166,7 +166,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "6. 体育基础设施-巡检维修动态-批量导入", position = 6)
+    @ApiOperation(value = "6. 体育基础设施-巡检维修动态-批量导入")
     @AnonymousPostMapping("/facilityInspect")
     public Response<Boolean> facilityInspectImport(@RequestBody List<HydResultFacilityInspectReq> facilityInspects) {
         logger.info("体育基础设施-巡检维修动态-批量导入, 条数 : {}", facilityInspects.size());
@@ -179,7 +179,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "7. 体育基础设施-设施各区月数据-批量导入", position = 7)
+    @ApiOperation(value = "7. 体育基础设施-设施各区月数据-批量导入")
     @AnonymousPostMapping("/facilityDistrictMonth")
     public Response<Boolean> facilityDistrictMonthImport(@RequestBody List<HydResultFacilityDistrictMonthReq> facilityDistrictMonths) {
         logger.info("体育基础设施-设施各区月数据-批量导入, 条数 : {}", facilityDistrictMonths.size());
@@ -194,7 +194,7 @@ public class ImportController {
 
     // ------------------------------------- 体育消费卷 -------------------------------------
 
-    @ApiOperation(value = "8. 体育消费卷-消费券总金额-批量导入", position = 8)
+    @ApiOperation(value = "8. 体育消费卷-消费券总金额-批量导入")
     @AnonymousPostMapping("/couponAmount")
     public Response<Boolean> couponAmountImport(@RequestBody List<HydResultCouponAmountReq> couponAmounts) {
         logger.info("体育消费卷-消费券总金额-批量导入, 条数 : {}", couponAmounts.size());
@@ -207,7 +207,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "9. 体育消费卷-消费券领卷用券-批量导入", position = 9)
+    @ApiOperation(value = "9. 体育消费卷-消费券领卷用券-批量导入")
     @AnonymousPostMapping("/stock")
     public Response<Boolean> stockImport(@RequestBody List<HydResultStockReq> stocks) {
         logger.info("体育消费卷-消费券领卷用券-批量导入, 条数 : {}", stocks.size());
@@ -220,7 +220,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "10. 体育消费卷-项目消费券订单金额Top5-批量导入", position = 10)
+    @ApiOperation(value = "10. 体育消费卷-项目消费券订单金额Top5-批量导入")
     @AnonymousPostMapping("/orderSport")
     public Response<Boolean> orderSportImport(@RequestBody List<HydResultOrderSportReq> orderSports) {
         logger.info("体育消费卷-项目消费券订单金额Top5-批量导入, 条数 : {}", orderSports.size());
@@ -233,7 +233,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "11. 体育消费卷-场馆消费券订单金额Top5-批量导入", position = 11)
+    @ApiOperation(value = "11. 体育消费卷-场馆消费券订单金额Top5-批量导入")
     @AnonymousPostMapping("/orderStadium")
     public Response<Boolean> orderStadiumImport(@RequestBody List<HydResultOrderStadiumReq> orderStadiums) {
         logger.info("体育消费卷-场馆消费券订单金额Top5-批量导入, 条数 : {}", orderStadiums.size());
@@ -246,7 +246,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "12. 体育消费卷-订单数量-批量导入", position = 12)
+    @ApiOperation(value = "12. 体育消费卷-订单数量-批量导入")
     @AnonymousPostMapping("/order")
     public Response<Boolean> orderImport(@RequestBody List<HydResultOrderReq> orders) {
         logger.info("体育消费卷-订单数量-批量导入, 条数 : {}", orders.size());
@@ -259,7 +259,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "13. 体育消费卷-订单趋势-批量导入", position = 13)
+    @ApiOperation(value = "13. 体育消费卷-订单趋势-批量导入")
     @AnonymousPostMapping("/orderMonth")
     public Response<Boolean> orderMonthImport(@RequestBody List<HydResultOrderMonthReq> orderMonths) {
         logger.info("体育消费卷-订单趋势-批量导入, 条数 : {}", orderMonths.size());
@@ -272,7 +272,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "14. 体育消费卷-券用户年龄分布-批量导入", position = 14)
+    @ApiOperation(value = "14. 体育消费卷-券用户年龄分布-批量导入")
     @AnonymousPostMapping("/couponUserAge")
     public Response<Boolean> couponUserAgeImport(@RequestBody List<HydResultCouponUserAgeReq> couponUserAges) {
         logger.info("体育消费卷-券用户年龄分布-批量导入, 条数 : {}", couponUserAges.size());
@@ -285,7 +285,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "15. 体育消费卷-券用户分析-批量导入", position = 15)
+    @ApiOperation(value = "15. 体育消费卷-券用户分析-批量导入")
     @AnonymousPostMapping("/couponUser")
     public Response<Boolean> couponUserImport(@RequestBody List<HydResultCouponUserReq> couponUsers) {
         logger.info("体育消费卷-券用户分析-批量导入, 条数 : {}", couponUsers.size());
@@ -300,7 +300,7 @@ public class ImportController {
 
     // ------------------------------------- 场馆预定 -------------------------------------
 
-    @ApiOperation(value = "16. 场馆预定-在线场馆各区情况-批量导入", position = 16)
+    @ApiOperation(value = "16. 场馆预定-在线场馆各区情况-批量导入")
     @AnonymousPostMapping("/stadiumDistrict")
     public Response<Boolean> stadiumDistrictImport(@RequestBody List<HydResultStadiumDistrictReq> stadiumDistricts) {
         logger.info("场馆预定-在线场馆各区情况-批量导入, 条数 : {}", stadiumDistricts.size());
@@ -313,7 +313,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "17. 场馆预定-消费券场馆预订Top-批量导入", position = 17)
+    @ApiOperation(value = "17. 场馆预定-消费券场馆预订Top-批量导入")
     @AnonymousPostMapping("/couponStadiumTop")
     public Response<Boolean> couponStadiumTopImport(@RequestBody List<HydResultCouponStadiumTopReq> couponStadiumTops) {
         logger.info("场馆预定-消费券场馆预订Top-批量导入, 条数 : {}", couponStadiumTops.size());
@@ -326,7 +326,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "18. 场馆预定-年龄占比-批量导入", position = 18)
+    @ApiOperation(value = "18. 场馆预定-年龄占比-批量导入")
     @AnonymousPostMapping("/userAge")
     public Response<Boolean> userAgeImport(@RequestBody List<HydResultUserAgeReq> userAges) {
         logger.info("场馆预定-年龄占比-批量导入, 条数 : {}", userAges.size());
@@ -339,7 +339,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "19. 场馆预定-用户来源渠道-批量导入", position = 19)
+    @ApiOperation(value = "19. 场馆预定-用户来源渠道-批量导入")
     @AnonymousPostMapping("/userChannel")
     public Response<Boolean> userChannelImport(@RequestBody List<HydResultUserChannelReq> userChannels) {
         logger.info("场馆预定-用户来源渠道-批量导入, 条数 : {}", userChannels.size());
@@ -352,7 +352,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "20. 场馆预定-每月新增用户-批量导入", position = 20)
+    @ApiOperation(value = "20. 场馆预定-每月新增用户-批量导入")
     @AnonymousPostMapping("/userRegister")
     public Response<Boolean> userRegisterImport(@RequestBody List<HydResultUserRegisterReq> userRegisters) {
         logger.info("场馆预定-每月新增用户-批量导入, 条数 : {}", userRegisters.size());
@@ -365,7 +365,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "21. 场馆预定-复购率-批量导入", position = 21)
+    @ApiOperation(value = "21. 场馆预定-复购率-批量导入")
     @AnonymousPostMapping("/userRepurchase")
     public Response<Boolean> userRepurchaseImport(@RequestBody List<HydResultUserRepurchaseReq> userRepurchases) {
         logger.info("场馆预定-复购率-批量导入, 条数 : {}", userRepurchases.size());
@@ -378,7 +378,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "22. 场馆预定-男女占比-批量导入", position = 22)
+    @ApiOperation(value = "22. 场馆预定-男女占比-批量导入")
     @AnonymousPostMapping("/userSex")
     public Response<Boolean> userSexImport(@RequestBody List<HydResultUserSexReq> userSexes) {
         logger.info("场馆预定-男女占比-批量导入, 条数 : {}", userSexes.size());
@@ -391,7 +391,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "23. 场馆预定-在线场馆数量-批量导入", position = 23)
+    @ApiOperation(value = "23. 场馆预定-在线场馆数量-批量导入")
     @AnonymousPostMapping("/stadium")
     public Response<Boolean> stadiumImport(@RequestBody List<HydResultStadiumReq> stadiums) {
         logger.info("场馆预定-在线场馆数量-批量导入, 条数 : {}", stadiums.size());
@@ -404,7 +404,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "24. 场馆预定-运动项目分布用券数占比-批量导入", position = 24)
+    @ApiOperation(value = "24. 场馆预定-运动项目分布用券数占比-批量导入")
     @AnonymousPostMapping("/stadiumSportCoupon")
     public Response<Boolean> stadiumSportCouponImport(@RequestBody List<HydResultStadiumSportCouponReq> stadiumSportCoupons) {
         logger.info("场馆预定-运动项目分布用券数占比-批量导入, 条数 : {}", stadiumSportCoupons.size());
@@ -418,8 +418,7 @@ public class ImportController {
     }
 
     // ------------------------------------- 原始表 -------------------------------------
-
-    @ApiOperation(value = "25. 原始表-校外培训机构附件表-批量导入", position = 25)
+    @ApiOperation(value = "25. 原始表-校外培训机构附件表-批量导入")
     @AnonymousPostMapping("/laStadiumFiles")
     public Response<Boolean> laStadiumFilesImport(@RequestBody List<HydOriginLaStadiumFileReq> laStadiumFiles) {
         logger.info("原始表-校外培训机构附件表-批量导入, 条数 : {}", laStadiumFiles.size());
@@ -432,7 +431,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "26. 原始表-校外培训机构-批量导入", position = 26)
+    @ApiOperation(value = "26. 原始表-校外培训机构-批量导入")
     @AnonymousPostMapping("/laStadiums")
     public Response<Boolean> laStadiumsImport(@RequestBody List<HydOriginLaStadiumReq> laStadiums) {
         logger.info("原始表-校外培训机构-批量导入, 条数 : {}", laStadiums.size());
@@ -445,7 +444,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "27. 原始表-订单-批量导入", position = 27)
+    @ApiOperation(value = "27. 原始表-订单-批量导入")
     @AnonymousPostMapping("/orders")
     public Response<Boolean> ordersImport(@RequestBody List<HydOriginOrderReq> orders) {
         logger.info("原始表-订单-批量导入, 条数 : {}", orders.size());
@@ -458,7 +457,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "28. 原始表-场馆培训项目-批量导入", position = 28)
+    @ApiOperation(value = "28. 原始表-场馆培训项目-批量导入")
     @AnonymousPostMapping("/stadiumItems")
     public Response<Boolean> stadiumItemsImport(@RequestBody List<HydOriginStadiumItemReq> stadiumItems) {
         logger.info("原始表-场馆培训项目-批量导入, 条数 : {}", stadiumItems.size());
@@ -471,7 +470,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "29. 原始表-培训场馆-批量导入", position = 29)
+    @ApiOperation(value = "29. 原始表-培训场馆-批量导入")
     @AnonymousPostMapping("/stadiums")
     public Response<Boolean> stadiumsImport(@RequestBody List<HydOriginStadiumReq> stadiums) {
         logger.info("原始表-培训场馆-批量导入, 条数 : {}", stadiums.size());
@@ -484,7 +483,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "30. 原始表-组织机构-批量导入", position = 30)
+    @ApiOperation(value = "30. 原始表-组织机构-批量导入")
     @AnonymousPostMapping("/tenants")
     public Response<Boolean> tenantsImport(@RequestBody List<HydOriginTenantReq> tenants) {
         logger.info("原始表-组织机构-批量导入, 条数 : {}", tenants.size());
@@ -497,7 +496,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "31. 原始表-培训活动支持的项目-批量导入", position = 31)
+    @ApiOperation(value = "31. 原始表-培训活动支持的项目-批量导入")
     @AnonymousPostMapping("/trainingActivityItems")
     public Response<Boolean> trainingActivityItemsImport(@RequestBody List<HydOriginTrainingActivityItemReq> trainingActivityItems) {
         logger.info("原始表-培训活动支持的项目-批量导入, 条数 : {}", trainingActivityItems.size());
@@ -510,7 +509,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "32. 原始表-培训活动场馆支持的项目-批量导入", position = 32)
+    @ApiOperation(value = "32. 原始表-培训活动场馆支持的项目-批量导入")
     @AnonymousPostMapping("/trainingActivityItemStadiums")
     public Response<Boolean> trainingActivityItemStadiumsImport(@RequestBody List<HydOriginTrainingActivityItemStadiumReq> trainingActivityItemStadiums) {
         logger.info("原始表-培训活动场馆支持的项目-批量导入, 条数 : {}", trainingActivityItemStadiums.size());
@@ -523,7 +522,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "33. 原始表-培训活动-批量导入", position = 33)
+    @ApiOperation(value = "33. 原始表-培训活动-批量导入")
     @AnonymousPostMapping("/trainingActivities")
     public Response<Boolean> trainingActivitiesImport(@RequestBody List<HydOriginTrainingActivityReq> trainingActivities) {
         logger.info("原始表-培训活动-批量导入, 条数 : {}", trainingActivities.size());
@@ -536,7 +535,7 @@ public class ImportController {
         }
     }
 
-    @ApiOperation(value = "34. 原始表-培训课程-批量导入", position = 34)
+    @ApiOperation(value = "34. 原始表-培训课程-批量导入")
     @AnonymousPostMapping("/trainingCourses")
     public Response<Boolean> trainingCoursesImport(@RequestBody List<HydOriginTrainingCourseReq> trainingCourses) {
         logger.info("原始表-培训课程-批量导入, 条数 : {}", trainingCourses.size());

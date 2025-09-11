@@ -2,10 +2,8 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
-import cn.wuhan.hyd.sports.domain.HydOriginOrder;
 import cn.wuhan.hyd.sports.domain.HydOriginOrderHistory;
 import cn.wuhan.hyd.sports.repository.HydOriginOrderHistoryRepo;
-import cn.wuhan.hyd.sports.repository.HydOriginOrderRepo;
 import cn.wuhan.hyd.sports.req.HydOriginOrderReq;
 import cn.wuhan.hyd.sports.service.IHydOriginOrderService;
 import org.slf4j.Logger;
@@ -29,30 +27,27 @@ import java.util.Map;
 public class HydOriginOrderServiceImpl extends HydBaseServiceImpl implements IHydOriginOrderService {
 
     private final Logger logger = LoggerFactory.getLogger(IHydOriginOrderService.class);
-
-    @Resource
-    private HydOriginOrderRepo orderRepo;
     @Resource
     private HydOriginOrderHistoryRepo orderHistoryRepo;
 
     @Override
-    public PageResult<HydOriginOrder> queryAll(int page, int size) {
+    public PageResult<HydOriginOrderHistory> queryAll(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<HydOriginOrder> pageResult = orderRepo.findAll(pageable);
-        PageResult<HydOriginOrder> result = new PageResult<>();
+        Page<HydOriginOrderHistory> pageResult = orderHistoryRepo.findAll(pageable);
+        PageResult<HydOriginOrderHistory> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
         result.setContent(pageResult.getContent());
         return result;
     }
 
     @Override
-    public List<HydOriginOrder> queryAll() {
-        return orderRepo.findAll();
+    public List<HydOriginOrderHistory> queryAll() {
+        return orderHistoryRepo.findAll();
     }
 
     @Override
-    public HydOriginOrder findById(String id) {
-        return orderRepo.findById(id)
+    public HydOriginOrderHistory findById(String id) {
+        return orderHistoryRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("订单不存在，ID：" + id));
     }
 
@@ -63,25 +58,25 @@ public class HydOriginOrderServiceImpl extends HydBaseServiceImpl implements IHy
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HydOriginOrder save(HydOriginOrder hydOriginOrder) {
-        return orderRepo.save(hydOriginOrder);
+    public HydOriginOrderHistory save(HydOriginOrderHistory hydOriginOrder) {
+        return orderHistoryRepo.save(hydOriginOrder);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(String id) {
-        orderRepo.deleteById(id);
+        orderHistoryRepo.deleteById(id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public HydOriginOrder update(HydOriginOrder order) {
+    public HydOriginOrderHistory update(HydOriginOrderHistory order) {
         if (order.getId() == null) {
             throw new IllegalArgumentException("更新操作必须提供ID");
         }
         // 校验订单是否存在
         findById(order.getId());
-        return orderRepo.save(order);
+        return orderHistoryRepo.save(order);
     }
 
     @Override
@@ -93,25 +88,10 @@ public class HydOriginOrderServiceImpl extends HydBaseServiceImpl implements IHy
         }
         String batchNo = UUIDUtil.getBatchNo();
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydOriginOrder> queryList = convert(logger, orders, HydOriginOrder.class, batchNo);
-        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydOriginOrderHistory> historyList = convert(logger, orders, HydOriginOrderHistory.class, batchNo);
 
         try {
-            // 4. 清空查询表：日志记录操作意图，便于问题追溯
-            logger.info("【批量保存】开始清空HydOriginOrder表，批次号：{}", batchNo);
-            orderRepo.deleteAll();
-
-            // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
-            int querySaveCount = saveAndLog(
-                    logger,
-                    queryList,
-                    orderRepo::saveAll,
-                    "HydOriginOrder",
-                    batchNo
-            );
-
-            // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
+            // 保存历史表：复用时间统计逻辑，避免代码冗余
             int historySaveCount = saveAndLog(
                     logger,
                     historyList,
@@ -120,21 +100,19 @@ public class HydOriginOrderServiceImpl extends HydBaseServiceImpl implements IHy
                     batchNo
             );
 
-            // 7. 校验保存结果：确保双表保存数量一致，避免数据不一致
-            if (querySaveCount != historySaveCount || querySaveCount != orders.size()) {
+            // 校验保存结果：确保双表保存数量一致，避免数据不一致
+            if (historySaveCount != orders.size()) {
                 throw new RuntimeException(
-                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
-                                batchNo, orders.size(), querySaveCount, historySaveCount)
+                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，历史表保存量：%d",
+                                batchNo, orders.size(), historySaveCount)
                 );
             }
 
-            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
-            return querySaveCount; // 返回实际保存数量，而非固定100，更具业务意义
-
+            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, historySaveCount);
+            return historySaveCount;
         } catch (Exception e) {
-            // 8. 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
-            logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：",
-                    batchNo, orders.size(), e);
+            // 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
+            logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：", batchNo, orders.size(), e);
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
     }

@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultFacility;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +33,8 @@ public interface HydResultFacilityRepo extends JpaRepository<HydResultFacility, 
      */
     @Query(value = "SELECT DISTINCT(facilityTypeName) FROM hyd_result_facility WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC", nativeQuery = true)
     List<String> allTypeName(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_facility WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, int statisticalYear);
 }

@@ -69,13 +69,24 @@ public class HydCouponController {
         }
     }
 
+    @ApiOperation("卷名列表")
+    @AnonymousGetMapping("/allGroupName")
+    public Response<List<String>> allGroupName(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(stockService.allGroupName(year));
+    }
+
     @ApiOperation("消费卷领卷用卷统计")
     @AnonymousGetMapping("/stockGetAndUseStat")
     public Response<List<StockGetAndUseStatResp>> stockGetAndUseStat(
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
-            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        List<HydResultStock> stocks = stockService.queryAll(year);
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year,
+            @ApiParam(value = "卷名", required = true)
+            @NotBlank(message = "卷名不能为空") @RequestParam String groupName) {
+        List<HydResultStock> stocks = stockService.queryAll(year, groupName);
         List<StockGetAndUseStatResp> result = stocks.stream().map(source -> {
             StockGetAndUseStatResp target = new StockGetAndUseStatResp();
             if (source != null) {
@@ -93,8 +104,10 @@ public class HydCouponController {
     public Response<List<StockUseOrderStatResp>> stockUseOrderStat(
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
-            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        List<HydResultStock> stocks = stockService.queryAll(year);
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year,
+            @ApiParam(value = "卷名", required = true)
+            @NotBlank(message = "卷名不能为空") @RequestParam String groupName) {
+        List<HydResultStock> stocks = stockService.queryAll(year, groupName);
         List<StockUseOrderStatResp> result = stocks.stream().map(source -> {
             StockUseOrderStatResp target = new StockUseOrderStatResp();
             if (source != null) {

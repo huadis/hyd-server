@@ -3,6 +3,7 @@ package cn.wuhan.hyd.sports.controller;
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.sports.domain.HydOriginLaStadium;
+import cn.wuhan.hyd.sports.domain.HydOriginLaStadiumHistory;
 import cn.wuhan.hyd.sports.service.IHydOriginLaStadiumService;
 import cn.wuhan.hyd.sports.service.IHydResultLaStadiumStatService;
 import io.swagger.annotations.Api;
@@ -46,7 +47,7 @@ public class HydLaStadiumController {
      */
     @ApiOperation("所有场馆信息")
     @AnonymousGetMapping("/stadiums")
-    public Response<List<HydOriginLaStadium>> stadiums() {
+    public Response<List<HydOriginLaStadiumHistory>> stadiums() {
         return Response.ok(laStadiumService.queryAll());
     }
 
@@ -55,7 +56,7 @@ public class HydLaStadiumController {
      */
     @ApiOperation("所有培训机构信息")
     @AnonymousGetMapping("/laStadiums")
-    public Response<List<HydOriginLaStadium>> laStadiums() {
+    public Response<List<HydOriginLaStadiumHistory>> laStadiums() {
         return Response.ok(laStadiumService.queryAll());
     }
 

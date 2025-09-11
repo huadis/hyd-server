@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.service.impl;
 
+import cn.wuhan.hyd.framework.utils.DateUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 
@@ -44,6 +45,7 @@ public class HydBaseServiceImpl {
                             BeanUtils.copyProperties(target, source);
                             // 设置版本号
                             setBatchNoToTarget(target, batchNo);
+                            setStatisticalYearToTarget(target, DateUtil.getPreviousDayYear());
                             return target;
                         } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException |
                                  InstantiationException e) {
@@ -103,6 +105,25 @@ public class HydBaseServiceImpl {
             }
         }
 
+    }
+
+    /**
+     * 为目标实体设置统计年份（通过反射调用setStatisticalYear方法）
+     */
+    private static <T> void setStatisticalYearToTarget(T target, Integer statisticalYear) {
+        Method setStatisticalYearMethod = null;
+        try {
+            // 调用目标实体的setBatchNo(String)方法
+            setStatisticalYearMethod = target.getClass().getMethod("setStatisticalYear", Integer.class);
+        } catch (NoSuchMethodException ignored) {
+        }
+        if (setStatisticalYearMethod != null) {
+            try {
+                setStatisticalYearMethod.invoke(target, statisticalYear);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException("调用setStatisticalYear方法失败", e);
+            }
+        }
     }
 
     static BigDecimal addValue(BigDecimal total, String value) {
@@ -193,6 +214,7 @@ public class HydBaseServiceImpl {
 
     /**
      * 从Map中获取BigDecimal（支持多种数值类型转换）
+     *
      * @param map 目标Map
      * @param key 键
      * @return BigDecimal值（若键不存在/值为null/类型不支持，返回BigDecimal.ZERO）

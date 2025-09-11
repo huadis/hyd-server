@@ -28,10 +28,8 @@ import java.util.Map;
 @Service
 public class HydOriginStadiumServiceImpl extends HydBaseServiceImpl implements IHydOriginStadiumService {
 
-    private final Logger logger = LoggerFactory.getLogger(IHydOriginStadiumService.class);
+    private final Logger logger = LoggerFactory.getLogger(HydOriginStadiumServiceImpl.class);
 
-    @Resource
-    private HydOriginStadiumRepo stadiumRepo;
     @Resource
     private HydOriginStadiumHistoryRepo stadiumHistoryRepo;
 
@@ -89,25 +87,10 @@ public class HydOriginStadiumServiceImpl extends HydBaseServiceImpl implements I
 
         String batchNo = UUIDUtil.getBatchNo();
         // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydOriginStadium> queryList = convert(logger, stadiums, HydOriginStadium.class, batchNo);
-        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydOriginStadiumHistory> historyList = convert(logger, stadiums, HydOriginStadiumHistory.class, batchNo);
 
         try {
-            // 4. 清空查询表：日志记录操作意图，便于问题追溯
-            logger.info("【批量保存】开始清空HydOriginStadium表，批次号：{}", batchNo);
-            stadiumRepo.deleteAll();
-
-            // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
-            int querySaveCount = saveAndLog(
-                    logger,
-                    queryList,
-                    stadiumRepo::saveAll,
-                    "HydOriginStadium",
-                    batchNo
-            );
-
-            // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
+            // 保存历史表：复用时间统计逻辑，避免代码冗余
             int historySaveCount = saveAndLog(
                     logger,
                     historyList,
@@ -116,21 +99,19 @@ public class HydOriginStadiumServiceImpl extends HydBaseServiceImpl implements I
                     batchNo
             );
 
-            // 7. 校验保存结果：确保双表保存数量一致，避免数据不一致
-            if (querySaveCount != historySaveCount || querySaveCount != stadiums.size()) {
+            // 校验保存结果：确保双表保存数量一致，避免数据不一致
+            if (historySaveCount != stadiums.size()) {
                 throw new RuntimeException(
-                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
-                                batchNo, stadiums.size(), querySaveCount, historySaveCount)
+                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，历史表保存量：%d",
+                                batchNo, stadiums.size(), historySaveCount)
                 );
             }
 
-            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
-            return querySaveCount; // 返回实际保存数量，而非固定100，更具业务意义
-
+            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, historySaveCount);
+            return historySaveCount;
         } catch (Exception e) {
-            // 8. 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
-            logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：",
-                    batchNo, stadiums.size(), e);
+            // 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
+            logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：", batchNo, stadiums.size(), e);
             throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
         }
     }

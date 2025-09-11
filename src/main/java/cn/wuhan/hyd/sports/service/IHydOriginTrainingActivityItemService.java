@@ -1,7 +1,7 @@
 package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydOriginTrainingActivityItem;
+import cn.wuhan.hyd.sports.domain.HydOriginTrainingActivityItemHistory;
 import cn.wuhan.hyd.sports.req.HydOriginTrainingActivityItemReq;
 
 import java.util.List;
@@ -20,14 +20,14 @@ public interface IHydOriginTrainingActivityItemService {
      * @param size 每页条数
      * @return 实体对象列表
      */
-    PageResult<HydOriginTrainingActivityItem> queryAll(int page, int size);
+    PageResult<HydOriginTrainingActivityItemHistory> queryAll(int page, int size);
 
     /**
      * 查询全部
      *
      * @return 实体对象列表
      */
-    List<HydOriginTrainingActivityItem> queryAll();
+    List<HydOriginTrainingActivityItemHistory> queryAll();
 
 
     /**
@@ -36,7 +36,7 @@ public interface IHydOriginTrainingActivityItemService {
      * @param hydOriginTrainingActivityItem 实体对象
      * @return 保存后的实体对象
      */
-    HydOriginTrainingActivityItem save(HydOriginTrainingActivityItem hydOriginTrainingActivityItem);
+    HydOriginTrainingActivityItemHistory save(HydOriginTrainingActivityItemHistory hydOriginTrainingActivityItem);
 
     /**
      * 根据ID删除数据
@@ -51,7 +51,7 @@ public interface IHydOriginTrainingActivityItemService {
      * @param hydOriginTrainingActivityItem 实体对象
      * @return 更新后的实体对象
      */
-    HydOriginTrainingActivityItem update(HydOriginTrainingActivityItem hydOriginTrainingActivityItem);
+    HydOriginTrainingActivityItemHistory update(HydOriginTrainingActivityItemHistory hydOriginTrainingActivityItem);
 
     /**
      * 根据ID查询数据
@@ -59,7 +59,7 @@ public interface IHydOriginTrainingActivityItemService {
      * @param id 主键ID
      * @return 实体对象
      */
-    HydOriginTrainingActivityItem findById(String id);  // 主键为String类型
+    HydOriginTrainingActivityItemHistory findById(String id);  // 主键为String类型
 
     int batchSave(List<HydOriginTrainingActivityItemReq> items);
 }

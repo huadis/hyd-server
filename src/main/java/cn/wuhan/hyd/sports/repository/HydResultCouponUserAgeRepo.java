@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultCouponUserAge;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,8 @@ public interface HydResultCouponUserAgeRepo extends JpaRepository<HydResultCoupo
 
     @Query(value = "SELECT * FROM hyd_result_coupon_user_age WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC limit 1", nativeQuery = true)
     HydResultCouponUserAge latestCouponUserAge(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_coupon_user_age WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
+    int deleteByNotBatchNo(String batchNo, Integer statisticalYear);
 }

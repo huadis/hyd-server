@@ -1,7 +1,7 @@
 package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydOriginTenant;
+import cn.wuhan.hyd.sports.domain.HydOriginTenantHistory;
 import cn.wuhan.hyd.sports.req.HydOriginTenantReq;
 
 import java.util.List;
@@ -20,27 +20,27 @@ public interface IHydOriginTenantService {
      * @param size 每页条数
      * @return 分页结果
      */
-    PageResult<HydOriginTenant> queryAll(int page, int size);
+    PageResult<HydOriginTenantHistory> queryAll(int page, int size);
 
     /**
      * 查询全部
      * @return 租户列表
      */
-    List<HydOriginTenant> queryAll();
+    List<HydOriginTenantHistory> queryAll();
 
     /**
      * 根据ID查询
      * @param id 主键ID
      * @return 租户实体
      */
-    HydOriginTenant findById(String id);
+    HydOriginTenantHistory findById(String id);
 
     /**
      * 新增租户
      * @param hydOriginTenant 租户实体
      * @return 保存后的实体
      */
-    HydOriginTenant save(HydOriginTenant hydOriginTenant);
+    HydOriginTenantHistory save(HydOriginTenantHistory hydOriginTenant);
 
     /**
      * 批量新增
@@ -54,25 +54,11 @@ public interface IHydOriginTenantService {
      * @param hydOriginTenant 租户实体
      * @return 更新后的实体
      */
-    HydOriginTenant update(HydOriginTenant hydOriginTenant);
+    HydOriginTenantHistory update(HydOriginTenantHistory hydOriginTenant);
 
     /**
      * 根据ID删除
      * @param id 主键ID
      */
     void deleteById(String id);
-
-    /**
-     * 根据省份编码查询
-     * @param province 省份编码
-     * @return 租户列表
-     */
-    List<HydOriginTenant> findByProvince(String province);
-
-    /**
-     * 根据名称模糊查询
-     * @param tenantName 租户名称
-     * @return 租户列表
-     */
-    List<HydOriginTenant> findByTenantNameLike(String tenantName);
 }

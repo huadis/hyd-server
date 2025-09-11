@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.service.impl;
 
+import cn.wuhan.hyd.framework.utils.DateUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
 import cn.wuhan.hyd.sports.domain.HydResultUserChannel;
@@ -107,7 +108,7 @@ public class HydResultUserChannelServiceImpl extends HydBaseServiceImpl implemen
         try {
             // 4. 清空查询表：日志记录操作意图，便于问题追溯
             logger.info("【批量保存】开始清空HydResultUserChannel表，批次号：{}", batchNo);
-            userChannelRepo.deleteByNotBatchNo(batchNo);
+            userChannelRepo.deleteByNotBatchNo(batchNo, DateUtil.getPreviousDayYear());
 
             // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
             int querySaveCount = saveAndLog(
