@@ -310,16 +310,16 @@ public class HydExcelInstructorServiceImpl implements IHydExcelInstructorService
      * 年龄统计
      */
     @Override
-    public List<Map<String, Object>> ageIntervalStat() {
-        return instructorAgeStatsRepo.ageIntervalStat();
+    public List<Map<String, Object>> ageIntervalStat(String year) {
+        return instructorAgeStatsRepo.ageIntervalStat(year);
     }
 
     /**
      * 人数增长统计
      */
     @Override
-    public List<Map<String, Object>> ageGrowthStat() {
-        return instructorAgeGrowthRepo.ageGrowthStat();
+    public List<Map<String, Object>> ageGrowthStat(String year) {
+        return instructorAgeGrowthRepo.ageGrowthStat(year);
     }
 
     /**

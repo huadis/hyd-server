@@ -1,6 +1,7 @@
 package cn.wuhan.hyd.sports.domain;
 
 import cn.wuhan.hyd.framework.annotation.ExcelField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -51,15 +52,18 @@ public class HydExcelSportsOrg implements Serializable {
     @ApiModelProperty(value = "区属")
     private String districtName;
 
+    @JsonIgnore
     @Column(name = "batchNo")
     private String batchNo;
 
     @Column(name = "createdTime", nullable = false, updatable = false)
     private Date createdTime;
 
+    @JsonIgnore
     @Column(name = "updateTime", nullable = false)
     private Date updateTime;
 
+    @JsonIgnore
     @Column(name = "importTime", nullable = false)
     private Date importTime;
 

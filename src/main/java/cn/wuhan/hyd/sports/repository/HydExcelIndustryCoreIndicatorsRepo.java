@@ -17,11 +17,7 @@ public interface HydExcelIndustryCoreIndicatorsRepo extends JpaRepository<HydExc
     /**
      * 总览
      */
-    @Query(value = "SELECT " +
-            " * " +
-            "FROM " +
-            "    hyd_excel_industry_core_indicators WHERE statisticalYear = ?1 " +
-            "ORDER BY createdTime limit 1", nativeQuery = true)
+    @Query(value = "SELECT  * FROM hyd_excel_industry_core_indicators WHERE statisticalYear = ?1 ORDER BY createdTime limit 1", nativeQuery = true)
     HydExcelIndustryCoreIndicators overview(String year);
 
     @Modifying

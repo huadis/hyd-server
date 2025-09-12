@@ -9,6 +9,7 @@ import org.apache.commons.collections.MapUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -53,7 +54,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     // ========================== 1. 社会体育指导员-级别统计（HydResultInstructorLevel）实现 ==========================
     @Override
     public PageResult<HydResultInstructorLevel> queryAllLevel(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultInstructorLevel> pageResult = instructorLevelRepo.findAll(pageable);
         PageResult<HydResultInstructorLevel> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -91,7 +93,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     // ========================== 2. 社会体育指导员-概览（HydResultInstructorOverview）实现 ==========================
     @Override
     public PageResult<HydResultInstructorOverview> queryAllOverview(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultInstructorOverview> pageResult = instructorOverviewRepo.findAll(pageable);
         PageResult<HydResultInstructorOverview> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -129,7 +132,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     // ========================== 3. 社会体育指导员-各区指导人员统计（HydResultInstructorRegion）实现 ==========================
     @Override
     public PageResult<HydResultInstructorRegion> queryAllRegion(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultInstructorRegion> pageResult = instructorRegionRepo.findAll(pageable);
         PageResult<HydResultInstructorRegion> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -167,7 +171,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     // ========================== 4. 社会体育指导员-项目统计（HydResultInstructorServiceProject）实现 ==========================
     @Override
     public PageResult<HydResultInstructorServiceProject> queryAllServiceProject(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultInstructorServiceProject> pageResult = instructorServiceProjectRepo.findAll(pageable);
         PageResult<HydResultInstructorServiceProject> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -205,7 +210,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     // ========================== 5. 社会体育指导员-指导项目统计TOP15（HydResultInstructorServiceProjectTop）实现 ==========================
     @Override
     public PageResult<HydResultInstructorServiceProjectTop> queryAllServiceProjectTop(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultInstructorServiceProjectTop> pageResult = instructorServiceProjectTopRepo.findAll(pageable);
         PageResult<HydResultInstructorServiceProjectTop> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -243,7 +249,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     // ========================== 6. 社会体育指导员-性别统计（HydResultInstructorUserSex）实现 ==========================
     @Override
     public PageResult<HydResultInstructorUserSex> queryAllUserSex(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultInstructorUserSex> pageResult = instructorUserSexRepo.findAll(pageable);
         PageResult<HydResultInstructorUserSex> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());

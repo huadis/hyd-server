@@ -2,10 +2,8 @@ package cn.wuhan.hyd.sports.service.impl;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.framework.utils.UUIDUtil;
-import cn.wuhan.hyd.sports.domain.HydOriginStadium;
 import cn.wuhan.hyd.sports.domain.HydOriginStadiumHistory;
 import cn.wuhan.hyd.sports.repository.HydOriginStadiumHistoryRepo;
-import cn.wuhan.hyd.sports.repository.HydOriginStadiumRepo;
 import cn.wuhan.hyd.sports.req.HydOriginStadiumReq;
 import cn.wuhan.hyd.sports.service.IHydOriginStadiumService;
 import org.slf4j.Logger;

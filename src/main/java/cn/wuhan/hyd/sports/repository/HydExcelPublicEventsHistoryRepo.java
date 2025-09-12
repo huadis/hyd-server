@@ -55,12 +55,8 @@ public interface HydExcelPublicEventsHistoryRepo extends JpaRepository<HydExcelP
     /**
      * 各月办赛数据
      */
-    @Query(value = "SELECT " +
-            "eventYear as statisticalYear, " +
-            "eventMonth, " +
-            "COUNT(id) AS eventCount " +
-            " FROM " +
-            "hyd_excel_public_events_history WHERE eventYear is not null and eventYear != '' AND eventMonth != '' AND eventMonth is not null GROUP BY eventYear, eventMonth ORDER BY statisticalYear DESC, eventMonth DESC;", nativeQuery = true)
+    @Query(value = "SELECT eventYear as statisticalYear, eventMonth, COUNT(id) AS eventCount " +
+            "FROM hyd_excel_public_events_history WHERE eventYear is not null and eventYear != '' AND eventMonth != '' AND eventMonth is not null GROUP BY eventYear, eventMonth ORDER BY statisticalYear DESC, eventMonth DESC;", nativeQuery = true)
     List<Map<String, Object>> monthStat();
 
     /**

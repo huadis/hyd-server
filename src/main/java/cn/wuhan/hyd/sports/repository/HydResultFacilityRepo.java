@@ -22,7 +22,7 @@ public interface HydResultFacilityRepo extends JpaRepository<HydResultFacility, 
      * @param year 年份
      * @return 设施全貌
      */
-    @Query(value = "SELECT * FROM hyd_result_facility WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_facility WHERE statisticalYear = ?1 ORDER BY createdTime DESC", nativeQuery = true)
     List<HydResultFacility> facilityOverview(String year);
 
     /**
@@ -31,7 +31,7 @@ public interface HydResultFacilityRepo extends JpaRepository<HydResultFacility, 
      * @param year 年份
      * @return 设施类型名称
      */
-    @Query(value = "SELECT DISTINCT(facilityTypeName) FROM hyd_result_facility WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC", nativeQuery = true)
+    @Query(value = "SELECT DISTINCT(facilityTypeName) FROM hyd_result_facility WHERE statisticalYear = ?1 ORDER BY createdTime DESC", nativeQuery = true)
     List<String> allTypeName(String year);
 
     @Modifying

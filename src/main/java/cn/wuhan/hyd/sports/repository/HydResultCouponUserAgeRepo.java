@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HydResultCouponUserAgeRepo extends JpaRepository<HydResultCouponUserAge, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_coupon_user_age WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC limit 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_coupon_user_age WHERE statisticalYear = ?1 ORDER BY createdTime DESC limit 1", nativeQuery = true)
     HydResultCouponUserAge latestCouponUserAge(String year);
 
     @Modifying

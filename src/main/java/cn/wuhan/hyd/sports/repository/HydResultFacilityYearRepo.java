@@ -20,7 +20,7 @@ public interface HydResultFacilityYearRepo extends JpaRepository<HydResultFacili
      * @param year 年份
      * @return 健身点位
      */
-    @Query(value = "SELECT * FROM hyd_result_facility_year WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_facility_year WHERE statisticalYear = ?1 ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
     HydResultFacilityYear fitnessOverview(String year);
 
     @Modifying

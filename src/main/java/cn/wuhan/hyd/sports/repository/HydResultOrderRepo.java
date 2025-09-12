@@ -16,21 +16,13 @@ import java.util.Map;
 @Repository
 public interface HydResultOrderRepo extends JpaRepository<HydResultOrder, Long> {
 
-    @Query(value = "SELECT " +
-            "orderNum, " +
-            "orderAmount, " +
-            "couponAmount " +
-            "FROM hyd_result_order WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT orderNum, orderAmount, couponAmount FROM hyd_result_order WHERE statisticalYear = ?1 ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
     Map<String, Object> overview(String year);
 
-    @Query(value = "SELECT " +
-            "sum(orderNum) orderNumSum " +
-            "FROM hyd_result_order ", nativeQuery = true)
+    @Query(value = "SELECT sum(orderNum) orderNumSum FROM hyd_result_order ", nativeQuery = true)
     Long sumOrderNum();
 
-    @Query(value = "SELECT " +
-            "sum(orderAmount) orderAmountSum " +
-            "FROM hyd_result_order ", nativeQuery = true)
+    @Query(value = "SELECT sum(orderAmount) orderAmountSum FROM hyd_result_order ", nativeQuery = true)
     Long sumOrderAmount();
 
     @Modifying

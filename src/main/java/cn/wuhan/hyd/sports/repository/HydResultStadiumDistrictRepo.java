@@ -21,7 +21,7 @@ public interface HydResultStadiumDistrictRepo extends JpaRepository<HydResultSta
      *
      * @return 包含区场馆统计数据列表，包含区名称及场馆数量
      */
-    @Query(value = "SELECT * FROM hyd_result_stadium_district WHERE YEAR(createdTime) = ?1 and districtName is not null and districtName != '' order by CAST(stadiumNum AS UNSIGNED) desc", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_stadium_district WHERE statisticalYear = ?1 and districtName is not null and districtName != '' order by CAST(stadiumNum AS UNSIGNED) desc", nativeQuery = true)
     List<HydResultStadiumDistrict> countStadiumDistrict(String year);
 
     @Modifying

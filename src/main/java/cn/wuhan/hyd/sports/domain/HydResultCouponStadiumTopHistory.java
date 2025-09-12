@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,6 +57,7 @@ public class HydResultCouponStadiumTopHistory implements Serializable {
     @ApiModelProperty(value = "类型")
     private String type;
 
+    @JsonIgnore
     @Column(name = "batchNo")
     @ApiModelProperty(value = "批次号")
     private String batchNo;
@@ -68,10 +70,12 @@ public class HydResultCouponStadiumTopHistory implements Serializable {
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;
 
+    @JsonIgnore
     @Column(name = "updateTime")
     @ApiModelProperty(value = "更新时间", hidden = true)
     private Timestamp updateTime;
 
+    @JsonIgnore
     @Column(name = "importTime")
     @ApiModelProperty(value = "导入时间", hidden = true)
     private Timestamp importTime;

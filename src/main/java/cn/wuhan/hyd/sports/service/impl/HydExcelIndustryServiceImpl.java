@@ -600,7 +600,8 @@ public class HydExcelIndustryServiceImpl implements IHydExcelIndustryService {
      */
     @Override
     public List<Map<String, Object>> industryScaleTrendStat(String year) {
-        return industryScaleTrendRepo.stat(year);
+        Integer fromYear = Integer.parseInt(year) - 6;
+        return industryScaleTrendRepo.stat(fromYear + "", year);
     }
 
     /**

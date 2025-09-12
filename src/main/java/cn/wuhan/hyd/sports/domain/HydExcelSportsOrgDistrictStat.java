@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,15 +37,18 @@ public class HydExcelSportsOrgDistrictStat implements Serializable {
     @Column(name = "districtNum")
     private Long districtNum; // 数量
 
+    @JsonIgnore
     @Column(name = "batchNo", length = 50)
     private String batchNo; // 批次号
 
     @Column(name = "createdTime", nullable = false, updatable = false)
     private Date createdTime;
 
+    @JsonIgnore
     @Column(name = "updateTime", nullable = false)
     private Date updateTime;
 
+    @JsonIgnore
     @Column(name = "importTime", nullable = false)
     private Date importTime;
 

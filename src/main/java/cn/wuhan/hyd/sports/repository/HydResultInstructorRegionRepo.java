@@ -16,6 +16,6 @@ import java.util.Map;
 @Repository
 public interface HydResultInstructorRegionRepo extends JpaRepository<HydResultInstructorRegion, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_instructor_region WHERE YEAR(createdTime) = ?1 ORDER BY instructorCount DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_instructor_region WHERE statisticalYear = ?1 ORDER BY instructorCount DESC", nativeQuery = true)
     List<Map<String, Object>> regionInstructorStat(String year);
 }

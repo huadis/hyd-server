@@ -22,7 +22,7 @@ public interface HydResultFacilityDistrictMonthRepo extends JpaRepository<HydRes
      * @param year 年份
      * @return 设施全貌
      */
-    @Query(value = "SELECT * FROM hyd_result_facility_district_month WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_facility_district_month WHERE statisticalYear = ?1 ORDER BY createdTime DESC", nativeQuery = true)
     List<HydResultFacilityDistrictMonth> inspectMaintenance(String year);
 
     @Modifying

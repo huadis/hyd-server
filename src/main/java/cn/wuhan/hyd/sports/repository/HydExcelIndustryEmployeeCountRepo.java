@@ -17,14 +17,9 @@ import java.util.Map;
 @Repository
 public interface HydExcelIndustryEmployeeCountRepo extends JpaRepository<HydExcelIndustryEmployeeCount, Long> {
 
-    @Query(value = "SELECT " +
-            "    entityType, " +
-            "    personCount " +
-            "FROM " +
-            "    hyd_excel_industry_employee_count " +
-            "WHERE statisticalYear = ?1 " +
-            "ORDER BY personCount DESC;", nativeQuery = true)
-    List<Map<String,Object>> stat(String year);
+    @Query(value = "SELECT entityType, personCount FROM hyd_excel_industry_employee_count " +
+            "WHERE statisticalYear = ?1 ORDER BY personCount DESC;", nativeQuery = true)
+    List<Map<String, Object>> stat(String year);
 
     @Modifying
     @Query(value = "DELETE FROM hyd_excel_industry_employee_count WHERE batchNo != ?1", nativeQuery = true)

@@ -1,6 +1,7 @@
 package cn.wuhan.hyd.sports.domain;
 
 import cn.wuhan.hyd.framework.annotation.ExcelField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,17 +31,15 @@ public class HydResultOrderYktStadiumStat implements Serializable {
     private Long id;
 
     @Column(name = "stadium")
-    @ExcelField(name = "培训场馆名称")
     @ApiModelProperty(value = "培训场馆名称，如武汉体育中心")
     private String stadium;
 
     @Column(name = "orderAmount")
-    @ExcelField(name = "消费券总金额")
     @ApiModelProperty(value = "消费券总金额")
     private Integer orderAmount;
 
+    @JsonIgnore
     @Column(name = "batchNo")
-    @ExcelField(name = "批次号")
     @ApiModelProperty(value = "批次号，用于标识数据批次")
     private String batchNo;
 
@@ -52,10 +51,12 @@ public class HydResultOrderYktStadiumStat implements Serializable {
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;
 
+    @JsonIgnore
     @Column(name = "updateTime")
     @ApiModelProperty(value = "更新时间", hidden = true)
     private Timestamp updateTime;
 
+    @JsonIgnore
     @Column(name = "importTime")
     @ApiModelProperty(value = "导入时间", hidden = true)
     private Timestamp importTime;

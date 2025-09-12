@@ -182,12 +182,12 @@ public interface IHydExcelInstructorService {
     /**
      * 年龄统计
      */
-    List<Map<String, Object>> ageIntervalStat();
+    List<Map<String, Object>> ageIntervalStat(String year);
 
     /**
      * 人数增长统计
      */
-    List<Map<String, Object>> ageGrowthStat();
+    List<Map<String, Object>> ageGrowthStat(String year);
 
     Map<String, Object> overview();
 

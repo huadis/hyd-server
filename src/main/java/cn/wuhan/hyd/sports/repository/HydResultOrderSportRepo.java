@@ -17,10 +17,7 @@ import java.util.Map;
 @Repository
 public interface HydResultOrderSportRepo extends JpaRepository<HydResultOrderSport, Long> {
 
-    @Query(value = "SELECT " +
-            "sportName, " +
-            "orderAmount " +
-            "FROM hyd_result_order_sport WHERE YEAR(createdTime) = ?1 ORDER BY orderAmount DESC limit 5", nativeQuery = true)
+    @Query(value = "SELECT sportName, orderAmount FROM hyd_result_order_sport WHERE statisticalYear = ?1 ORDER BY orderAmount DESC limit 5", nativeQuery = true)
     List<Map<String, Object>> projectTop5(String year);
 
     @Modifying

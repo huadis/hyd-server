@@ -15,6 +15,6 @@ import java.util.Map;
 @Repository
 public interface HydResultInstructorOverviewRepo extends JpaRepository<HydResultInstructorOverview, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_instructor_overview WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC limit 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_instructor_overview WHERE statisticalYear = ?1 ORDER BY createdTime DESC limit 1", nativeQuery = true)
     Map<String, Object> overview(String year);
 }

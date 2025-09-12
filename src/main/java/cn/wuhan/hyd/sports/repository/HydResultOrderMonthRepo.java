@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface HydResultOrderMonthRepo extends JpaRepository<HydResultOrderMonth, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_order_month WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_order_month WHERE statisticalYear = ?1 ORDER BY createdTime DESC", nativeQuery = true)
     List<HydResultOrderMonth> list(String year);
 
     @Modifying

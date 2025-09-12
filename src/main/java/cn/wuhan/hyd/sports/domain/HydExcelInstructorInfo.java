@@ -1,6 +1,7 @@
 package cn.wuhan.hyd.sports.domain;
 
 import cn.wuhan.hyd.framework.annotation.ExcelField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -75,6 +75,7 @@ public class HydExcelInstructorInfo implements Serializable {
     @ApiModelProperty(value = "上传时间")
     private String uploadTime;
 
+    @JsonIgnore
     @Column(name = "batchNo")
     @ApiModelProperty(value = "批次号")
     private String batchNo;
@@ -83,10 +84,12 @@ public class HydExcelInstructorInfo implements Serializable {
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;
 
+    @JsonIgnore
     @Column(name = "updateTime")
     @ApiModelProperty(value = "更新时间", hidden = true)
     private Timestamp updateTime;
 
+    @JsonIgnore
     @Column(name = "importTime")
     @ApiModelProperty(value = "导入时间", hidden = true)
     private Timestamp importTime;

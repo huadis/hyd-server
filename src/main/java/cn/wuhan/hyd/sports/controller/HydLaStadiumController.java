@@ -2,7 +2,6 @@ package cn.wuhan.hyd.sports.controller;
 
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
-import cn.wuhan.hyd.sports.domain.HydOriginLaStadium;
 import cn.wuhan.hyd.sports.domain.HydOriginLaStadiumHistory;
 import cn.wuhan.hyd.sports.service.IHydOriginLaStadiumService;
 import cn.wuhan.hyd.sports.service.IHydResultLaStadiumStatService;
@@ -35,7 +34,7 @@ public class HydLaStadiumController {
     @Resource
     private IHydResultLaStadiumStatService laStadiumStatService;
 
-    @ApiOperation("手动刷新结果表")
+    @ApiOperation("刷新结果集")
     @AnonymousGetMapping("/refresh")
     public Response<Boolean> refresh() {
         laStadiumStatService.syncResultData();

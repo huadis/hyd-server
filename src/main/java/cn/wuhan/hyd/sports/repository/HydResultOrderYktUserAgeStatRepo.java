@@ -15,6 +15,6 @@ import java.util.List;
 @Repository
 public interface HydResultOrderYktUserAgeStatRepo extends JpaRepository<HydResultOrderYktUserAgeStat, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_order_ykt_userage_stat WHERE YEAR(createdTime) = ?1 ORDER BY FIELD(ageGroup, '2岁', '3岁', '4岁', '5岁', '6岁', '7岁', '8岁', '9岁', '10岁', '11岁', '12岁', '13岁', '14岁')", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_order_ykt_userage_stat WHERE statisticalYear = ?1 ORDER BY FIELD(ageGroup, '2岁', '3岁', '4岁', '5岁', '6岁', '7岁', '8岁', '9岁', '10岁', '11岁', '12岁', '13岁', '14岁')", nativeQuery = true)
     List<HydResultOrderYktUserAgeStat> listUserAge(String year);
 }

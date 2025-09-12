@@ -17,15 +17,8 @@ import java.util.Map;
 @Repository
 public interface HydExcelIndustryGrowthValueTrendRepo extends JpaRepository<HydExcelIndustryGrowthValueTrend, Long> {
 
-    @Query(value = "SELECT " +
-            "    statisticalYear , " +
-            "    totalOutputValue , " +
-            "    growthRate " +
-            "FROM " +
-            "    hyd_excel_industry_growth_value_trend " +
-            "WHERE " +
-            "    statisticalYear BETWEEN ?1 AND ?2 " +
-            "ORDER BY statisticalYear ASC ", nativeQuery = true)
+    @Query(value = "SELECT statisticalYear, totalOutputValue, growthRate FROM hyd_excel_industry_growth_value_trend " +
+            "WHERE statisticalYear BETWEEN ?1 AND ?2 ORDER BY statisticalYear ASC ", nativeQuery = true)
     List<Map<String, Object>> stat(String from, String to);
 
     @Modifying

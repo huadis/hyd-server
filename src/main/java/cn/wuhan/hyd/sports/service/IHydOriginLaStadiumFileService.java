@@ -1,12 +1,10 @@
 package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
-import cn.wuhan.hyd.sports.domain.HydOriginLaStadiumFile;
 import cn.wuhan.hyd.sports.domain.HydOriginLaStadiumFileHistory;
 import cn.wuhan.hyd.sports.req.HydOriginLaStadiumFileReq;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 功能说明： 校外培训机构附件表 <br>

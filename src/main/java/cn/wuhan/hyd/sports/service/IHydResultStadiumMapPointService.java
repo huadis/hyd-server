@@ -2,7 +2,6 @@ package cn.wuhan.hyd.sports.service;
 
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultStadiumMapPoint;
-import cn.wuhan.hyd.sports.domain.HydResultStadiumMapPointHistory;
 import cn.wuhan.hyd.sports.req.HydResultStadiumMapPointReq;
 
 import java.util.List;

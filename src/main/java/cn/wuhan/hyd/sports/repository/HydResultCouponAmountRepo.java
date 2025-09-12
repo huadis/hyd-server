@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HydResultCouponAmountRepo extends JpaRepository<HydResultCouponAmount, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_coupon_amount WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_coupon_amount WHERE statisticalYear = ?1 ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
     HydResultCouponAmount findLatestCouponAmount(String year);
 
     @Modifying

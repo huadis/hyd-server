@@ -10,8 +10,6 @@ import cn.wuhan.hyd.sports.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,26 +72,6 @@ public class DataController {
     private IHydResultUserRepurchaseService hydUserRepurchaseService;
     @Resource
     private IHydResultUserSexService hydUserSexService;
-    @Resource
-    private IHydOriginLaStadiumFileService laStadiumFileService;
-    @Resource
-    private IHydOriginLaStadiumService laStadiumService;
-    @Resource
-    private IHydOriginOrderService orderService;
-    @Resource
-    private IHydOriginStadiumItemService stadiumItemService;
-    @Resource
-    private IHydOriginStadiumService stadiumService;
-    @Resource
-    private IHydOriginTenantService tenantService;
-    @Resource
-    private IHydOriginTrainingActivityItemService trainingActivityItemService;
-    @Resource
-    private IHydOriginTrainingActivityItemStadiumService trainingActivityItemStadiumService;
-    @Resource
-    private IHydOriginTrainingActivityService trainingActivityService;
-    @Resource
-    private IHydOriginTrainingCourseService trainingCourseService;
     @Resource
     private IHydYktService yktService;
     @Resource

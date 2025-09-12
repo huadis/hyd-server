@@ -1767,3 +1767,15 @@ CREATE TABLE `hyd_excel_sports_organization_district_stat` (
     `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='体育组织-区属统计';
+
+
+
+-- 创建模块更新配置表
+CREATE TABLE `hyd_sys_config` (
+    `module_name` varchar(100) NOT NULL COMMENT '模块名称',
+    `auto_refresh` tinyint NOT NULL DEFAULT '1' COMMENT '是否自动更新：1-是，0-否',
+    `remark` varchar(500) DEFAULT NULL COMMENT '备注说明',
+    `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    UNIQUE KEY `uk_module_name` (`module_name`) COMMENT '模块名称唯一'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统模块-配置表';

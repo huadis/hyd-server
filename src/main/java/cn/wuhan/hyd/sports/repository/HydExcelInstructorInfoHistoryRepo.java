@@ -19,63 +19,41 @@ public interface HydExcelInstructorInfoHistoryRepo extends JpaRepository<HydExce
     /**
      * 指导项目top15
      */
-    @Query(value = "SELECT " +
-            "serviceProject, " +
-            "COUNT(id) AS personCount, " +
+    @Query(value = "SELECT serviceProject, COUNT(id) AS personCount, " +
             "ROUND(COUNT(id) / (SELECT COUNT(id) FROM hyd_excel_instructor_info_history) * 100, 2) AS proportion " +
-            " FROM " +
-            "hyd_excel_instructor_info_history GROUP BY serviceProject " +
-            "ORDER BY personCount DESC LIMIT 15", nativeQuery = true)
+            "FROM hyd_excel_instructor_info_history GROUP BY serviceProject ORDER BY personCount DESC LIMIT 15", nativeQuery = true)
     List<Map<String, Object>> serviceProjectTop15();
 
     /**
      * 性别统计
      */
-    @Query(value = "SELECT " +
-            "gender, " +
-            "COUNT(id) AS personCount, " +
-            "CONCAT(ROUND(COUNT(id) / (SELECT COUNT(id) FROM hyd_excel_instructor_info_history) * 100, 2), '%') AS proportion " +
-            " FROM " +
-            "hyd_excel_instructor_info_history GROUP BY gender ", nativeQuery = true)
+    @Query(value = "SELECT gender, COUNT(id) AS personCount, CONCAT(ROUND(COUNT(id) / (SELECT COUNT(id) FROM hyd_excel_instructor_info_history) * 100, 2), '%') AS proportion " +
+            "FROM hyd_excel_instructor_info_history GROUP BY gender ", nativeQuery = true)
     List<Map<String, Object>> genderStat();
 
     /**
      * 级别统计
      */
-    @Query(value = "SELECT " +
-            "level, " +
-            "COUNT(id) AS personCount, " +
-            "CONCAT(ROUND(COUNT(id) / (SELECT COUNT(id) FROM hyd_excel_instructor_info_history) * 100, 2), '%') AS proportion " +
-            " FROM " +
-            "hyd_excel_instructor_info_history GROUP BY level ", nativeQuery = true)
+    @Query(value = "SELECT level, COUNT(id) AS personCount, CONCAT(ROUND(COUNT(id) / (SELECT COUNT(id) FROM hyd_excel_instructor_info_history) * 100, 2), '%') AS proportion " +
+            "FROM hyd_excel_instructor_info_history GROUP BY level ", nativeQuery = true)
     List<Map<String, Object>> levelStat();
 
     /**
      * 各区指导人员统计
      */
-    @Query(value = "SELECT " +
-            "region, " +
-            "COUNT(id) AS instructorCount " +
-            " FROM " +
-            "hyd_excel_instructor_info_history GROUP BY region ORDER BY instructorCount DESC", nativeQuery = true)
+    @Query(value = "SELECT region, COUNT(id) AS instructorCount FROM hyd_excel_instructor_info_history GROUP BY region ORDER BY instructorCount DESC", nativeQuery = true)
     List<Map<String, Object>> regionInstructorStat();
 
     /**
      * 总人数
      */
-    @Query(value = "SELECT " +
-            "COUNT(id) AS count " +
-            " FROM " +
-            "hyd_excel_instructor_info_history ", nativeQuery = true)
+    @Query(value = "SELECT COUNT(id) AS count FROM hyd_excel_instructor_info_history ", nativeQuery = true)
     Long countAll();
 
     /**
      * 新增人数
      */
-    @Query(value = "SELECT " +
-            "COUNT(id) AS count " +
-            " FROM " +
-            "hyd_excel_instructor_info_history where certifyTime is not null and certifyTime != '' and STR_TO_DATE(certifyTime, '%Y-%m-%d') BETWEEN '2025-01-01' AND '2025-12-31'", nativeQuery = true)
+    @Query(value = "SELECT COUNT(id) AS count FROM hyd_excel_instructor_info_history where certifyTime is not null and certifyTime != '' and STR_TO_DATE(certifyTime, '%Y-%m-%d') BETWEEN DATE_FORMAT(CURDATE(), '%Y-01-01') AND DATE_FORMAT(CURDATE(), '%Y-12-31')", nativeQuery = true)
     Long newCount();
 
     /**
@@ -84,7 +62,7 @@ public interface HydExcelInstructorInfoHistoryRepo extends JpaRepository<HydExce
     @Query(value = "SELECT serviceProject, COUNT(id) AS personCount FROM hyd_excel_instructor_info_history GROUP BY serviceProject ORDER BY personCount DESC", nativeQuery = true)
     List<Map<String, Object>> serviceProject();
 
-    @Query(value = "SELECT serviceProject, COUNT(id) AS personCount FROM hyd_excel_instructor_info_history where certifyTime is not null and certifyTime != '' and STR_TO_DATE(certifyTime, '%Y-%m-%d') BETWEEN '2025-01-01' AND '2025-12-31' GROUP BY serviceProject ORDER BY personCount DESC", nativeQuery = true)
+    @Query(value = "SELECT serviceProject, COUNT(id) AS personCount FROM hyd_excel_instructor_info_history where certifyTime is not null and certifyTime != '' and STR_TO_DATE(certifyTime, '%Y-%m-%d') BETWEEN DATE_FORMAT(CURDATE(), '%Y-01-01') AND DATE_FORMAT(CURDATE(), '%Y-12-31') GROUP BY serviceProject ORDER BY personCount DESC", nativeQuery = true)
     List<Map<String, Object>> serviceProjectWithCurrentYear();
 
     @Modifying

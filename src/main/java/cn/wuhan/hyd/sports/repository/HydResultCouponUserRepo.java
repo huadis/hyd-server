@@ -21,7 +21,7 @@ public interface HydResultCouponUserRepo extends JpaRepository<HydResultCouponUs
             "useCouponNum, " +
             "maleNum, " +
             "femaleNum " +
-            "FROM hyd_result_coupon_user WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC limit 1", nativeQuery = true)
+            "FROM hyd_result_coupon_user WHERE statisticalYear = ?1 ORDER BY createdTime DESC limit 1", nativeQuery = true)
     Map<String, Object> latestCouponUser(String year);
 
     @Modifying

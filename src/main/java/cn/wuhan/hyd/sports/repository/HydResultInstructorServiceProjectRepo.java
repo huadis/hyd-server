@@ -16,6 +16,6 @@ import java.util.Map;
 @Repository
 public interface HydResultInstructorServiceProjectRepo extends JpaRepository<HydResultInstructorServiceProject, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_instructor_service_project WHERE YEAR(createdTime) = ?1 ORDER BY totalPersonCount DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_instructor_service_project WHERE statisticalYear = ?1 ORDER BY totalPersonCount DESC", nativeQuery = true)
     List<Map<String, Object>> serviceProject(String year);
 }

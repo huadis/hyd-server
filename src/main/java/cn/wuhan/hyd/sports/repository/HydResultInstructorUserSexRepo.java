@@ -15,6 +15,6 @@ import java.util.Map;
  */
 @Repository
 public interface HydResultInstructorUserSexRepo extends JpaRepository<HydResultInstructorUserSex, Long> {
-    @Query(value = "SELECT * FROM hyd_result_instructor_usersex WHERE YEAR(createdTime) = ?1 ORDER BY personCount DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_instructor_usersex WHERE statisticalYear = ?1 ORDER BY personCount DESC", nativeQuery = true)
     List<Map<String, Object>> genderStat(String year);
 }

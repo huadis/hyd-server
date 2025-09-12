@@ -2,7 +2,6 @@ package cn.wuhan.hyd.sports.controller;
 
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
-import cn.wuhan.hyd.sports.domain.HydOriginStadium;
 import cn.wuhan.hyd.sports.domain.HydOriginStadiumHistory;
 import cn.wuhan.hyd.sports.domain.HydResultOrderMonth;
 import cn.wuhan.hyd.sports.domain.HydResultStadiumDistrict;

@@ -15,6 +15,6 @@ import java.util.Map;
  */
 @Repository
 public interface HydResultLaStadiumDistrictRepo extends JpaRepository<HydResultLaStadiumDistrict, Long> {
-    @Query(value = "SELECT * FROM hyd_result_la_stadium_district WHERE YEAR(createdTime) = ?1 ORDER BY stadiumNum DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_la_stadium_district WHERE statisticalYear = ?1 ORDER BY stadiumNum DESC", nativeQuery = true)
     List<Map<String, Object>> stadiumCountByDistrict(String year);
 }

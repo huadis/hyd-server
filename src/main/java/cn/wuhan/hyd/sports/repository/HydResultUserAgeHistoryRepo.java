@@ -1,8 +1,18 @@
 package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultUserAgeHistory;
+import cn.wuhan.hyd.sports.domain.HydResultUserChannelHistory;
+import cn.wuhan.hyd.sports.domain.HydResultUserRegisterHistory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 功能说明： 场馆预定-年龄占比 <br>
@@ -12,4 +22,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HydResultUserAgeHistoryRepo extends JpaRepository<HydResultUserAgeHistory, Long> {
 
+    @Query(value = "SELECT * FROM hyd_result_user_age_history WHERE (:startTime IS NULL OR createdTime >= :startTime) " +
+            "AND (:endTime IS NULL OR createdTime <= :endTime)",
+            countQuery = "SELECT COUNT(*) FROM hyd_result_user_age_history " +
+                    "WHERE (:startTime IS NULL OR createdTime >= :startTime) AND (:endTime IS NULL OR createdTime <= :endTime)", nativeQuery = true)
+    Page<HydResultUserAgeHistory> findAllByTimeRange(Pageable pageable, @Param("startTime") Timestamp startTime, @Param("endTime") Timestamp endTime);
 }

@@ -48,7 +48,7 @@ public class HydPublicEventController {
     private IHydExcelPublicEventsService hydPublicEventsService;
     private static final Logger log = LoggerFactory.getLogger(HydPublicEventController.class);
 
-    @ApiOperation("手动刷新结果表")
+    @ApiOperation("刷新结果集")
     @AnonymousGetMapping("/refresh")
     public Response<Boolean> refresh() {
         hydPublicEventsService.syncResultData();

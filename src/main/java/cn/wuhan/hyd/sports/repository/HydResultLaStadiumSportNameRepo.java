@@ -15,6 +15,6 @@ import java.util.Map;
  */
 @Repository
 public interface HydResultLaStadiumSportNameRepo extends JpaRepository<HydResultLaStadiumSportName, Long> {
-    @Query(value = "SELECT * FROM hyd_result_la_stadium_sport_name WHERE YEAR(createdTime) = ?1 ORDER BY num DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_la_stadium_sport_name WHERE statisticalYear = ?1 ORDER BY num DESC", nativeQuery = true)
     List<Map<String, Object>> itemCountBySportName(String year);
 }

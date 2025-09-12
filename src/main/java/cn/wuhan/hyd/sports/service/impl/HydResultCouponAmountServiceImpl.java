@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +32,7 @@ import java.util.List;
 @Service
 public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl implements IHydResultCouponAmountService {
 
-    private final Logger logger = LoggerFactory.getLogger(IHydResultCouponAmountService.class);
+    private final Logger logger = LoggerFactory.getLogger(HydResultCouponAmountServiceImpl.class);
 
     @Resource
     private HydResultCouponAmountRepo couponAmountRepo;
@@ -40,7 +41,8 @@ public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl impleme
 
     @Override
     public PageResult<HydResultCouponAmount> queryAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultCouponAmount> pageResult = couponAmountRepo.findAll(pageable);
         PageResult<HydResultCouponAmount> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());

@@ -14,13 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 功能说明： 场馆预定-在线场馆各区情况 服务实现 <br>
@@ -39,7 +39,8 @@ public class HydResultStadiumDistrictServiceImpl extends HydBaseServiceImpl impl
 
     @Override
     public PageResult<HydResultStadiumDistrict> queryAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultStadiumDistrict> pageResult = stadiumDistrictRepo.findAll(pageable);
         PageResult<HydResultStadiumDistrict> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());

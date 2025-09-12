@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,8 @@ public class HydResultFacilityServiceImpl extends HydBaseServiceImpl implements 
 
     @Override
     public PageResult<HydResultFacility> queryAll(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultFacility> pageResult = facilityRepo.findAll(pageable);
         PageResult<HydResultFacility> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());

@@ -11,6 +11,7 @@ import org.apache.commons.collections.MapUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,11 +49,9 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
     // ========================== 1. 各区场馆数量统计（HydResultLaStadiumDistrict）实现 ==========================
     @Override
     public PageResult<HydResultLaStadiumDistrict> queryAllDistrictStat(int page, int size) {
-        // 构建分页参数（Spring Data JPA分页从0开始，直接使用page参数）
-        Pageable pageable = PageRequest.of(page, size);
-        // 调用Repository分页查询
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultLaStadiumDistrict> pageData = districtRepo.findAll(pageable);
-
         // 封装为自定义PageResult返回
         PageResult<HydResultLaStadiumDistrict> result = new PageResult<>();
         result.setTotalElements(pageData.getTotalElements()); // 总条数
@@ -99,9 +98,9 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
     // ========================== 2. 项目类型统计（HydResultLaStadiumSportName）实现 ==========================
     @Override
     public PageResult<HydResultLaStadiumSportName> queryAllSportNameStat(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultLaStadiumSportName> pageData = sportNameRepo.findAll(pageable);
-
         PageResult<HydResultLaStadiumSportName> result = new PageResult<>();
         result.setTotalElements(pageData.getTotalElements());
         result.setContent(pageData.getContent());
@@ -141,9 +140,9 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
     // ========================== 3. 项目类型占比TOP10统计（HydResultLaStadiumSportNameTop）实现 ==========================
     @Override
     public PageResult<HydResultLaStadiumSportNameTop> queryAllSportNameTopStat(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultLaStadiumSportNameTop> pageData = sportNameTopRepo.findAll(pageable);
-
         PageResult<HydResultLaStadiumSportNameTop> result = new PageResult<>();
         result.setTotalElements(pageData.getTotalElements());
         result.setContent(pageData.getContent());

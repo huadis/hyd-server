@@ -5,7 +5,6 @@ import cn.wuhan.hyd.sports.domain.HydResultStadiumDistrict;
 import cn.wuhan.hyd.sports.req.HydResultStadiumDistrictReq;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 功能说明： 驾驶舱-在线场馆各区情况 <br>

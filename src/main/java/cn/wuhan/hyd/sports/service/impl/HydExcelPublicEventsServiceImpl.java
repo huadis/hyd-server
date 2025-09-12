@@ -12,6 +12,7 @@ import org.apache.commons.collections.MapUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -280,7 +281,8 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     // ------------------------- 大众赛事-总览信息表操作 -------------------------
     @Override
     public PageResult<HydResultEventsOverviewStat> queryAllOverview(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultEventsOverviewStat> pageResult = overviewStatRepo.findAll(pageable);
         PageResult<HydResultEventsOverviewStat> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -317,7 +319,8 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     // ------------------------- 大众赛事-各月办赛数据表操作 -------------------------
     @Override
     public PageResult<HydResultEventsMonthCountStat> queryAllMonthCount(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultEventsMonthCountStat> pageResult = monthCountStatRepo.findAll(pageable);
         PageResult<HydResultEventsMonthCountStat> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -354,7 +357,8 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     // ------------------------- 大众赛事-赛事数量TOP5项目表操作 -------------------------
     @Override
     public PageResult<HydResultEventsSportItemTop> queryAllSportItemTop(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultEventsSportItemTop> pageResult = sportItemTopRepo.findAll(pageable);
         PageResult<HydResultEventsSportItemTop> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -391,7 +395,8 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     // ------------------------- 大众赛事-参赛人数人档表操作 -------------------------
     @Override
     public PageResult<HydResultEventsParticipantLevel> queryAllParticipantLevel(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultEventsParticipantLevel> pageResult = participantLevelRepo.findAll(pageable);
         PageResult<HydResultEventsParticipantLevel> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());

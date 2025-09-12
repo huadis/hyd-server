@@ -1,6 +1,7 @@
 package cn.wuhan.hyd.sports.domain;
 
 import cn.wuhan.hyd.framework.annotation.ExcelField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -75,6 +76,7 @@ public class HydExcelIndustryCoreIndicatorsHistory implements Serializable {
     @ApiModelProperty(value = "备注")
     private String remark;
 
+    @JsonIgnore
     @Column(name = "batchNo")
     @ApiModelProperty(value = "批次号")
     private String batchNo;

@@ -1,8 +1,14 @@
 package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultFacilityHistory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.sql.Timestamp;
 
 /**
  * 功能说明： 体育基础设施-设施全貌 <br>
@@ -11,4 +17,10 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface HydResultFacilityHistoryRepo extends JpaRepository<HydResultFacilityHistory, Long> {
+
+    @Query(value = "SELECT * FROM hyd_result_facility_history WHERE (:startTime IS NULL OR createdTime >= :startTime) " +
+            "AND (:endTime IS NULL OR createdTime <= :endTime)",
+            countQuery = "SELECT COUNT(*) FROM hyd_result_facility_history " +
+                    "WHERE (:startTime IS NULL OR createdTime >= :startTime) AND (:endTime IS NULL OR createdTime <= :endTime)", nativeQuery = true)
+    Page<HydResultFacilityHistory> findAllByTimeRange(Pageable pageable, @Param("startTime") Timestamp startTime, @Param("endTime") Timestamp endTime);
 }

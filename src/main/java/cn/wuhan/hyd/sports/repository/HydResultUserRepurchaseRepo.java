@@ -26,7 +26,7 @@ public interface HydResultUserRepurchaseRepo extends JpaRepository<HydResultUser
             "over5Num AS '5次-10次', " +
             "over10Num AS '10次-50次', " +
             "over50Num AS '50次以上' " +
-            "FROM hyd_result_user_repurchase WHERE YEAR(createdTime) = ?1 " +
+            "FROM hyd_result_user_repurchase WHERE statisticalYear = ?1 " +
             "ORDER BY createdTime DESC LIMIT 1", nativeQuery = true)
     Map<String, Object> countStadiumUserRepurchaseStat(String year);
 

@@ -1,6 +1,7 @@
 package cn.wuhan.hyd.sports.domain;
 
 import cn.wuhan.hyd.framework.annotation.ExcelField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,42 +31,35 @@ public class HydResultEventsOverviewStat implements Serializable {
     private Long id;
 
     @Column(name = "statisticalYear")
-    @ExcelField(name = "统计年度")
     @ApiModelProperty(value = "统计年度")
     private Integer statisticalYear;
 
     @Column(name = "total")
-    @ExcelField(name = "总赛事场次")
     @ApiModelProperty(value = "总赛事场次")
     private Long total;
 
     @Column(name = "participantCount")
-    @ExcelField(name = "总参与人数")
     @ApiModelProperty(value = "总参与人数")
     private Long participantCount;
 
     @Column(name = "internationalCount")
-    @ExcelField(name = "国际赛事")
     @ApiModelProperty(value = "国际赛事")
     private Long internationalCount;
 
     @Column(name = "nationalCount")
-    @ExcelField(name = "国家级赛事")
     @ApiModelProperty(value = "国家级赛事")
     private Long nationalCount;
 
     @Column(name = "provinceCount")
-    @ExcelField(name = "省级赛事")
     @ApiModelProperty(value = "省级赛事")
     private Long provinceCount;
 
     @Column(name = "cityCount")
-    @ExcelField(name = "市级赛事")
     @ApiModelProperty(value = "市级赛事")
     private Long cityCount;
 
+    @JsonIgnore
     @Column(name = "batchNo")
-    @ExcelField(name = "批次号")
     @ApiModelProperty(value = "批次号，用于标识数据批次")
     private String batchNo;
 
@@ -73,10 +67,12 @@ public class HydResultEventsOverviewStat implements Serializable {
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;
 
+    @JsonIgnore
     @Column(name = "updateTime")
     @ApiModelProperty(value = "更新时间", hidden = true)
     private Timestamp updateTime;
 
+    @JsonIgnore
     @Column(name = "importTime")
     @ApiModelProperty(value = "导入时间", hidden = true)
     private Timestamp importTime;

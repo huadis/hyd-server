@@ -8,6 +8,7 @@ import org.apache.commons.collections.MapUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -36,8 +37,6 @@ public class HydYktServiceImpl implements IHydYktService {
     @Resource
     private HydResultOrderYktUserSexStatRepo yktUserSexStatRepo;
     @Resource
-    private HydOriginOrderRepo originOrderRepo;
-    @Resource
     private HydOriginOrderHistoryRepo originOrderHistoryRepo;
 
     public void syncResultData() {
@@ -51,7 +50,8 @@ public class HydYktServiceImpl implements IHydYktService {
 
     @Override
     public PageResult<HydResultOrderYktDistrictStat> queryAllDistrict(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultOrderYktDistrictStat> pageResult = yktDistrictStatRepo.findAll(pageable);
         PageResult<HydResultOrderYktDistrictStat> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -86,7 +86,8 @@ public class HydYktServiceImpl implements IHydYktService {
 
     @Override
     public PageResult<HydResultOrderYktCourseStat> queryAllCourse(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultOrderYktCourseStat> pageResult = yktCourseStatRepo.findAll(pageable);
         PageResult<HydResultOrderYktCourseStat> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -121,7 +122,8 @@ public class HydYktServiceImpl implements IHydYktService {
 
     @Override
     public PageResult<HydResultOrderYktProjectStat> queryAllProject(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultOrderYktProjectStat> pageResult = yktProjectStatRepo.findAll(pageable);
         PageResult<HydResultOrderYktProjectStat> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -156,7 +158,8 @@ public class HydYktServiceImpl implements IHydYktService {
 
     @Override
     public PageResult<HydResultOrderYktStadiumStat> queryAllStadium(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultOrderYktStadiumStat> pageResult = yktStadiumStatRepo.findAll(pageable);
         PageResult<HydResultOrderYktStadiumStat> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -191,7 +194,8 @@ public class HydYktServiceImpl implements IHydYktService {
 
     @Override
     public PageResult<HydResultOrderYktUserAgeStat> queryAllUserAge(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultOrderYktUserAgeStat> pageResult = yktUserAgeStatRepo.findAll(pageable);
         PageResult<HydResultOrderYktUserAgeStat> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
@@ -226,7 +230,8 @@ public class HydYktServiceImpl implements IHydYktService {
 
     @Override
     public PageResult<HydResultOrderYktUserSexStat> queryAllUserSex(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Direction.DESC, "createdTime");
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<HydResultOrderYktUserSexStat> pageResult = yktUserSexStatRepo.findAll(pageable);
         PageResult<HydResultOrderYktUserSexStat> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());

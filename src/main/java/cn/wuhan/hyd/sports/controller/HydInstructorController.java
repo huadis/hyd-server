@@ -54,7 +54,7 @@ public class HydInstructorController {
     private static final Logger log = LoggerFactory.getLogger(HydInstructorController.class);
 
 
-    @ApiOperation("手动刷新结果表")
+    @ApiOperation("刷新结果集")
     @AnonymousGetMapping("/refresh")
     public Response<Boolean> refresh() {
         hydResultInstructorService.syncResultData();
@@ -329,7 +329,7 @@ public class HydInstructorController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(hydInstructorService.ageIntervalStat());
+        return Response.ok(hydInstructorService.ageIntervalStat(year));
     }
 
     /**
@@ -341,7 +341,7 @@ public class HydInstructorController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(hydInstructorService.ageGrowthStat());
+        return Response.ok(hydInstructorService.ageGrowthStat(year));
     }
 
     /**

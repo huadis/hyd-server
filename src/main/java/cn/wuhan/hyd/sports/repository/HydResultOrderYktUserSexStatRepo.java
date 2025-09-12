@@ -15,6 +15,6 @@ import java.util.List;
 @Repository
 public interface HydResultOrderYktUserSexStatRepo extends JpaRepository<HydResultOrderYktUserSexStat, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_order_ykt_usersex_stat WHERE YEAR(createdTime) = ?1 ORDER BY createdTime DESC", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_order_ykt_usersex_stat WHERE statisticalYear = ?1 ORDER BY createdTime DESC", nativeQuery = true)
     List<HydResultOrderYktUserSexStat> listUserSex(String year);
 }

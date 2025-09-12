@@ -15,6 +15,6 @@ import java.util.Map;
  */
 @Repository
 public interface HydResultLaStadiumSportNameTopRepo extends JpaRepository<HydResultLaStadiumSportNameTop, Long> {
-    @Query(value = "SELECT * FROM hyd_result_la_stadium_sport_name_top WHERE YEAR(createdTime) = ?1 ORDER BY num DESC limit 10", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_la_stadium_sport_name_top WHERE statisticalYear = ?1 ORDER BY num DESC limit 10", nativeQuery = true)
     List<Map<String, Object>> itemCountTop10BySportName(String year);
 }

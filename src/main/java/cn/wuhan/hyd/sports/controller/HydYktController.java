@@ -41,15 +41,14 @@ public class HydYktController {
     private static final Logger log = LoggerFactory.getLogger(HydYktController.class);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-
-    @ApiOperation("从订单表刷新青少年技能培训结果表")
+    @ApiOperation("刷新结果集")
     @AnonymousGetMapping("/refresh")
     public Response<Boolean> refresh() {
         yktService.syncResultData();
         return Response.ok(true);
     }
 
-    // 每天凌晨 00:00 执行（即 12 点整）
+    // 每天凌晨 00:00 执行
     @Scheduled(cron = "0 0 0 * * ?")
     public void dailyCalculation() {
         // 记录任务启动日志

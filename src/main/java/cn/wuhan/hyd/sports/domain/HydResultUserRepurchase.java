@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +30,7 @@ public class HydResultUserRepurchase implements Serializable {
 
     @Column(name = "1Num")
     @ApiModelProperty(value = "一次下单")
-    private String onceNum;  // 变量名调整为符合Java命名规范，通过@Column映射到数据库字段"1Num"
+    private String onceNum;
 
     @Column(name = "bt2and5Num")
     @ApiModelProperty(value = "2-5次")
@@ -47,6 +48,7 @@ public class HydResultUserRepurchase implements Serializable {
     @ApiModelProperty(value = "50次以上")
     private String over50Num;
 
+    @JsonIgnore
     @Column(name = "batchNo")
     @ApiModelProperty(value = "批次号")
     private String batchNo;
@@ -59,10 +61,12 @@ public class HydResultUserRepurchase implements Serializable {
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;
 
+    @JsonIgnore
     @Column(name = "updateTime")
     @ApiModelProperty(value = "更新时间", hidden = true)
     private Timestamp updateTime;
 
+    @JsonIgnore
     @Column(name = "importTime")
     @ApiModelProperty(value = "导入时间", hidden = true)
     private Timestamp importTime;
