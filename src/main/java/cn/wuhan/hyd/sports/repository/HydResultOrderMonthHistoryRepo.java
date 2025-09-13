@@ -1,6 +1,5 @@
 package cn.wuhan.hyd.sports.repository;
 
-import cn.wuhan.hyd.sports.domain.HydResultOrderHistory;
 import cn.wuhan.hyd.sports.domain.HydResultOrderMonthHistory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

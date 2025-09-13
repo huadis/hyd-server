@@ -1,16 +1,17 @@
 package cn.wuhan.hyd.sports.controller;
 
 import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
+import cn.wuhan.hyd.framework.annotation.rest.AnonymousPostMapping;
 import cn.wuhan.hyd.framework.base.Response;
+import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultStadiumDistrict;
-import cn.wuhan.hyd.sports.service.IHydExcelPublicEventsService;
-import cn.wuhan.hyd.sports.service.IHydExcelSportsOrgService;
-import cn.wuhan.hyd.sports.service.IHydResultLaStadiumStatService;
-import cn.wuhan.hyd.sports.service.IHydResultStadiumDistrictService;
+import cn.wuhan.hyd.sports.domain.HydSysConfig;
+import cn.wuhan.hyd.sports.service.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.collections.MapUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +41,8 @@ public class HomeController {
     private IHydExcelPublicEventsService publicEventsService;
     @Resource
     private IHydExcelSportsOrgService sportsOrgService;
+    @Resource
+    private IHydSysConfigService sysConfigService;
 
     @ApiOperation("数据总览")
     @AnonymousGetMapping("/dataOverview")
@@ -76,5 +79,17 @@ public class HomeController {
         return Response.ok(result);
     }
 
+    @ApiOperation("系统配置-分页查询")
+    @AnonymousGetMapping("/sysConfig/list")
+    public Response<PageResult<HydSysConfig>> sysConfig(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size) {
+        return Response.ok(sysConfigService.queryAll(page, size));
+    }
 
+    @ApiOperation("系统配置-更新")
+    @AnonymousPostMapping("/sysConfig/update")
+    public Response<HydSysConfig> sysConfigUpdate(@RequestBody HydSysConfig config) {
+        return Response.ok(sysConfigService.update(config));
+    }
 }

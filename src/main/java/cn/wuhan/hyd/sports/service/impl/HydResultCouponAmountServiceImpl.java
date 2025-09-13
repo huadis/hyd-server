@@ -9,6 +9,7 @@ import cn.wuhan.hyd.sports.repository.HydResultCouponAmountHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultCouponAmountRepo;
 import cn.wuhan.hyd.sports.req.HydResultCouponAmountReq;
 import cn.wuhan.hyd.sports.service.IHydResultCouponAmountService;
+import cn.wuhan.hyd.sports.service.IHydSysConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -38,6 +39,8 @@ public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl impleme
     private HydResultCouponAmountRepo couponAmountRepo;
     @Resource
     private HydResultCouponAmountHistoryRepo couponAmountHistoryRepo;
+    @Resource
+    private IHydSysConfigService configService;
 
     @Override
     public PageResult<HydResultCouponAmount> queryAll(int page, int size) {
@@ -98,6 +101,50 @@ public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl impleme
             throw new IllegalArgumentException("导入的数据列表不能为空");
         }
         String batchNo = UUIDUtil.getBatchNo();
+        List<HydResultCouponAmountHistory> historyList = convert(logger, couponAmounts, HydResultCouponAmountHistory.class, batchNo);
+        try {
+            int querySaveCount = 0;
+            boolean refresh = !configService.notRefresh("体育消费卷");
+            // 是否冻结，不允许更新查询表
+            if (refresh) {
+                List<HydResultCouponAmount> queryList = computeQueryList(couponAmounts, batchNo);
+                // 4. 清空查询表：日志记录操作意图，便于问题追溯
+                logger.info("【批量保存】开始清空HydResultCouponAmount表，批次号：{}", batchNo);
+                couponAmountRepo.deleteByNotBatchNo(batchNo, DateUtil.getPreviousDayYear());
+
+                // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
+                querySaveCount = saveAndLog(
+                        logger,
+                        queryList,
+                        couponAmountRepo::saveAll,
+                        "HydResultCouponAmount",
+                        batchNo
+                );
+            }
+
+            // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
+            int historySaveCount = saveAndLog(
+                    logger,
+                    historyList,
+                    couponAmountHistoryRepo::saveAll,
+                    "HydResultCouponAmountHistory",
+                    batchNo
+            );
+
+            // 7. 校验保存结果：根据 refresh 状态区分校验逻辑，避免数据不一致
+            checkSaveData(couponAmounts, refresh, querySaveCount, historySaveCount, batchNo);
+
+            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
+            return historySaveCount;
+        } catch (Exception e) {
+            // 8. 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
+            logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：",
+                    batchNo, couponAmounts.size(), e);
+            throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
+        }
+    }
+
+    private static List<HydResultCouponAmount> computeQueryList(List<HydResultCouponAmountReq> couponAmounts, String batchNo) {
         // 初始化求和变量
         BigDecimal totalSendAmount = BigDecimal.ZERO;
         BigDecimal totalReceiveCount = BigDecimal.ZERO;
@@ -152,50 +199,7 @@ public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl impleme
         couponAmount.setStatisticalYear(DateUtil.getPreviousDayYear());
         List<HydResultCouponAmount> queryList = new ArrayList<>();
         queryList.add(couponAmount);
-
-        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydResultCouponAmountHistory> historyList = convert(logger, couponAmounts, HydResultCouponAmountHistory.class, batchNo);
-
-        try {
-            // 4. 清空查询表：日志记录操作意图，便于问题追溯
-            logger.info("【批量保存】开始清空HydResultCouponAmount表，批次号：{}", batchNo);
-            couponAmountRepo.deleteByNotBatchNo(batchNo, DateUtil.getPreviousDayYear());
-
-            // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
-            int querySaveCount = saveAndLog(
-                    logger,
-                    queryList,
-                    couponAmountRepo::saveAll,
-                    "HydResultCouponAmount",
-                    batchNo
-            );
-
-            // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
-            int historySaveCount = saveAndLog(
-                    logger,
-                    historyList,
-                    couponAmountHistoryRepo::saveAll,
-                    "HydResultCouponAmountHistory",
-                    batchNo
-            );
-
-            // 7. 校验保存结果：确保双表保存数量一致，避免数据不一致
-            if (historySaveCount != couponAmounts.size()) {
-                throw new RuntimeException(
-                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
-                                batchNo, couponAmounts.size(), querySaveCount, historySaveCount)
-                );
-            }
-
-            logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
-            return querySaveCount; // 返回实际保存数量，而非固定100，更具业务意义
-
-        } catch (Exception e) {
-            // 8. 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
-            logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：",
-                    batchNo, couponAmounts.size(), e);
-            throw new RuntimeException(String.format("【批量保存】批次%s同步失败", batchNo), e);
-        }
+        return queryList;
     }
 
     // 工具方法：安全地将 String 转为 BigDecimal 并相加

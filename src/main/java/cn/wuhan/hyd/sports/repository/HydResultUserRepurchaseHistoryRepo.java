@@ -1,7 +1,5 @@
 package cn.wuhan.hyd.sports.repository;
 
-import cn.wuhan.hyd.sports.domain.HydResultUserChannelHistory;
-import cn.wuhan.hyd.sports.domain.HydResultUserRegisterHistory;
 import cn.wuhan.hyd.sports.domain.HydResultUserRepurchaseHistory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,8 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 功能说明： 场馆预定-复购率 <br>

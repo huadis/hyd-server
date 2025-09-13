@@ -222,4 +222,20 @@ public class HydBaseServiceImpl {
     public static BigDecimal getBigDecimalFromMap(Map<String, Object> map, String key) {
         return getBigDecimalFromMap(map, key, BigDecimal.ZERO);
     }
+
+    public static <T> void checkSaveData(List<T> list, boolean refresh, int querySaveCount, int historySaveCount, String batchNo) {
+        boolean isSaveCountValid;
+        if (refresh) {
+            isSaveCountValid = (querySaveCount == list.size()) && (historySaveCount == list.size());
+        } else {
+            isSaveCountValid = (historySaveCount == list.size());
+        }
+
+        if (!isSaveCountValid) {
+            throw new RuntimeException(
+                    String.format("【批量保存】数据保存数量不一致，批次号：%s，是否更新查询表：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
+                            batchNo, refresh, list.size(), querySaveCount, historySaveCount)
+            );
+        }
+    }
 }

@@ -4,6 +4,7 @@ import cn.wuhan.hyd.framework.annotation.rest.AnonymousGetMapping;
 import cn.wuhan.hyd.framework.base.Response;
 import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.resp.*;
+import cn.wuhan.hyd.sports.service.IHydSysConfigService;
 import cn.wuhan.hyd.sports.service.IHydYktService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +41,8 @@ public class HydYktController {
     private IHydYktService yktService;
     private static final Logger log = LoggerFactory.getLogger(HydYktController.class);
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    @Resource
+    private IHydSysConfigService configService;
 
     @ApiOperation("刷新结果集")
     @AnonymousGetMapping("/refresh")
@@ -51,22 +54,28 @@ public class HydYktController {
     // 每天凌晨 00:00 执行
     @Scheduled(cron = "0 0 0 * * ?")
     public void dailyCalculation() {
-        // 记录任务启动日志
-        LocalDateTime startTime = LocalDateTime.now();
-        log.info("【定时任务】每日数据同步任务启动，启动时间：{}", startTime.format(formatter));
-        try {
-            // 执行同步操作
-            yktService.syncResultData();
-            // 记录任务完成日志
-            LocalDateTime endTime = LocalDateTime.now();
-            log.info("【定时任务】每日数据同步任务执行完成，完成时间：{}，耗时：{}毫秒",
-                    endTime.format(formatter),
-                    java.time.Duration.between(startTime, endTime).toMillis());
-        } catch (Exception e) {
-            // 记录任务异常日志
-            LocalDateTime errorTime = LocalDateTime.now();
-            log.error("【定时任务】每日数据同步任务执行失败，失败时间：{}，错误信息：{}",
-                    errorTime.format(formatter), e.getMessage(), e);
+        boolean refresh = !configService.notRefresh("青少年技能培训");
+        // 是否冻结，不允许更新查询表
+        if (refresh) {
+            // 记录任务启动日志
+            LocalDateTime startTime = LocalDateTime.now();
+            log.info("【定时任务】每日数据同步任务启动，启动时间：{}", startTime.format(formatter));
+            try {
+                // 执行同步操作
+                yktService.syncResultData();
+                // 记录任务完成日志
+                LocalDateTime endTime = LocalDateTime.now();
+                log.info("【定时任务】每日数据同步任务执行完成，完成时间：{}，耗时：{}毫秒",
+                        endTime.format(formatter),
+                        java.time.Duration.between(startTime, endTime).toMillis());
+            } catch (Exception e) {
+                // 记录任务异常日志
+                LocalDateTime errorTime = LocalDateTime.now();
+                log.error("【定时任务】每日数据同步任务执行失败，失败时间：{}，错误信息：{}",
+                        errorTime.format(formatter), e.getMessage(), e);
+            }
+        } else {
+            log.info("【定时任务】每日数据同步任务未执行，该模块查询表已被冻结，无法触发计算");
         }
     }
 

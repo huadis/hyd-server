@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,14 +23,21 @@ import java.util.Objects;
 public class HydSysConfig implements Serializable {
 
     @Id
-    @Column(name = "moduleName", length = 100)
-    @NotNull(message = "模块名称不能为空")
-    @ApiModelProperty(value = "模块名称（唯一标识）", required = true)
-    private String moduleName;
+    @Column(name = "id")
+    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ApiModelProperty(value = "主键ID", hidden = true)
+    private Long id;
 
-    @Column(name = "autoRefresh", nullable = false)
-    @ApiModelProperty(value = "是否自动更新：1-是，0-否", allowableValues = "0,1", required = true)
-    private Boolean autoRefresh;
+    @Column(name = "key", length = 100)
+    @NotNull(message = "键不能为空")
+    @ApiModelProperty(value = "键", required = true)
+    private String key;
+
+    @Column(name = "value", nullable = false)
+    @NotNull(message = "值不能为空")
+    @ApiModelProperty(value = "值", required = true)
+    private String value;
 
     @Column(name = "remark", length = 500)
     @ApiModelProperty(value = "备注说明")
@@ -39,6 +47,7 @@ public class HydSysConfig implements Serializable {
     @ApiModelProperty(value = "创建时间", hidden = true)
     private Timestamp createdTime;
 
+    @JsonIgnore
     @Column(name = "updateTime")
     @ApiModelProperty(value = "更新时间", hidden = true)
     private Timestamp updateTime;
@@ -60,11 +69,11 @@ public class HydSysConfig implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         HydSysConfig that = (HydSysConfig) o;
-        return Objects.equals(moduleName, that.moduleName);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(moduleName);
+        return Objects.hash(id);
     }
 }

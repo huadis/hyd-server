@@ -205,10 +205,11 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
             e.setStadiumNum(MapUtils.getLong(map, "stadiumNum"));
             stadiumDistricts.add(e);
         });
-
-        // 3. 清空旧数据并保存新数据
-        districtRepo.deleteAll();
-        districtRepo.saveAll(stadiumDistricts);
+        if (CollectionUtils.isNotEmpty(stadiumDistricts)) {
+            // 3. 清空旧数据并保存新数据
+            districtRepo.deleteAll();
+            districtRepo.saveAll(stadiumDistricts);
+        }
     }
 
     private void syncSportName() {
@@ -223,10 +224,11 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
             e.setNum(MapUtils.getLong(map, "num"));
             laStadiumSportNameTops.add(e);
         });
-
-        // 3. 清空旧数据并保存新数据
-        sportNameTopRepo.deleteAll();
-        sportNameTopRepo.saveAll(laStadiumSportNameTops);
+        if (CollectionUtils.isNotEmpty(laStadiumSportNameTops)) {
+            // 3. 清空旧数据并保存新数据
+            sportNameTopRepo.deleteAll();
+            sportNameTopRepo.saveAll(laStadiumSportNameTops);
+        }
     }
 
     private void syncSportNameTop() {
@@ -241,10 +243,11 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
             e.setNum(MapUtils.getLong(map, "num"));
             laStadiumSportNames.add(e);
         });
-
-        // 3. 清空旧数据并保存新数据
-        sportNameRepo.deleteAll();
-        sportNameRepo.saveAll(laStadiumSportNames);
+        if (CollectionUtils.isNotEmpty(laStadiumSportNames)) {
+            // 3. 清空旧数据并保存新数据
+            sportNameRepo.deleteAll();
+            sportNameRepo.saveAll(laStadiumSportNames);
+        }
     }
 
     private List<Map<String, Object>> countOtherStat(List<Map<String, Object>> allSportStats) {

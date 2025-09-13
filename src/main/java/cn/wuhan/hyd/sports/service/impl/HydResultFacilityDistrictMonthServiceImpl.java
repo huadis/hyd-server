@@ -9,6 +9,7 @@ import cn.wuhan.hyd.sports.repository.HydResultFacilityDistrictMonthHistoryRepo;
 import cn.wuhan.hyd.sports.repository.HydResultFacilityDistrictMonthRepo;
 import cn.wuhan.hyd.sports.req.HydResultFacilityDistrictMonthReq;
 import cn.wuhan.hyd.sports.service.IHydResultFacilityDistrictMonthService;
+import cn.wuhan.hyd.sports.service.IHydSysConfigService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,8 @@ public class HydResultFacilityDistrictMonthServiceImpl extends HydBaseServiceImp
     private HydResultFacilityDistrictMonthRepo facilityDistrictMonthRepo;
     @Resource
     private HydResultFacilityDistrictMonthHistoryRepo facilityDistrictMonthHistoryRepo;
+    @Resource
+    private IHydSysConfigService configService;
 
     @Override
     public PageResult<HydResultFacilityDistrictMonth> queryAll(int page, int size) {
@@ -95,24 +98,26 @@ public class HydResultFacilityDistrictMonthServiceImpl extends HydBaseServiceImp
             throw new IllegalArgumentException("导入的数据列表不能为空");
         }
         String batchNo = UUIDUtil.getBatchNo();
-        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
-        List<HydResultFacilityDistrictMonth> queryList = convert(logger, facilityDistrictMonths, HydResultFacilityDistrictMonth.class, batchNo);
-        // 数据转换：Stream流+异常封装, 提前转换失败直接终止
         List<HydResultFacilityDistrictMonthHistory> historyList = convert(logger, facilityDistrictMonths, HydResultFacilityDistrictMonthHistory.class, batchNo);
-
         try {
-            // 4. 清空查询表：日志记录操作意图，便于问题追溯
-            logger.info("【批量保存】开始清空HydResultFacilityDistrictMonth表，批次号：{}", batchNo);
-            facilityDistrictMonthRepo.deleteByNotBatchNo(batchNo, DateUtil.getPreviousDayYear());
+            int querySaveCount = 0;
+            boolean refresh = !configService.notRefresh("体育基础设施");
+            // 是否冻结，不允许更新查询表
+            if (refresh) {
+                List<HydResultFacilityDistrictMonth> queryList = convert(logger, facilityDistrictMonths, HydResultFacilityDistrictMonth.class, batchNo);
+                // 4. 清空查询表：日志记录操作意图，便于问题追溯
+                logger.info("【批量保存】开始清空HydResultFacilityDistrictMonth表，批次号：{}", batchNo);
+                facilityDistrictMonthRepo.deleteByNotBatchNo(batchNo, DateUtil.getPreviousDayYear());
 
-            // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
-            int querySaveCount = saveAndLog(
-                    logger,
-                    queryList,
-                    facilityDistrictMonthRepo::saveAll,
-                    "HydResultFacilityDistrictMonth",
-                    batchNo
-            );
+                // 5. 保存查询表：统一时间统计工具，日志包含批次号和数据量
+                querySaveCount = saveAndLog(
+                        logger,
+                        queryList,
+                        facilityDistrictMonthRepo::saveAll,
+                        "HydResultFacilityDistrictMonth",
+                        batchNo
+                );
+            }
 
             // 6. 保存历史表：复用时间统计逻辑，避免代码冗余
             int historySaveCount = saveAndLog(
@@ -123,17 +128,11 @@ public class HydResultFacilityDistrictMonthServiceImpl extends HydBaseServiceImp
                     batchNo
             );
 
-            // 7. 校验保存结果：确保双表保存数量一致，避免数据不一致
-            if (querySaveCount != historySaveCount || querySaveCount != facilityDistrictMonths.size()) {
-                throw new RuntimeException(
-                        String.format("【批量保存】数据保存数量不一致，批次号：%s，原数据量：%d，查询表保存量：%d，历史表保存量：%d",
-                                batchNo, facilityDistrictMonths.size(), querySaveCount, historySaveCount)
-                );
-            }
+            // 7. 校验保存结果：根据 refresh 状态区分校验逻辑，避免数据不一致
+            checkSaveData(facilityDistrictMonths, refresh, querySaveCount, historySaveCount, batchNo);
 
             logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
-            return querySaveCount; // 返回实际保存数量，而非固定100，更具业务意义
-
+            return historySaveCount;
         } catch (Exception e) {
             // 8. 异常处理：补充上下文信息，便于定位问题；抛出异常触发事务回滚
             logger.error("【批量保存】批次数据同步失败，批次号：{}，原数据量：{}，异常信息：",

@@ -1,6 +1,5 @@
 package cn.wuhan.hyd.sports.domain;
 
-import cn.wuhan.hyd.framework.annotation.ExcelField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
