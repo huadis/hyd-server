@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultInstructorServiceProject;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +19,8 @@ public interface HydResultInstructorServiceProjectRepo extends JpaRepository<Hyd
 
     @Query(value = "SELECT * FROM hyd_result_instructor_service_project WHERE statisticalYear = ?1 ORDER BY totalPersonCount DESC", nativeQuery = true)
     List<Map<String, Object>> serviceProject(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_instructor_service_project WHERE statisticalYear = ?1", nativeQuery = true)
+    int deleteByStatisticalYear(Integer statisticalYear);
 }

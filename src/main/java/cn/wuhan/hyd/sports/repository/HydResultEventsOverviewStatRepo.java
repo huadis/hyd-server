@@ -15,6 +15,6 @@ import java.util.Map;
 @Repository
 public interface HydResultEventsOverviewStatRepo extends JpaRepository<HydResultEventsOverviewStat, Long> {
 
-    @Query(value = "SELECT total,participantCount,internationalCount,nationalCount,provinceCount,cityCount  FROM hyd_result_events_overview_stat WHERE statisticalYear = ?1 order by createdTime limit 1", nativeQuery = true)
+    @Query(value = "SELECT total, participantCount, internationalCount, nationalCount, provinceCount, cityCount FROM hyd_result_events_overview_stat WHERE statisticalYear = ?1 order by createdTime limit 1", nativeQuery = true)
     Map<String, Object> overview(String year);
 }

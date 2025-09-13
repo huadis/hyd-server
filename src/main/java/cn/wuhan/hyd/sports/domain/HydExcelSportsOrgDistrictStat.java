@@ -41,6 +41,10 @@ public class HydExcelSportsOrgDistrictStat implements Serializable {
     @Column(name = "batchNo", length = 50)
     private String batchNo; // 批次号
 
+    @Column(name = "statisticalYear")
+    @ApiModelProperty(value = "统计年度")
+    private Integer statisticalYear;
+
     @Column(name = "createdTime", nullable = false, updatable = false)
     private Date createdTime;
 

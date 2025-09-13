@@ -86,8 +86,8 @@ public class HydResultCouponStadiumTopServiceImpl extends HydBaseServiceImpl imp
     }
 
     @Override
-    public List<Map<String, Object>> stadiumTop5() {
-        return couponStadiumTopRepo.stadiumTop5();
+    public List<Map<String, Object>> stadiumTop5(String statisticalYear) {
+        return couponStadiumTopRepo.stadiumTop5(statisticalYear);
     }
 
     /**

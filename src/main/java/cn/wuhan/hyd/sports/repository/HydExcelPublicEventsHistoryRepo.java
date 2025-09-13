@@ -1,10 +1,14 @@
 package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydExcelPublicEventsHistory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -125,4 +129,10 @@ public interface HydExcelPublicEventsHistoryRepo extends JpaRepository<HydExcelP
             "ORDER BY " +
             "    eventMonth desc ;", nativeQuery = true)
     List<Map<String, Object>> currentMouthEvents(String year, String month);
+
+    @Query(value = "SELECT * FROM hyd_excel_public_events_history WHERE (:startTime IS NULL OR createTime >= :startTime) " +
+            "AND (:endTime IS NULL OR createTime <= :endTime)",
+            countQuery = "SELECT COUNT(*) FROM hyd_excel_public_events_history " +
+                    "WHERE (:startTime IS NULL OR createTime >= :startTime) AND (:endTime IS NULL OR createTime <= :endTime)", nativeQuery = true)
+    Page<HydExcelPublicEventsHistory> findAllByTimeRange(Pageable pageable, @Param("startTime") Timestamp startTime, @Param("endTime") Timestamp endTime);
 }

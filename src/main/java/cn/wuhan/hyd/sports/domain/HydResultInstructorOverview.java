@@ -41,11 +41,6 @@ public class HydResultInstructorOverview implements Serializable {
     @ApiModelProperty(value = "男女比例")
     private String sexRatio;
 
-    @JsonIgnore
-    @Column(name = "batchNo")
-    @ApiModelProperty(value = "批次号，用于标识数据批次")
-    private String batchNo;
-
     @Column(name = "statisticalYear")
     @ApiModelProperty(value = "统计年度")
     private Integer statisticalYear;

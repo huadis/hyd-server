@@ -37,11 +37,6 @@ public class HydResultLaStadiumDistrict implements Serializable {
     @ApiModelProperty(value = "场馆数量")
     private Long stadiumNum;
 
-    @JsonIgnore
-    @Column(name = "batchNo")
-    @ApiModelProperty(value = "批次号")
-    private String batchNo;
-
     @Column(name = "statisticalYear")
     @ApiModelProperty(value = "统计年度")
     private Integer statisticalYear;

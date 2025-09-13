@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultOrderYktUserSexStat;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,8 @@ public interface HydResultOrderYktUserSexStatRepo extends JpaRepository<HydResul
 
     @Query(value = "SELECT * FROM hyd_result_order_ykt_usersex_stat WHERE statisticalYear = ?1 ORDER BY createdTime DESC", nativeQuery = true)
     List<HydResultOrderYktUserSexStat> listUserSex(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_order_ykt_usersex_stat WHERE statisticalYear = ?1", nativeQuery = true)
+    int deleteByStatisticalYear(Integer statisticalYear);
 }

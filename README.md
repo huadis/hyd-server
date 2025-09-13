@@ -1,9 +1,258 @@
 # hyd-server
 武汉市体育数据大屏，对接汉运动平台的数据
 
-# 定时任务
-青少年技能培训(每天凌晨 00:00 执行)
+# 数据源
+> - 共 103 张表
+> - 24\*2 结果表 + 10 原始表 + 11\*2 excel(大众赛事、体育产业、社会体育指导员) + 2 excel(体育组织) + 6张青少年技能培训 + 4 大众赛事 + 3 校外培训机构 + 6 社会体育指导员 + 2 系统表
+> - 场馆表（hyd_origin_stadium_history） 项目表（hyd_origin_stadium_item_history） 课程表（hyd_origin_training_course_history） 是一直新增的，关联时，不需要带时间
 
+- API 24结果表数据（场馆预定、体育消费卷、基础体育设施） -- 本身就是结果表， 历史和查询表，总共 48 张表
+- API 10原始表数据（青少年技能培训、校外培训机构）      -- 涉及多表关联，每晚定时触发计算， 总共 10 张表 
+- Excel 24张表数据（大众赛事、体育产业、社会体育指导员） -- 体育产业的excel就是结果表，大众赛事和社会体育指导员导入时计算，总共 张表 22 张表
+- Excel （体育组织）                                -- 用于首页展示
+
+> 1. 23张结果表是全量推送（先清空表中非今日的数据，再插入）
+> 2. 10张原始表是增量更新，追加到表中
+> 3. excel上传的，由增量改为全量（先清空表中数据，再插入）
+> UPDATE hyd_excel_instructor_info_history SET batchNo = 'BATCH_20250829' WHERE DATE(createdTime) = '2025-08-29';
+
+# 定时任务
+- 青少年技能培训(每天凌晨 00:00 执行)
+- 校外培训机构(每天凌晨 00:00 执行)
+
+# 各模块数据计算
+
+## 青少年技能培训
+
+### 各区机构数量统计 
+- `hyd_result_order_ykt_district_stat` 
+> 基于 `hyd_origin_stadium_history`, `hyd_origin_order_history` 计算
+
+### 性别统计
+- `hyd_result_order_ykt_usersex_stat`  
+> 基于  `hyd_origin_order_history` 计算
+
+### 热门项目机构数量统计
+- `hyd_result_order_ykt_project_stat`  
+> 基于 `hyd_origin_order_history` ,`hyd_origin_stadium_item_history` 计算
+
+
+### 培训场馆地图
+- `hyd_origin_order_history`
+- `hyd_origin_stadium_history`
+
+`select DISTINCT b.* from hyd_origin_order_history a, hyd_origin_stadium_history b where a.stadiumId = b.id`
+
+### 课程热度排行（TOP5）
+- `hyd_result_order_ykt_course_stat`
+> 基于 `hyd_origin_training_course_history`, `hyd_origin_order_history` 计算
+
+### 年龄分布
+- `hyd_result_order_ykt_userage_stat`
+> 基于 `hyd_origin_order_history` 计算
+
+### 培训场馆销售统计（top10）
+- `hyd_result_order_ykt_stadium_stat`
+> 基于 `hyd_origin_order_history`, `hyd_origin_stadium_history` 计算
+
+
+## 校外培训机构
+### 各区场馆数量统计
+- `hyd_result_la_stadium_district`
+-  基于 `hyd_origin_la_stadium_history` 计算
+
+### 项目类型占比TOP10
+- `hyd_result_la_stadium_sport_name_top`
+-  基于 `hyd_origin_training_activity_item_history` 计算
+
+### 校外培训机构分布图 - 接口同 `各区场馆数量统计`
+- `hyd_result_la_stadium_district`
+
+### 首页 - 项目类型占比Top5和其他
+- `hyd_result_la_stadium_sport_name`
+-  基于 `hyd_origin_training_activity_item_history` 计算
+
+
+## 场馆预定
+### 各区场馆数量统计
+- `hyd_result_stadium_district`
+
+### 项目消费券订单金额
+- `hyd_result_order_sport`
+
+### 场馆消费券订单金额TOP5
+- `hyd_result_order_stadium`
+
+### 订单数量(订单月份趋势统计 - 同 体育消费卷-订单趋势图一样)
+- `hyd_result_order_month`
+
+### 场馆分布地图
+- `hyd_origin_stadium_history`
+
+
+### 用户
+- `hyd_result_user_channel` 
+- `hyd_result_user_sex` -- 性别占比
+- `hyd_result_user_age` -- 年龄占比
+
+
+### 复购率
+- `hyd_result_user_repurchase`
+
+
+### 新增用户
+- `hyd_result_user_register`
+
+
+
+
+## 体育消费券
+
+### 概览
+- `hyd_result_coupon_amount`
+> 汇聚多条记录
+
+### 武汉市体育消费卷-领卷用卷
+- `hyd_result_stock`
+
+### 武汉市体育消费卷-用卷订单
+- `hyd_result_stock`
+
+### 项目消费卷订单金额TOP5
+- `hyd_result_order_sport`
+
+### 场馆消费卷订单金额TOP5
+- `hyd_result_order_stadium`
+
+### 订单总数统计
+- `hyd_result_order`
+
+### 订单月份趋势统计
+- `hyd_result_order_month`
+
+### 用户性别统计
+- `hyd_result_coupon_user`
+
+### 用户年龄分布统计
+- `hyd_result_coupon_user_age`
+
+### 用户领卷用卷统计
+- `hyd_result_coupon_user`
+
+
+
+## 体育产业
+### 总览
+- `hyd_excel_industry_core_indicators`
+
+### 体育产业总规模
+- `hyd_excel_industry_scale_trend`
+
+### 体育产业市场主体数量
+- `hyd_excel_industry_entity_count_ratio`
+
+### 体育产业总增速和增加值
+- `hyd_excel_industry_growth_value_trend`
+
+### 体育产业从业人员数量
+- `hyd_excel_industry_employee_count`
+
+## 基础体育设施
+
+### 健身点位
+- `hyd_result_facility_year`
+
+### 各类型体育设施数量及占比
+- `hyd_result_facility`
+> 汇聚多条记录
+
+### 各区分布
+- `hyd_result_facility_district`
+
+### 基础设施点位地图
+- `hyd_result_stadium_map_point`
+
+
+### 巡检维修动态
+- `hyd_result_facility_inspect`
+
+### 各区巡检维修数据（月度）
+- `hyd_result_facility_district_month`
+
+
+
+## 社会体育指导员
+
+计算 是 导入excel时 触发 计算
+
+### 指导项目统计TOP15
+- `hyd_result_instructor_service_project_top`
+> 基于 `hyd_excel_instructor_info` 计算
+
+### 性别统计
+- `hyd_result_instructor_usersex`
+> 基于 `hyd_excel_instructor_info` 计算
+
+
+### 级别统计
+- `hyd_result_instructor_level`
+> 基于 `hyd_excel_instructor_info` 计算
+
+
+### 年龄统计
+- `hyd_excel_instructor_age_stats`
+
+
+### 人数增长统计
+- `hyd_excel_instructor_age_growth`
+
+
+### 各区指导员人数
+- `hyd_result_instructor_region`
+> 基于 `hyd_excel_instructor_info` 计算
+
+
+### 总览-首页用
+- `hyd_result_instructor_overview`
+> 基于 `hyd_excel_instructor_info` 计算
+
+
+### 指导项目统计-首页用
+- `hyd_result_instructor_service_project`
+> 基于 `hyd_excel_instructor_info` 计算
+
+
+## 大众赛事
+
+计算 是 导入excel时 触发 计算
+
+### 总览信息
+- `hyd_result_events_overview_stat`
+> 基于 `hyd_excel_public_events` 计算
+
+### 各月办赛数据
+- `hyd_result_events_month_count_stat`
+> 基于 `hyd_excel_public_events` 计算
+
+
+### 赛事数量TOP5项目
+- `hyd_result_events_sport_item_top`
+> 基于 `hyd_excel_public_events` 计算
+
+
+### 赛事活动办赛地点热力图
+- `hyd_excel_public_events`
+> 基于 `hyd_excel_public_events` 计算
+
+
+### 参赛人数人档
+- `hyd_result_events_participant_level`
+> 基于 `hyd_excel_public_events` 计算
+
+
+### 最新赛事
+- `hyd_excel_public_events`
+> 基于 `hyd_excel_public_events` 计算
 
 
 

@@ -42,11 +42,6 @@ public class HydResultInstructorUserSex implements Serializable {
     @ApiModelProperty(value = "占比（%），保留2位小数")
     private BigDecimal proportion;
 
-    @JsonIgnore
-    @Column(name = "batchNo")
-    @ApiModelProperty(value = "批次号，用于标识数据批次")
-    private String batchNo;
-
     @Column(name = "statisticalYear")
     @ApiModelProperty(value = "统计年度")
     private Integer statisticalYear;

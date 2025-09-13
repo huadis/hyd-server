@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.service.impl;
 
+import cn.wuhan.hyd.framework.utils.DateUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydResultLaStadiumDistrict;
 import cn.wuhan.hyd.sports.domain.HydResultLaStadiumSportName;
@@ -195,7 +196,7 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
 
     private void syncStadiumDistricts() {
         // 1. 从原始数据仓库查询统计结果
-        List<Map<String, Object>> list = laStadiumHistoryRepo.stadiumCountByDistrict("");
+        List<Map<String, Object>> list = laStadiumHistoryRepo.stadiumCountByDistrict();
         List<HydResultLaStadiumDistrict> stadiumDistricts = new ArrayList<>();
 
         // 2. 映射原始数据到统计实体
@@ -203,18 +204,19 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
             HydResultLaStadiumDistrict e = new HydResultLaStadiumDistrict();
             e.setDistrictName(MapUtils.getString(map, "districtName"));
             e.setStadiumNum(MapUtils.getLong(map, "stadiumNum"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             stadiumDistricts.add(e);
         });
         if (CollectionUtils.isNotEmpty(stadiumDistricts)) {
             // 3. 清空旧数据并保存新数据
-            districtRepo.deleteAll();
+            districtRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
             districtRepo.saveAll(stadiumDistricts);
         }
     }
 
     private void syncSportName() {
         // 1. 从原始数据仓库查询统计结果
-        List<Map<String, Object>> list = trainingActivityItemHistoryRepo.itemCountTop10BySportName("");
+        List<Map<String, Object>> list = trainingActivityItemHistoryRepo.itemCountTop10BySportName();
         List<HydResultLaStadiumSportNameTop> laStadiumSportNameTops = new ArrayList<>();
 
         // 2. 映射原始数据到统计实体
@@ -222,18 +224,19 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
             HydResultLaStadiumSportNameTop e = new HydResultLaStadiumSportNameTop();
             e.setSportName(MapUtils.getString(map, "sportName"));
             e.setNum(MapUtils.getLong(map, "num"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             laStadiumSportNameTops.add(e);
         });
         if (CollectionUtils.isNotEmpty(laStadiumSportNameTops)) {
             // 3. 清空旧数据并保存新数据
-            sportNameTopRepo.deleteAll();
+            sportNameTopRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
             sportNameTopRepo.saveAll(laStadiumSportNameTops);
         }
     }
 
     private void syncSportNameTop() {
         // 1. 从原始数据仓库查询统计结果
-        List<Map<String, Object>> list = trainingActivityItemHistoryRepo.itemCountBySportName("");
+        List<Map<String, Object>> list = trainingActivityItemHistoryRepo.itemCountBySportName();
         List<HydResultLaStadiumSportName> laStadiumSportNames = new ArrayList<>();
 
         // 2. 映射原始数据到统计实体
@@ -241,11 +244,12 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
             HydResultLaStadiumSportName e = new HydResultLaStadiumSportName();
             e.setSportName(MapUtils.getString(map, "sportName"));
             e.setNum(MapUtils.getLong(map, "num"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             laStadiumSportNames.add(e);
         });
         if (CollectionUtils.isNotEmpty(laStadiumSportNames)) {
             // 3. 清空旧数据并保存新数据
-            sportNameRepo.deleteAll();
+            sportNameRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
             sportNameRepo.saveAll(laStadiumSportNames);
         }
     }

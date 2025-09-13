@@ -2,6 +2,7 @@ package cn.wuhan.hyd.sports.repository;
 
 import cn.wuhan.hyd.sports.domain.HydResultOrderYktCourseStat;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,8 @@ public interface HydResultOrderYktCourseStatRepo extends JpaRepository<HydResult
 
     @Query(value = "SELECT * FROM hyd_result_order_ykt_course_stat WHERE statisticalYear ORDER BY num DESC LIMIT 5", nativeQuery = true)
     List<HydResultOrderYktCourseStat> courseTop5(String year);
+
+    @Modifying
+    @Query(value = "DELETE FROM hyd_result_order_ykt_course_stat WHERE statisticalYear = ?1", nativeQuery = true)
+    int deleteByStatisticalYear(Integer statisticalYear);
 }

@@ -99,7 +99,30 @@ public class HistoryController {
     private HydOriginLaStadiumHistoryRepo originLaStadiumHistoryRepo;
     @Resource
     private HydOriginLaStadiumFileHistoryRepo originLaStadiumFileHistoryRepo;
-
+    @Resource
+    private HydExcelPublicEventsHistoryRepo eventsHistoryRepo;
+    @Resource
+    private HydExcelInstructorInfoHistoryRepo instructorInfoHistoryRepo;
+    @Resource
+    private HydExcelSportsOrgRepo sportsOrgRepo;
+    @Resource
+    private HydExcelIndustryCoreIndicatorsHistoryRepo industryCoreIndicatorsHistoryRepo;
+    @Resource
+    private HydExcelIndustryEmployeeCountHistoryRepo industryEmployeeCountHistoryRepo;
+    @Resource
+    private HydExcelIndustryEntityCountRatioHistoryRepo industryEntityCountRatioHistoryRepo;
+    @Resource
+    private HydExcelIndustryGoodsPurchaseRateHistoryRepo industryGoodsPurchaseRateHistoryRepo;
+    @Resource
+    private HydExcelIndustryGrowthValueTrendHistoryRepo industryGrowthValueTrendHistoryRepo;
+    @Resource
+    private HydExcelIndustryScaleTrendHistoryRepo industryScaleTrendHistoryRepo;
+    @Resource
+    private HydExcelIndustryTrainingParticipationRateHistoryRepo industryTrainingParticipationRateHistoryRepo;
+    @Resource
+    private HydExcelInstructorAgeGrowthHistoryRepo instructorAgeGrowthHistoryRepo;
+    @Resource
+    private HydExcelInstructorAgeStatsHistoryRepo instructorAgeStatsHistoryRepo;
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -982,6 +1005,319 @@ public class HistoryController {
         // 按时间参数是否存在执行不同查询
         Page<HydOriginLaStadiumFileHistory> pageResult = originLaStadiumFileHistoryRepo.findAllByTimeRange(pageable, start, end);
         PageResult<HydOriginLaStadiumFileHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("35. 大众赛事-分页查询")
+    @AnonymousGetMapping("/publicEvents/list")
+    public Response<PageResult<HydExcelPublicEventsHistory>> publicEventsList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelPublicEventsHistory> pageResult = eventsHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelPublicEventsHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("36. 社会体育指导员-分页查询")
+    @AnonymousGetMapping("/instructorInfo/list")
+    public Response<PageResult<HydExcelInstructorInfoHistory>> instructorInfoList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelInstructorInfoHistory> pageResult = instructorInfoHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelInstructorInfoHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("37. 体育组织-分页查询")
+    @AnonymousGetMapping("/sportsOrg/list")
+    public Response<PageResult<HydExcelSportsOrg>> sportsOrgList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelSportsOrg> pageResult = sportsOrgRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelSportsOrg> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+
+    @ApiOperation("38. 体育产业-核心指标总表-分页查询")
+    @AnonymousGetMapping("/industryCoreIndicators/list")
+    public Response<PageResult<HydExcelIndustryCoreIndicatorsHistory>> industryCoreIndicatorsList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelIndustryCoreIndicatorsHistory> pageResult = industryCoreIndicatorsHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelIndustryCoreIndicatorsHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("39. 体育产业-从业人员数量-分页查询")
+    @AnonymousGetMapping("/industryEmployeeCount/list")
+    public Response<PageResult<HydExcelIndustryEmployeeCountHistory>> industryEmployeeCountList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelIndustryEmployeeCountHistory> pageResult = industryEmployeeCountHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelIndustryEmployeeCountHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("40. 体育产业-场主体数量-分页查询")
+    @AnonymousGetMapping("/industryEntityCountRatio/list")
+    public Response<PageResult<HydExcelIndustryEntityCountRatioHistory>> industryEntityCountRatioList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelIndustryEntityCountRatioHistory> pageResult = industryEntityCountRatioHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelIndustryEntityCountRatioHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("41. 体育产业-居民体育用品购买率表-分页查询")
+    @AnonymousGetMapping("/industryGoodsPurchaseRate/list")
+    public Response<PageResult<HydExcelIndustryGoodsPurchaseRateHistory>> industryGoodsPurchaseRateList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelIndustryGoodsPurchaseRateHistory> pageResult = industryGoodsPurchaseRateHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelIndustryGoodsPurchaseRateHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("42. 体育产业-总增速和增加值-分页查询")
+    @AnonymousGetMapping("/industryGrowthValueTrend/list")
+    public Response<PageResult<HydExcelIndustryGrowthValueTrendHistory>> industryGrowthValueTrendList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelIndustryGrowthValueTrendHistory> pageResult = industryGrowthValueTrendHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelIndustryGrowthValueTrendHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("43. 体育产业-总规模-分页查询")
+    @AnonymousGetMapping("/industryScaleTrend/list")
+    public Response<PageResult<HydExcelIndustryScaleTrendHistory>> industryScaleTrendList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelIndustryScaleTrendHistory> pageResult = industryScaleTrendHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelIndustryScaleTrendHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("44. 体育产业-居民体育培训项目参与率表-分页查询")
+    @AnonymousGetMapping("/industryTrainingParticipationRate/list")
+    public Response<PageResult<HydExcelIndustryTrainingParticipationRateHistory>> industryTrainingParticipationRateList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelIndustryTrainingParticipationRateHistory> pageResult = industryTrainingParticipationRateHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelIndustryTrainingParticipationRateHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("45. 体育指导员-人数增长统计明细表-分页查询")
+    @AnonymousGetMapping("/instructorAgeGrowth/list")
+    public Response<PageResult<HydExcelInstructorAgeGrowthHistory>> instructorAgeGrowthList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelInstructorAgeGrowthHistory> pageResult = instructorAgeGrowthHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelInstructorAgeGrowthHistory> result = new PageResult<>();
+        result.setTotalElements(pageResult.getTotalElements());
+        result.setContent(pageResult.getContent());
+        return Response.ok(result);
+    }
+
+    @ApiOperation("46. 体育指导员-年龄统计明细表-分页查询")
+    @AnonymousGetMapping("/instructorAgeStats/list")
+    public Response<PageResult<HydExcelInstructorAgeStatsHistory>> instructorAgeStatsList(
+            @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
+            @ApiParam(value = "每页条数", example = "10") @RequestParam(defaultValue = "10") int size,
+            @ApiParam(value = "开始时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-01-01 00:00:00")
+            @RequestParam(required = false) String startTime,
+            @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
+            @RequestParam(required = false) String endTime) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Timestamp start, end;
+        try {
+            // 将字符串时间转换为 Timestamp
+            start = startTime != null ? new Timestamp(sdf.parse(startTime).getTime()) : null;
+            end = endTime != null ? new Timestamp(sdf.parse(endTime).getTime()) : null;
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("时间格式错误，正确格式：yyyy-MM-dd HH:mm:ss", e);
+        }
+        // 按时间参数是否存在执行不同查询
+        Page<HydExcelInstructorAgeStatsHistory> pageResult = instructorAgeStatsHistoryRepo.findAllByTimeRange(pageable, start, end);
+        PageResult<HydExcelInstructorAgeStatsHistory> result = new PageResult<>();
         result.setTotalElements(pageResult.getTotalElements());
         result.setContent(pageResult.getContent());
         return Response.ok(result);

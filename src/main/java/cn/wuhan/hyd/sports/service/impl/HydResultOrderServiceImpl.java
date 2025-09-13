@@ -89,8 +89,8 @@ public class HydResultOrderServiceImpl extends HydBaseServiceImpl implements IHy
     @Override
     public Map<String, Object> orderStat(String year) {
         Map<String, Object> result = new HashMap<>();
-        result.put("sumOrderNum", orderRepo.sumOrderNum());
-        result.put("sumOrderAmount", orderRepo.sumOrderAmount());
+        result.put("sumOrderNum", orderRepo.sumOrderNum(year));
+        result.put("sumOrderAmount", orderRepo.sumOrderAmount(year));
         result.put("monthOrderStat", orderRepo.overview(year));
         return result;
     }

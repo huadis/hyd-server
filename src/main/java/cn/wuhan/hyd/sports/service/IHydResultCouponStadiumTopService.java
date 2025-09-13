@@ -62,7 +62,7 @@ public interface IHydResultCouponStadiumTopService {
      */
     HydResultCouponStadiumTop findById(Long id);
 
-    List<Map<String, Object>> stadiumTop5();
+    List<Map<String, Object>> stadiumTop5(String statisticalYear);
 
     int batchSave(List<HydResultCouponStadiumTopReq> couponStadiumTops);
 }

@@ -37,11 +37,6 @@ public class HydResultOrderYktCourseStat implements Serializable {
     @ApiModelProperty(value = "课程热度统计数量（如报名人数、订单数）")
     private Long num;
 
-    @JsonIgnore
-    @Column(name = "batchNo")
-    @ApiModelProperty(value = "批次号，用于标识数据批次")
-    private String batchNo;
-
     @Column(name = "statisticalYear")
     @ApiModelProperty(value = "统计年度")
     private Integer statisticalYear;

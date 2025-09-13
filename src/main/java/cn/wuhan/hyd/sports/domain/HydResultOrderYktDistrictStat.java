@@ -41,11 +41,6 @@ public class HydResultOrderYktDistrictStat implements Serializable {
     @ApiModelProperty(value = "各区对应的机构数量")
     private Long num;
 
-    @JsonIgnore
-    @Column(name = "batchNo")
-    @ApiModelProperty(value = "批次号，用于标识数据批次")
-    private String batchNo;
-
     @Column(name = "statisticalYear")
     @ApiModelProperty(value = "统计年度")
     private Integer statisticalYear;

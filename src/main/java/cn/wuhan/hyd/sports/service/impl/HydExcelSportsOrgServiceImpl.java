@@ -1,5 +1,6 @@
 package cn.wuhan.hyd.sports.service.impl;
 
+import cn.wuhan.hyd.framework.utils.DateUtil;
 import cn.wuhan.hyd.framework.utils.MapUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.HydExcelSportsOrg;
@@ -44,6 +45,7 @@ public class HydExcelSportsOrgServiceImpl implements IHydExcelSportsOrgService {
             HydExcelSportsOrgDistrictStat e = new HydExcelSportsOrgDistrictStat();
             e.setDistrictName(MapUtils.getString(map, "districtName"));
             e.setDistrictNum(MapUtils.getLong(map, "districtNum"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             districtStats.add(e);
         });
 

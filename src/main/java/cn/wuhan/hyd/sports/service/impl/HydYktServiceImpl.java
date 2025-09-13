@@ -1,9 +1,11 @@
 package cn.wuhan.hyd.sports.service.impl;
 
+import cn.wuhan.hyd.framework.utils.DateUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydYktService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -307,10 +309,13 @@ public class HydYktServiceImpl implements IHydYktService {
             e.setDistrictName(MapUtils.getString(map, "districtName"));
             e.setDistrict(MapUtils.getString(map, "district"));
             e.setNum(MapUtils.getLong(map, "num"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             districtStats.add(e);
         });
-        yktDistrictStatRepo.deleteAll();
-        yktDistrictStatRepo.saveAll(districtStats);
+        if (CollectionUtils.isNotEmpty(districtStats)) {
+            yktDistrictStatRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            yktDistrictStatRepo.saveAll(districtStats);
+        }
     }
 
     public void syncGender() {
@@ -320,10 +325,13 @@ public class HydYktServiceImpl implements IHydYktService {
             HydResultOrderYktUserSexStat e = new HydResultOrderYktUserSexStat();
             e.setGender(MapUtils.getString(map, "gender"));
             e.setNum(MapUtils.getLong(map, "num"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             userSexStats.add(e);
         });
-        yktUserSexStatRepo.deleteAll();
-        yktUserSexStatRepo.saveAll(userSexStats);
+        if (CollectionUtils.isNotEmpty(userSexStats)) {
+            yktUserSexStatRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            yktUserSexStatRepo.saveAll(userSexStats);
+        }
     }
 
     public void syncProject() {
@@ -333,10 +341,13 @@ public class HydYktServiceImpl implements IHydYktService {
             HydResultOrderYktProjectStat e = new HydResultOrderYktProjectStat();
             e.setProject(MapUtils.getString(map, "project"));
             e.setNum(MapUtils.getLong(map, "num"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             projectStats.add(e);
         });
-        yktProjectStatRepo.deleteAll();
-        yktProjectStatRepo.saveAll(projectStats);
+        if (CollectionUtils.isNotEmpty(projectStats)) {
+            yktProjectStatRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            yktProjectStatRepo.saveAll(projectStats);
+        }
     }
 
     public void syncCourse() {
@@ -346,10 +357,14 @@ public class HydYktServiceImpl implements IHydYktService {
             HydResultOrderYktCourseStat e = new HydResultOrderYktCourseStat();
             e.setCourse(MapUtils.getString(map, "course"));
             e.setNum(MapUtils.getLong(map, "num"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             courseStats.add(e);
         });
-        yktCourseStatRepo.deleteAll();
-        yktCourseStatRepo.saveAll(courseStats);
+
+        if (CollectionUtils.isNotEmpty(courseStats)) {
+            yktCourseStatRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            yktCourseStatRepo.saveAll(courseStats);
+        }
     }
 
     public void syncUserAgeStat() {
@@ -359,10 +374,13 @@ public class HydYktServiceImpl implements IHydYktService {
             HydResultOrderYktUserAgeStat e = new HydResultOrderYktUserAgeStat();
             e.setAgeGroup(MapUtils.getString(map, "ageGroup"));
             e.setNum(MapUtils.getLong(map, "num"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             userAgeStat.add(e);
         });
-        yktUserAgeStatRepo.deleteAll();
-        yktUserAgeStatRepo.saveAll(userAgeStat);
+        if (CollectionUtils.isNotEmpty(userAgeStat)) {
+            yktUserAgeStatRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            yktUserAgeStatRepo.saveAll(userAgeStat);
+        }
     }
 
     public void syncStadium() {
@@ -372,9 +390,12 @@ public class HydYktServiceImpl implements IHydYktService {
             HydResultOrderYktStadiumStat e = new HydResultOrderYktStadiumStat();
             e.setStadium(MapUtils.getString(map, "stadium"));
             e.setOrderAmount(MapUtils.getInteger(map, "orderAmount"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             stadiumStats.add(e);
         });
-        yktStadiumStatRepo.deleteAll();
-        yktStadiumStatRepo.saveAll(stadiumStats);
+        if (CollectionUtils.isNotEmpty(stadiumStats)) {
+            yktStadiumStatRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            yktStadiumStatRepo.saveAll(stadiumStats);
+        }
     }
 }

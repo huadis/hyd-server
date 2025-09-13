@@ -1,10 +1,12 @@
 package cn.wuhan.hyd.sports.service.impl;
 
+import cn.wuhan.hyd.framework.utils.DateUtil;
 import cn.wuhan.hyd.framework.utils.PageResult;
 import cn.wuhan.hyd.sports.domain.*;
 import cn.wuhan.hyd.sports.repository.*;
 import cn.wuhan.hyd.sports.service.IHydExcelInstructorService;
 import cn.wuhan.hyd.sports.service.IHydResultInstructorService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -327,13 +329,15 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
             HydResultInstructorLevel e = new HydResultInstructorLevel();
             e.setLevel(MapUtils.getString(map, "level"));
             e.setPersonCount(MapUtils.getLong(map, "personCount"));
-            e.setBatchNo(MapUtils.getString(map, "batchNo"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             levelStats.add(e);
         });
 
-        // 3. 清空旧数据并保存新数据
-        instructorLevelRepo.deleteAll();
-        instructorLevelRepo.saveAll(levelStats);
+        if (CollectionUtils.isNotEmpty(levelStats)) {
+            // 3. 清空旧数据并保存新数据
+            instructorLevelRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            instructorLevelRepo.saveAll(levelStats);
+        }
     }
 
     /**
@@ -345,8 +349,9 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
         e.setTotal(MapUtils.getLong(map, "total")); // 全市人数
         e.setNewCount(MapUtils.getLong(map, "newCount")); // 今年新增
         e.setSexRatio(MapUtils.getString(map, "男:女")); // 男女比例
+        e.setStatisticalYear(DateUtil.getPreviousDayYear());
 
-        instructorOverviewRepo.deleteAll();
+        instructorOverviewRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
         instructorOverviewRepo.save(e);
     }
 
@@ -361,11 +366,14 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
             HydResultInstructorRegion e = new HydResultInstructorRegion();
             e.setRegion(MapUtils.getString(map, "region")); // 地区名称
             e.setInstructorCount(MapUtils.getLong(map, "instructorCount")); // 人员数量
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             regionStats.add(e);
         });
 
-        instructorRegionRepo.deleteAll();
-        instructorRegionRepo.saveAll(regionStats);
+        if (CollectionUtils.isNotEmpty(regionStats)) {
+            instructorRegionRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            instructorRegionRepo.saveAll(regionStats);
+        }
     }
 
     /**
@@ -379,11 +387,14 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
             e.setServiceProject(MapUtils.getString(map, "serviceProject")); // 服务项目ID
             e.setTotalPersonCount(MapUtils.getLong(map, "totalPersonCount")); // 总人数
             e.setNewPersonCount(MapUtils.getLong(map, "newPersonCount")); // 新增人数
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             projectStats.add(e);
         });
 
-        instructorServiceProjectRepo.deleteAll();
-        instructorServiceProjectRepo.saveAll(projectStats);
+        if (CollectionUtils.isNotEmpty(projectStats)) {
+            instructorServiceProjectRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            instructorServiceProjectRepo.saveAll(projectStats);
+        }
     }
 
     /**
@@ -398,11 +409,14 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
             e.setServiceProject(MapUtils.getString(map, "serviceProject")); // 服务项目ID
             e.setPersonCount(MapUtils.getLong(map, "personCount")); // 指导人数
             e.setProportion(getBigDecimalFromMap(map, "proportion"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             projectTopStats.add(e);
         });
 
-        instructorServiceProjectTopRepo.deleteAll();
-        instructorServiceProjectTopRepo.saveAll(projectTopStats);
+        if (CollectionUtils.isNotEmpty(projectTopStats)) {
+            instructorServiceProjectTopRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            instructorServiceProjectTopRepo.saveAll(projectTopStats);
+        }
     }
 
     /**
@@ -417,11 +431,14 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
             e.setGender(MapUtils.getString(map, "gender"));
             e.setPersonCount(MapUtils.getLong(map, "personCount"));
             e.setProportion(getBigDecimalFromMap(map, "proportion"));
+            e.setStatisticalYear(DateUtil.getPreviousDayYear());
             userSexes.add(e);
         });
 
-        instructorUserSexRepo.deleteAll();
-        instructorUserSexRepo.saveAll(userSexes);
+        if (CollectionUtils.isNotEmpty(userSexes)) {
+            instructorUserSexRepo.deleteByStatisticalYear(DateUtil.getPreviousDayYear());
+            instructorUserSexRepo.saveAll(userSexes);
+        }
     }
 
 

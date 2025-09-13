@@ -20,11 +20,11 @@ import java.util.Map;
 @Repository
 public interface HydOriginTrainingActivityItemHistoryRepo extends JpaRepository<HydOriginTrainingActivityItemHistory, String> {
 
-    @Query(value = "select sportName, count(*) as num from hyd_origin_training_activity_item_history WHERE sportName IS NOT NULL AND sportName != '' GROUP BY sportName order by num desc limit 10", nativeQuery = true)
-    List<Map<String, Object>> itemCountTop10BySportName(String year);
+    @Query(value = "select sportName, count(*) as num from hyd_origin_training_activity_item_history WHERE sportName IS NOT NULL AND sportName != '' AND createdTime >= DATE_FORMAT(CURDATE(), '%Y-01-01 00:00:00') AND createdTime < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 YEAR), '%Y-01-01 00:00:00') GROUP BY sportName order by num desc limit 10", nativeQuery = true)
+    List<Map<String, Object>> itemCountTop10BySportName();
 
-    @Query(value = "select sportName, count(*) as num from hyd_origin_training_activity_item_history WHERE sportName IS NOT NULL AND sportName != '' GROUP BY sportName order by num desc", nativeQuery = true)
-    List<Map<String, Object>> itemCountBySportName(String year);
+    @Query(value = "select sportName, count(*) as num from hyd_origin_training_activity_item_history WHERE sportName IS NOT NULL AND sportName != '' AND createdTime >= DATE_FORMAT(CURDATE(), '%Y-01-01 00:00:00') AND createdTime < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 YEAR), '%Y-01-01 00:00:00') GROUP BY sportName order by num desc", nativeQuery = true)
+    List<Map<String, Object>> itemCountBySportName();
 
     @Query(value = "SELECT * FROM hyd_origin_training_activity_item_history WHERE (:startTime IS NULL OR createdTime >= :startTime) " +
             "AND (:endTime IS NULL OR createdTime <= :endTime)",

@@ -17,11 +17,8 @@ import java.util.Map;
 @Repository
 public interface HydResultCouponStadiumTopRepo extends JpaRepository<HydResultCouponStadiumTop, Long> {
 
-    @Query(value = "SELECT " +
-            "stadiumName, " +
-            "couponAmount " +
-            "FROM hyd_result_coupon_stadium_top ", nativeQuery = true)
-    List<Map<String, Object>> stadiumTop5();
+    @Query(value = "SELECT stadiumName, couponAmount FROM hyd_result_coupon_stadium_top WHERE statisticalYear = ?1 ORDER BY couponAmount DESC ", nativeQuery = true)
+    List<Map<String, Object>> stadiumTop5(String statisticalYear);
 
     @Modifying
     @Query(value = "DELETE FROM hyd_result_coupon_stadium_top WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
