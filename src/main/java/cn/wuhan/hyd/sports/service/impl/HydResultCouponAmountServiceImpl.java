@@ -59,19 +59,19 @@ public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl impleme
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public HydResultCouponAmount save(HydResultCouponAmount hydResultCouponAmount) {
         return couponAmountRepo.save(hydResultCouponAmount);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteById(Long id) {
         couponAmountRepo.deleteById(id);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public HydResultCouponAmount update(HydResultCouponAmount couponAmount) {
         if (couponAmount.getId() == null) {
             throw new IllegalArgumentException("更新操作必须提供ID");

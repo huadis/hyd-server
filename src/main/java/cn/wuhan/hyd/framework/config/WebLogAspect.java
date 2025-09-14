@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 功能说明： 全局 Controller 访问日志切面 <br>
@@ -54,8 +56,20 @@ public class WebLogAspect {
             log.info("RequestURL      :  {}", request.getRequestURL().toString());
             log.info("RequestMethod   :  {}", request.getMethod());
             log.info("RequestIP       :  {}", request.getRemoteAddr());
-            if (joinPoint.getArgs().length <= 10) {
-                log.info("RequestParam    :  {}", Arrays.toString(joinPoint.getArgs()));
+            Object[] args = joinPoint.getArgs();
+            // 1. 先判断参数总数量
+            if (args.length > 10) {
+                log.info("RequestParam    :  Too many parameters, not printed");
+                return;
+            }
+            // 2. 再判断每个参数的数量
+            for (Object arg : args) {
+                if (arg instanceof List<?>) {
+                    if (((List<?>) arg).size() > 10) {
+                        log.info("RequestParam    :  Too many parameters, not printed");
+                        return;
+                    }
+                }
             }
         }
     }

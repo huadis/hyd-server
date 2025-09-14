@@ -52,6 +52,7 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     @Resource
     private Executor executor;
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncResultData() {
         syncOverviewStatData();
         syncMonthCountStatData();
@@ -59,6 +60,7 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
         syncParticipantLevelData();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncOverviewStatData() {
         List<Map<String, Object>> totalList = publicEventsRepo.countAll();
         List<Map<String, Object>> participantCountList = publicEventsRepo.totalParticipantCount();
@@ -129,6 +131,7 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
         return yearMap;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncMonthCountStatData() {
         List<Map<String, Object>> list = publicEventsRepo.monthStat();
         List<HydResultEventsMonthCountStat> result = new ArrayList<>();
@@ -145,6 +148,7 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
         monthCountStatRepo.saveAll(result);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncSportItemTopData() {
         List<Map<String, Object>> list = publicEventsRepo.sportItemTop5();
         List<HydResultEventsSportItemTop> result = new ArrayList<>();
@@ -161,6 +165,7 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
         sportItemTopRepo.saveAll(result);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncParticipantLevelData() {
         List<Map<String, Object>> list = publicEventsRepo.participantCountStat();
         List<HydResultEventsParticipantLevel> result = new ArrayList<>();
@@ -344,6 +349,7 @@ public class HydExcelPublicEventsServiceImpl implements IHydExcelPublicEventsSer
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public HydResultEventsMonthCountStat updateMonthCount(HydResultEventsMonthCountStat monthCountStat) {
         return monthCountStatRepo.save(monthCountStat);
     }

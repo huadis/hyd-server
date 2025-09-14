@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class HydYktServiceImpl implements IHydYktService {
     @Resource
     private HydOriginOrderHistoryRepo originOrderHistoryRepo;
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncResultData() {
         syncDistrict();
         syncGender();
@@ -301,6 +303,7 @@ public class HydYktServiceImpl implements IHydYktService {
         return originOrderHistoryRepo.stadiumsByOrder();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncDistrict() {
         List<Map<String, Object>> list = originOrderHistoryRepo.districtStatCount();
         List<HydResultOrderYktDistrictStat> districtStats = new ArrayList<>();
@@ -318,6 +321,7 @@ public class HydYktServiceImpl implements IHydYktService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncGender() {
         List<Map<String, Object>> list = originOrderHistoryRepo.genderStatCount();
         List<HydResultOrderYktUserSexStat> userSexStats = new ArrayList<>();
@@ -334,6 +338,7 @@ public class HydYktServiceImpl implements IHydYktService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncProject() {
         List<Map<String, Object>> list = originOrderHistoryRepo.projectStatCount();
         List<HydResultOrderYktProjectStat> projectStats = new ArrayList<>();
@@ -350,6 +355,7 @@ public class HydYktServiceImpl implements IHydYktService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncCourse() {
         List<Map<String, Object>> list = originOrderHistoryRepo.courseStatCount();
         List<HydResultOrderYktCourseStat> courseStats = new ArrayList<>();
@@ -367,6 +373,7 @@ public class HydYktServiceImpl implements IHydYktService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncUserAgeStat() {
         List<Map<String, Object>> list = originOrderHistoryRepo.userAgeStatCount();
         List<HydResultOrderYktUserAgeStat> userAgeStat = new ArrayList<>();
@@ -383,6 +390,7 @@ public class HydYktServiceImpl implements IHydYktService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void syncStadium() {
         List<Map<String, Object>> list = originOrderHistoryRepo.stadiumStatCount();
         List<HydResultOrderYktStadiumStat> stadiumStats = new ArrayList<>();

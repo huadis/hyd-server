@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class HydExcelSportsOrgServiceImpl implements IHydExcelSportsOrgService {
     private HydExcelSportsOrgDistrictStatRepo sportsOrgDistrictStatRepo;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void syncResultData() {
         List<Map<String, Object>> list = sportsOrgRepo.districtStatCount();
         List<HydExcelSportsOrgDistrictStat> districtStats = new ArrayList<>();

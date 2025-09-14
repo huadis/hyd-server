@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigInteger;
@@ -41,6 +42,7 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
     private HydOriginTrainingActivityItemHistoryRepo trainingActivityItemHistoryRepo;
 
     // ========================== 数据同步方法（参考模板syncResultData逻辑） ==========================
+    @Transactional(rollbackFor = Exception.class)
     public void syncResultData() {
         syncStadiumDistricts();
         syncSportName();
@@ -194,7 +196,8 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
         return sportNameRepo.itemCountBySportName(year);
     }
 
-    private void syncStadiumDistricts() {
+    @Transactional(rollbackFor = Exception.class)
+    public void syncStadiumDistricts() {
         // 1. 从原始数据仓库查询统计结果
         List<Map<String, Object>> list = laStadiumHistoryRepo.stadiumCountByDistrict();
         List<HydResultLaStadiumDistrict> stadiumDistricts = new ArrayList<>();
@@ -214,7 +217,8 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
         }
     }
 
-    private void syncSportName() {
+    @Transactional(rollbackFor = Exception.class)
+    public void syncSportName() {
         // 1. 从原始数据仓库查询统计结果
         List<Map<String, Object>> list = trainingActivityItemHistoryRepo.itemCountTop10BySportName();
         List<HydResultLaStadiumSportNameTop> laStadiumSportNameTops = new ArrayList<>();
@@ -234,7 +238,8 @@ public class HydResultLaStadiumStatServiceImpl implements IHydResultLaStadiumSta
         }
     }
 
-    private void syncSportNameTop() {
+    @Transactional(rollbackFor = Exception.class)
+    public void syncSportNameTop() {
         // 1. 从原始数据仓库查询统计结果
         List<Map<String, Object>> list = trainingActivityItemHistoryRepo.itemCountBySportName();
         List<HydResultLaStadiumSportName> laStadiumSportNames = new ArrayList<>();

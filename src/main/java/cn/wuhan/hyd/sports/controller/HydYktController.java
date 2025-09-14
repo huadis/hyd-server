@@ -51,8 +51,8 @@ public class HydYktController {
         return Response.ok(true);
     }
 
-    // 每天凌晨 00:00 执行
-    @Scheduled(cron = "0 0 0 * * ?")
+    // 每天凌晨 06:00 执行
+    @Scheduled(cron = "0 0 6 * * ?")
     public void dailyCalculation() {
         boolean refresh = !configService.notRefresh("青少年技能培训");
         // 是否冻结，不允许更新查询表

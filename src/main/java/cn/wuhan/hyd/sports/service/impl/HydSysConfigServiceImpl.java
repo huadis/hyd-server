@@ -50,9 +50,9 @@ public class HydSysConfigServiceImpl implements IHydSysConfigService {
     }
 
     @Override
-    public HydSysConfig findByKey(String key) {
-        return sysConfigRepo.findByKey(key)
-                .orElseThrow(() -> new RuntimeException("系统配置不存在，Key：" + key));
+    public HydSysConfig findByKey(String name) {
+        return sysConfigRepo.findByName(name)
+                .orElseThrow(() -> new RuntimeException("系统配置不存在，Name：" + name));
     }
 
     @Override
@@ -73,8 +73,8 @@ public class HydSysConfigServiceImpl implements IHydSysConfigService {
     }
 
     @Override
-    public boolean notRefresh(String key) {
-        return sysConfigRepo.findByKey(key)
+    public boolean notRefresh(String name) {
+        return sysConfigRepo.findByName(name)
                 .map(config -> {
                     String value = config.getValue();
                     if ("true".equalsIgnoreCase(value)) {
@@ -82,7 +82,7 @@ public class HydSysConfigServiceImpl implements IHydSysConfigService {
                     } else if ("false".equalsIgnoreCase(value)) {
                         return false;
                     } else {
-                        logger.warn("配置项 {} 的值 {} 不是有效的布尔值，默认返回 false", key, value);
+                        logger.warn("配置项 {} 的值 {} 不是有效的布尔值，默认返回 false", name, value);
                         return false;
                     }
                 })

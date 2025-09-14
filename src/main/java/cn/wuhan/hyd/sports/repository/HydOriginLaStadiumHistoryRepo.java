@@ -20,7 +20,7 @@ import java.util.Map;
 @Repository
 public interface HydOriginLaStadiumHistoryRepo extends JpaRepository<HydOriginLaStadiumHistory, Integer> {
 
-    @Query(value = "select region as districtName, count(*) as stadiumNum from hyd_origin_la_stadium_history WHERE region is not null and region != '' AND createdTime >= DATE_FORMAT(CURDATE(), '%Y-01-01 00:00:00') AND createdTime < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 YEAR), '%Y-01-01 00:00:00') GROUP BY region order by stadiumNum desc", nativeQuery = true)
+    @Query(value = "select region as districtName, count(*) as stadiumNum from hyd_origin_la_stadium_history WHERE region is not null and region != '' AND createTime >= DATE_FORMAT(CURDATE(), '%Y-01-01 00:00:00') AND createTime < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 YEAR), '%Y-01-01 00:00:00') GROUP BY region order by stadiumNum desc", nativeQuery = true)
     List<Map<String, Object>> stadiumCountByDistrict();
 
     @Query(value = "SELECT * FROM hyd_origin_la_stadium_history WHERE (:startTime IS NULL OR createTime >= :startTime) " +

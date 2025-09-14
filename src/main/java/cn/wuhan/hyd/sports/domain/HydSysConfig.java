@@ -29,10 +29,10 @@ public class HydSysConfig implements Serializable {
     @ApiModelProperty(value = "主键ID", hidden = true)
     private Long id;
 
-    @Column(name = "key", length = 100)
+    @Column(name = "name", length = 100)
     @NotNull(message = "键不能为空")
     @ApiModelProperty(value = "键", required = true)
-    private String key;
+    private String name;
 
     @Column(name = "value", nullable = false)
     @NotNull(message = "值不能为空")

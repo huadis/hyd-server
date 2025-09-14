@@ -126,7 +126,7 @@ public class HistoryController {
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    @ApiOperation("1. 用户来源渠道-分页查询")
+    @ApiOperation("1. 场馆预定-用户来源渠道-分页查询")
     @AnonymousGetMapping("/userChannel/list")
     public Response<PageResult<HydResultUserChannelHistory>> userChannelList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -152,7 +152,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("2. 每月新增用户-分页查询")
+    @ApiOperation("2. 场馆预定-每月新增用户-分页查询")
     @AnonymousGetMapping("/userRegister/list")
     public Response<PageResult<HydResultUserRegisterHistory>> userRegisterList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -178,7 +178,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("3. 男女占比-分页查询")
+    @ApiOperation("3. 场馆预定-男女占比-分页查询")
     @AnonymousGetMapping("/userSex/list")
     public Response<PageResult<HydResultUserSexHistory>> userSexList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -204,7 +204,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("4. 年龄占比-分页查询")
+    @ApiOperation("4. 场馆预定-年龄占比-分页查询")
     @AnonymousGetMapping("/userAge/list")
     public Response<PageResult<HydResultUserAgeHistory>> userAgeList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -230,7 +230,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("5. 复购率-分页查询")
+    @ApiOperation("5. 场馆预定-复购率-分页查询")
     @AnonymousGetMapping("/userRepurchase/list")
     public Response<PageResult<HydResultUserRepurchaseHistory>> userRepurchaseList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -256,7 +256,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("6. 订单数量-分页查询")
+    @ApiOperation("6. 体育消费卷-订单数量-分页查询")
     @AnonymousGetMapping("/order/list")
     public Response<PageResult<HydResultOrderHistory>> orderList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -282,7 +282,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("7. 订单趋势-分页查询")
+    @ApiOperation("7. 体育消费卷-订单趋势-分页查询")
     @AnonymousGetMapping("/orderMonth/list")
     public Response<PageResult<HydResultOrderMonthHistory>> orderMonthList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -308,7 +308,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("8. 项目消费券订单金额Top5-分页查询")
+    @ApiOperation("8. 体育消费卷-项目消费券订单金额Top5-分页查询")
     @AnonymousGetMapping("/orderSport/list")
     public Response<PageResult<HydResultOrderSportHistory>> orderSportList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -334,7 +334,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("9. 场馆消费券订单金额Top5-分页查询")
+    @ApiOperation("9. 体育消费卷-场馆消费券订单金额Top5-分页查询")
     @AnonymousGetMapping("/orderStadium/list")
     public Response<PageResult<HydResultOrderStadiumHistory>> orderStadiumList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -360,7 +360,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("10. 在线场馆数量-分页查询")
+    @ApiOperation("10. 场馆预定-在线场馆数量-分页查询")
     @AnonymousGetMapping("/stadium/list")
     public Response<PageResult<HydResultStadiumHistory>> stadiumList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -386,7 +386,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("11. 在线场馆各区情况-分页查询")
+    @ApiOperation("11. 场馆预定-在线场馆各区情况-分页查询")
     @AnonymousGetMapping("/stadiumDistrict/list")
     public Response<PageResult<HydResultStadiumDistrictHistory>> stadiumDistrictList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -412,7 +412,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("12. 运动项目分布用券数占比-分页查询")
+    @ApiOperation("12. 场馆预定-运动项目分布用券数占比-分页查询")
     @AnonymousGetMapping("/stadiumSportCoupon/list")
     public Response<PageResult<HydResultStadiumSportCouponHistory>> stadiumSportCouponList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -438,7 +438,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("13. 设施全貌-分页查询")
+    @ApiOperation("13. 体育基础设施-设施全貌-分页查询")
     @AnonymousGetMapping("/facility/list")
     public Response<PageResult<HydResultFacilityHistory>> facilityList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -464,7 +464,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("14. 设施各区分布-分页查询")
+    @ApiOperation("14. 体育基础设施-设施各区分布-分页查询")
     @AnonymousGetMapping("/facilityDistrict/list")
     public Response<PageResult<HydResultFacilityDistrictHistory>> facilityDistrictList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -490,7 +490,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("15. 电子地图-分页查询")
+    @ApiOperation("15. 体育基础设施-电子地图-分页查询")
     @AnonymousGetMapping("/stadiumMap/list")
     public Response<PageResult<HydResultStadiumMapHistory>> stadiumMapList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -516,7 +516,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("16. 健身点位年数据-分页查询")
+    @ApiOperation("16. 体育基础设施-健身点位年数据-分页查询")
     @AnonymousGetMapping("/facilityYear/list")
     public Response<PageResult<HydResultFacilityYearHistory>> facilityYearList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -542,7 +542,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("17. 设施各区数据-分页查询")
+    @ApiOperation("17. 体育基础设施-设施各区数据-分页查询")
     @AnonymousGetMapping("/facilityDistrictMonth/list")
     public Response<PageResult<HydResultFacilityDistrictMonthHistory>> facilityDistrictMonthList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -568,7 +568,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("18. 巡维动态-分页查询")
+    @ApiOperation("18. 体育基础设施-巡维动态-分页查询")
     @AnonymousGetMapping("/facilityInspect/list")
     public Response<PageResult<HydResultFacilityInspectHistory>> facilityInspectList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -594,7 +594,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("19. 消费券总金额-分页查询")
+    @ApiOperation("19. 体育消费卷-消费券总金额-分页查询")
     @AnonymousGetMapping("/couponAmount/list")
     public Response<PageResult<HydResultCouponAmountHistory>> couponAmountList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -620,7 +620,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("20. 消费券领券用券-分页查询")
+    @ApiOperation("20. 体育消费卷-消费券领券用券-分页查询")
     @AnonymousGetMapping("/stock/list")
     public Response<PageResult<HydResultStockHistory>> stockList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -646,7 +646,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("21. 券用户分析-分页查询")
+    @ApiOperation("21. 体育消费卷-券用户分析-分页查询")
     @AnonymousGetMapping("/couponUser/list")
     public Response<PageResult<HydResultCouponUserHistory>> couponUserList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -672,7 +672,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("22. 券用户年龄分布-分页查询")
+    @ApiOperation("22. 体育消费卷-券用户年龄分布-分页查询")
     @AnonymousGetMapping("/couponUserAge/list")
     public Response<PageResult<HydResultCouponUserAgeHistory>> couponUserAgeList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -698,7 +698,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("23. 消费券场馆预订top-分页查询")
+    @ApiOperation("23. 场馆预定-消费券场馆预订top-分页查询")
     @AnonymousGetMapping("/couponStadiumTop/list")
     public Response<PageResult<HydResultCouponStadiumTopHistory>> couponStadiumTopList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -724,7 +724,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("24. 电子地图点位信息-分页查询")
+    @ApiOperation("24. 体育基础设施-电子地图点位信息-分页查询")
     @AnonymousGetMapping("/stadiumMapPoint/list")
     public Response<PageResult<HydResultStadiumMapPointHistory>> stadiumMapPointList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -750,7 +750,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("25. 组织机构名-分页查询")
+    @ApiOperation("25. 青少年技能培训-组织机构名-分页查询")
     @AnonymousGetMapping("/originTenant/list")
     public Response<PageResult<HydOriginTenantHistory>> originTenantList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -776,7 +776,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("26. 培训场馆-分页查询")
+    @ApiOperation("26. 青少年技能培训-培训场馆-分页查询")
     @AnonymousGetMapping("/originStadium/list")
     public Response<PageResult<HydOriginStadiumHistory>> originStadiumList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -802,7 +802,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("27. 场馆培训项目-分页查询")
+    @ApiOperation("27. 青少年技能培训-场馆培训项目-分页查询")
     @AnonymousGetMapping("/originStadiumItem/list")
     public Response<PageResult<HydOriginStadiumItemHistory>> originStadiumItemList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -828,7 +828,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("28. 培训活动-分页查询")
+    @ApiOperation("28. 青少年技能培训-培训活动-分页查询")
     @AnonymousGetMapping("/originTrainingActivity/list")
     public Response<PageResult<HydOriginTrainingActivityHistory>> originTrainingActivityList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -854,7 +854,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("29. 培训活动支持的项目-分页查询")
+    @ApiOperation("29. 青少年技能培训-培训活动支持的项目-分页查询")
     @AnonymousGetMapping("/originTrainingActivityItem/list")
     public Response<PageResult<HydOriginTrainingActivityItemHistory>> originTrainingActivityItemList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -880,7 +880,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("30. 培训活动场馆支持的项目-分页查询")
+    @ApiOperation("30. 青少年技能培训-培训活动场馆支持的项目-分页查询")
     @AnonymousGetMapping("/originTrainingActivityItemStadium/list")
     public Response<PageResult<HydOriginTrainingActivityItemStadiumHistory>> originTrainingActivityItemStadiumList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -906,7 +906,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("31. 培训课程-分页查询")
+    @ApiOperation("31. 青少年技能培训-培训课程-分页查询")
     @AnonymousGetMapping("/originTrainingCourse/list")
     public Response<PageResult<HydOriginTrainingCourseHistory>> originTrainingCourseList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,
@@ -932,7 +932,7 @@ public class HistoryController {
         return Response.ok(result);
     }
 
-    @ApiOperation("32. 订单-分页查询")
+    @ApiOperation("32. 青少年技能培训-订单-分页查询")
     @AnonymousGetMapping("/originOrder/list")
     public Response<PageResult<HydOriginOrderHistory>> originOrderList(
             @ApiParam(value = "页码，从0开始", example = "0") @RequestParam(defaultValue = "0") int page,

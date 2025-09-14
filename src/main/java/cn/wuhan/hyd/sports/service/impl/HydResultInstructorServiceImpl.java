@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     private IHydExcelInstructorService instructorService;
 
     // ========================== 数据同步方法（参考模板syncResultData逻辑） ==========================
+    @Transactional(rollbackFor = Exception.class)
     public void syncResultData() {
         syncLevel();
         syncOverview();
@@ -319,7 +321,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     /**
      * 同步级别统计数据（参考模板syncDistrict逻辑）
      */
-    private void syncLevel() {
+    @Transactional(rollbackFor = Exception.class)
+    public void syncLevel() {
         // 1. 从原始数据仓库查询统计结果
         List<Map<String, Object>> list = instructorService.levelStat();
         List<HydResultInstructorLevel> levelStats = new ArrayList<>();
@@ -343,7 +346,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     /**
      * 同步概览统计数据
      */
-    private void syncOverview() {
+    @Transactional(rollbackFor = Exception.class)
+    public void syncOverview() {
         Map<String, Object> map = instructorService.overview();
         HydResultInstructorOverview e = new HydResultInstructorOverview();
         e.setTotal(MapUtils.getLong(map, "total")); // 全市人数
@@ -358,7 +362,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     /**
      * 同步各区指导人员统计数据
      */
-    private void syncRegion() {
+    @Transactional(rollbackFor = Exception.class)
+    public void syncRegion() {
         List<Map<String, Object>> list = instructorService.regionInstructorStat();
         List<HydResultInstructorRegion> regionStats = new ArrayList<>();
 
@@ -379,7 +384,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     /**
      * 同步项目统计数据
      */
-    private void syncServiceProject() {
+    @Transactional(rollbackFor = Exception.class)
+    public void syncServiceProject() {
         List<Map<String, Object>> list = instructorService.serviceProject();
         List<HydResultInstructorServiceProject> projectStats = new ArrayList<>();
         list.forEach(map -> {
@@ -400,7 +406,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     /**
      * 同步项目统计TOP15数据
      */
-    private void syncServiceProjectTop() {
+    @Transactional(rollbackFor = Exception.class)
+    public void syncServiceProjectTop() {
         List<Map<String, Object>> list = instructorService.serviceProjectTop15();
         List<HydResultInstructorServiceProjectTop> projectTopStats = new ArrayList<>();
 
@@ -422,7 +429,8 @@ public class HydResultInstructorServiceImpl extends HydBaseServiceImpl implement
     /**
      * 性别统计
      */
-    private void syncUserSex() {
+    @Transactional(rollbackFor = Exception.class)
+    public void syncUserSex() {
         List<Map<String, Object>> list = instructorService.genderStat();
         List<HydResultInstructorUserSex> userSexes = new ArrayList<>();
 

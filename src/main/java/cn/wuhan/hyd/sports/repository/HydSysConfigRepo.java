@@ -19,12 +19,12 @@ public interface HydSysConfigRepo extends JpaRepository<HydSysConfig, Long> {
      * @param key 配置键
      * @return 配置记录（包含value），若不存在则返回空Optional
      */
-    Optional<HydSysConfig> findByKey(String key);
+    Optional<HydSysConfig> findByName(String name);
 
     /**
      * 检查指定key是否存在
      * @param key 配置键
      * @return 存在返回true，否则返回false
      */
-    boolean existsByKey(String key);
+    boolean existsByName(String name);
 }
