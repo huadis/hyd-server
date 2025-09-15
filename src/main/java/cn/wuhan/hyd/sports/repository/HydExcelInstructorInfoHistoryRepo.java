@@ -74,9 +74,9 @@ public interface HydExcelInstructorInfoHistoryRepo extends JpaRepository<HydExce
     @Query(value = "DELETE FROM hyd_excel_instructor_info_history WHERE batchNo != ?1", nativeQuery = true)
     int deleteByNotBatchNo(String batchNo);
 
-    @Query(value = "SELECT * FROM hyd_excel_instructor_info_history WHERE (:startTime IS NULL OR createTime >= :startTime) " +
-            "AND (:endTime IS NULL OR createTime <= :endTime)",
+    @Query(value = "SELECT * FROM hyd_excel_instructor_info_history WHERE (:startTime IS NULL OR createdTime >= :startTime) " +
+            "AND (:endTime IS NULL OR createdTime <= :endTime)",
             countQuery = "SELECT COUNT(*) FROM hyd_excel_instructor_info_history " +
-                    "WHERE (:startTime IS NULL OR createTime >= :startTime) AND (:endTime IS NULL OR createTime <= :endTime)", nativeQuery = true)
+                    "WHERE (:startTime IS NULL OR createdTime >= :startTime) AND (:endTime IS NULL OR createdTime <= :endTime)", nativeQuery = true)
     Page<HydExcelInstructorInfoHistory> findAllByTimeRange(Pageable pageable, @Param("startTime") Timestamp startTime, @Param("endTime") Timestamp endTime);
 }

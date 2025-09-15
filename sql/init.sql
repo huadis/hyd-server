@@ -661,6 +661,8 @@ CREATE TABLE `hyd_origin_training_activity_item_stadium_history` (
   `sportCode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '项目类型编码',
   `sportName` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '项目类型名称',
   `batchNo` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '批次号，用于标识数据批次',
+  `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   `importTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导入时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='培训活动场馆支持的项目表（历史）';

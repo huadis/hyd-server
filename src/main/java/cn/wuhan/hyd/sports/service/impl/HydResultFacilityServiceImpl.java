@@ -130,7 +130,7 @@ public class HydResultFacilityServiceImpl extends HydBaseServiceImpl implements 
             );
 
             // 7. 校验保存结果：根据 refresh 状态区分校验逻辑，避免数据不一致
-            checkSaveData(facilities, refresh, querySaveCount, historySaveCount, batchNo);
+            checkSaveData(facilities, refresh, historySaveCount, historySaveCount, batchNo);
 
             logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
             return historySaveCount;

@@ -1019,7 +1019,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1045,7 +1045,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1071,7 +1071,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1098,7 +1098,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1124,7 +1124,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1150,7 +1150,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1176,7 +1176,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1202,7 +1202,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1228,7 +1228,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1254,7 +1254,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1280,7 +1280,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp
@@ -1306,7 +1306,7 @@ public class HistoryController {
             @RequestParam(required = false) String startTime,
             @ApiParam(value = "结束时间，格式：yyyy-MM-dd HH:mm:ss", example = "2025-12-31 23:59:59")
             @RequestParam(required = false) String endTime) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdTime").descending());
         Timestamp start, end;
         try {
             // 将字符串时间转换为 Timestamp

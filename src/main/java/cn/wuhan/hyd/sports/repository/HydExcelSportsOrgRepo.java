@@ -24,9 +24,9 @@ public interface HydExcelSportsOrgRepo extends JpaRepository<HydExcelSportsOrg, 
     @Query(value = "select districtName, count(*) as districtNum from hyd_excel_sports_organization WHERE districtName is not null and districtName != '' AND createdTime >= DATE_FORMAT(CURDATE(), '%Y-01-01 00:00:00') AND createdTime < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 YEAR), '%Y-01-01 00:00:00') group by districtName ORDER BY districtNum DESC", nativeQuery = true)
     List<Map<String, Object>> districtStatCount();
 
-    @Query(value = "SELECT * FROM hyd_excel_sports_organization WHERE (:startTime IS NULL OR createTime >= :startTime) " +
-            "AND (:endTime IS NULL OR createTime <= :endTime)",
+    @Query(value = "SELECT * FROM hyd_excel_sports_organization WHERE (:startTime IS NULL OR createdTime >= :startTime) " +
+            "AND (:endTime IS NULL OR createdTime <= :endTime)",
             countQuery = "SELECT COUNT(*) FROM hyd_excel_sports_organization " +
-                    "WHERE (:startTime IS NULL OR createTime >= :startTime) AND (:endTime IS NULL OR createTime <= :endTime)", nativeQuery = true)
+                    "WHERE (:startTime IS NULL OR createdTime >= :startTime) AND (:endTime IS NULL OR createdTime <= :endTime)", nativeQuery = true)
     Page<HydExcelSportsOrg> findAllByTimeRange(Pageable pageable, @Param("startTime") Timestamp startTime, @Param("endTime") Timestamp endTime);
 }

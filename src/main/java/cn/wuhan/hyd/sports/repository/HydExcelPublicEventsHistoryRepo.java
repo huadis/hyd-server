@@ -130,9 +130,9 @@ public interface HydExcelPublicEventsHistoryRepo extends JpaRepository<HydExcelP
             "    eventMonth desc ;", nativeQuery = true)
     List<Map<String, Object>> currentMouthEvents(String year, String month);
 
-    @Query(value = "SELECT * FROM hyd_excel_public_events_history WHERE (:startTime IS NULL OR createTime >= :startTime) " +
-            "AND (:endTime IS NULL OR createTime <= :endTime)",
+    @Query(value = "SELECT * FROM hyd_excel_public_events_history WHERE (:startTime IS NULL OR createdTime >= :startTime) " +
+            "AND (:endTime IS NULL OR createdTime <= :endTime)",
             countQuery = "SELECT COUNT(*) FROM hyd_excel_public_events_history " +
-                    "WHERE (:startTime IS NULL OR createTime >= :startTime) AND (:endTime IS NULL OR createTime <= :endTime)", nativeQuery = true)
+                    "WHERE (:startTime IS NULL OR createdTime >= :startTime) AND (:endTime IS NULL OR createdTime <= :endTime)", nativeQuery = true)
     Page<HydExcelPublicEventsHistory> findAllByTimeRange(Pageable pageable, @Param("startTime") Timestamp startTime, @Param("endTime") Timestamp endTime);
 }

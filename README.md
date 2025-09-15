@@ -14,7 +14,11 @@
 > 1. 23张结果表是全量推送（先清空表中非今日的数据，再插入）
 > 2. 10张原始表是增量更新，追加到表中
 > 3. excel上传的，由增量改为全量（先清空表中数据，再插入）
+> 
 > UPDATE hyd_excel_instructor_info_history SET batchNo = 'BATCH_20250829' WHERE DATE(createdTime) = '2025-08-29';
+> ALTER TABLE `hyd_origin_training_activity_item_stadium_history`
+ADD COLUMN `createdTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' AFTER `batchNo`,
+ADD COLUMN `updateTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间' AFTER `createdTime`;
 
 # 定时任务
 - 青少年技能培训(每天凌晨 00:00 执行)
