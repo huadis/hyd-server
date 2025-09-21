@@ -17,10 +17,10 @@ import java.util.Map;
 @Repository
 public interface HydResultCouponStadiumTopRepo extends JpaRepository<HydResultCouponStadiumTop, Long> {
 
-    @Query(value = "SELECT stadiumName, couponAmount FROM hyd_result_coupon_stadium_top WHERE statisticalYear = ?1 ORDER BY couponAmount DESC ", nativeQuery = true)
+    @Query(value = "SELECT stadiumName, couponAmount FROM hyd_result_coupon_stadium_top WHERE statisticalYear = ?1 ORDER BY CAST(couponAmount AS UNSIGNED) DESC ", nativeQuery = true)
     List<Map<String, Object>> stadiumTop5(String statisticalYear);
 
-    @Query(value = "SELECT stadiumName, couponAmount FROM hyd_result_coupon_stadium_top WHERE statisticalYear = ?1 and type = ?2 and activityName = ?3 and groupName = ?4 ORDER BY couponAmount DESC ", nativeQuery = true)
+    @Query(value = "SELECT stadiumName, couponAmount FROM hyd_result_coupon_stadium_top WHERE statisticalYear = ?1 and type = ?2 and activityName = ?3 and groupName = ?4 ORDER BY CAST(couponAmount AS UNSIGNED) DESC ", nativeQuery = true)
     List<Map<String, Object>> stadiumTop10(String statisticalYear, String type, String activityName, String groupName);
 
     @Modifying
