@@ -106,7 +106,8 @@ public class HydResultCouponUserAgeServiceImpl extends HydBaseServiceImpl implem
             boolean refresh = !configService.notRefresh("体育消费卷");
             // 是否冻结，不允许更新查询表
             if (refresh) {
-                List<HydResultCouponUserAge> queryList = computeQueryList(couponUserAges, batchNo);
+                // List<HydResultCouponUserAge> queryList = computeQueryList(couponUserAges, batchNo);
+                List<HydResultCouponUserAge> queryList = convert(logger, couponUserAges, HydResultCouponUserAge.class, batchNo);
                 // 4. 清空查询表：日志记录操作意图，便于问题追溯
                 logger.info("【批量保存】开始清空HydResultCouponUserAge表，批次号：{}", batchNo);
                 couponUserAgeRepo.deleteByNotBatchNo(batchNo, DateUtil.getPreviousDayYear());
@@ -131,7 +132,7 @@ public class HydResultCouponUserAgeServiceImpl extends HydBaseServiceImpl implem
             );
 
             // 7. 校验保存结果：根据 refresh 状态区分校验逻辑，避免数据不一致
-            checkSaveData(couponUserAges, refresh, historySaveCount, historySaveCount, batchNo);
+            checkSaveData(couponUserAges, refresh, querySaveCount, historySaveCount, batchNo);
 
             logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
             return historySaveCount;
@@ -184,7 +185,7 @@ public class HydResultCouponUserAgeServiceImpl extends HydBaseServiceImpl implem
     }
 
     @Override
-    public HydResultCouponUserAge latestCouponUserAge(String year) {
-        return couponUserAgeRepo.latestCouponUserAge(year);
+    public HydResultCouponUserAge couponUserAge(String year, String type, String activityName, String groupName) {
+        return couponUserAgeRepo.couponUserAge(year,  type, activityName, groupName);
     }
 }

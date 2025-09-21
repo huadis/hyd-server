@@ -107,7 +107,8 @@ public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl impleme
             boolean refresh = !configService.notRefresh("体育消费卷");
             // 是否冻结，不允许更新查询表
             if (refresh) {
-                List<HydResultCouponAmount> queryList = computeQueryList(couponAmounts, batchNo);
+                //List<HydResultCouponAmount> queryList = computeQueryList(couponAmounts, batchNo);
+                List<HydResultCouponAmount> queryList = convert(logger, couponAmounts, HydResultCouponAmount.class, batchNo);
                 // 4. 清空查询表：日志记录操作意图，便于问题追溯
                 logger.info("【批量保存】开始清空HydResultCouponAmount表，批次号：{}", batchNo);
                 couponAmountRepo.deleteByNotBatchNo(batchNo, DateUtil.getPreviousDayYear());
@@ -132,7 +133,7 @@ public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl impleme
             );
 
             // 7. 校验保存结果：根据 refresh 状态区分校验逻辑，避免数据不一致
-            checkSaveData(couponAmounts, refresh, historySaveCount, historySaveCount, batchNo);
+            checkSaveData(couponAmounts, refresh, querySaveCount, historySaveCount, batchNo);
 
             logger.info("【批量保存】批次数据同步完成，批次号：{}，共保存{}条数据", batchNo, querySaveCount);
             return historySaveCount;
@@ -217,7 +218,22 @@ public class HydResultCouponAmountServiceImpl extends HydBaseServiceImpl impleme
 
 
     @Override
-    public HydResultCouponAmount findLatestCouponAmount(String year) {
-        return couponAmountRepo.findLatestCouponAmount(year);
+    public HydResultCouponAmount findCouponAmount(String year, String type, String activityName, String groupName) {
+        return couponAmountRepo.findCouponAmount(year, type, activityName, groupName);
+    }
+
+    @Override
+    public List<String> allType(String year) {
+        return couponAmountRepo.allType(year);
+    }
+
+    @Override
+    public List<String> allActivityName(String year, String type) {
+        return couponAmountRepo.allActivityName(year, type);
+    }
+
+    @Override
+    public List<String> allGroupName(String year, String type, String activityName) {
+        return couponAmountRepo.allGroupName(year, type, activityName);
     }
 }

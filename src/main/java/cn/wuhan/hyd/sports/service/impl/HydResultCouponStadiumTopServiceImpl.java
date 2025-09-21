@@ -90,6 +90,11 @@ public class HydResultCouponStadiumTopServiceImpl extends HydBaseServiceImpl imp
         return couponStadiumTopRepo.stadiumTop5(statisticalYear);
     }
 
+    @Override
+    public List<Map<String, Object>> stadiumTop10(String statisticalYear, String type, String activityName, String groupName) {
+        return couponStadiumTopRepo.stadiumTop10(statisticalYear, type, activityName, groupName);
+    }
+
     /**
      * 批量保存 消费券场馆预订Top
      *

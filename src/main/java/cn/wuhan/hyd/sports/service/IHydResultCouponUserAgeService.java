@@ -63,5 +63,5 @@ public interface IHydResultCouponUserAgeService {
 
     int batchSave(List<HydResultCouponUserAgeReq> couponUserAges);
 
-    HydResultCouponUserAge latestCouponUserAge(String year);
+    HydResultCouponUserAge couponUserAge(String year, String type, String activityName, String groupName);
 }

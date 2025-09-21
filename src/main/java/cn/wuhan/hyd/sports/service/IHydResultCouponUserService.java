@@ -64,7 +64,6 @@ public interface IHydResultCouponUserService {
 
     int batchSave(List<HydResultCouponUserReq> couponUsers);
 
-    Map<String, Object> latestCouponUser(String year);
-
+    Map<String, Object> couponUser(String year, String type, String activityName, String groupName);
 
 }

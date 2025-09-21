@@ -63,5 +63,11 @@ public interface IHydResultCouponAmountService {
 
     int batchSave(List<HydResultCouponAmountReq> couponAmounts);
 
-    HydResultCouponAmount findLatestCouponAmount(String year);
+    HydResultCouponAmount findCouponAmount(String year, String type, String activityName, String groupName);
+
+    List<String> allType(String year);
+
+    List<String> allActivityName(String year, String type);
+
+    List<String> allGroupName(String year, String type, String activityName);
 }

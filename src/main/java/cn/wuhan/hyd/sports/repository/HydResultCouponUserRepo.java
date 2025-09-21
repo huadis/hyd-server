@@ -17,8 +17,8 @@ import java.util.Map;
 public interface HydResultCouponUserRepo extends JpaRepository<HydResultCouponUser, Long> {
 
     @Query(value = "SELECT receiveCouponNum, useCouponNum, maleNum, femaleNum " +
-            "FROM hyd_result_coupon_user WHERE statisticalYear = ?1 ORDER BY createdTime DESC limit 1", nativeQuery = true)
-    Map<String, Object> latestCouponUser(String year);
+            "FROM hyd_result_coupon_user WHERE statisticalYear = ?1 and type = ?2 and activityName = ?3 and groupName = ?4  ORDER BY createdTime DESC limit 1", nativeQuery = true)
+    Map<String, Object> couponUser(String year, String type, String activityName, String groupName);
 
     @Modifying
     @Query(value = "DELETE FROM hyd_result_coupon_user WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)

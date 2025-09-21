@@ -52,14 +52,45 @@ public class HydCouponController {
     private IHydResultCouponUserService couponUserService;
     @Resource
     private IHydResultCouponUserAgeService couponUserAgeService;
+    @Resource
+    private IHydResultCouponStadiumTopService couponStadiumTopService;
+
+    @ApiOperation("卷类型列表")
+    @AnonymousGetMapping("/allType")
+    public Response<List<String>> allType(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
+        return Response.ok(couponAmountService.allType(year));
+    }
+
+    @ApiOperation("活动名称列表")
+    @AnonymousGetMapping("/allActivityName")
+    public Response<List<String>> allActivityName(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year, @RequestParam String type) {
+        return Response.ok(couponAmountService.allActivityName(year, type));
+    }
+
+    @ApiOperation("消费卷列表")
+    @AnonymousGetMapping("/allGroupName")
+    public Response<List<String>> allGroupName(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year,
+            @RequestParam String type, @RequestParam String activityName) {
+        return Response.ok(couponAmountService.allGroupName(year, type, activityName));
+    }
 
     @ApiOperation("概览")
     @AnonymousGetMapping("/overview")
     public Response<CouponAmountOverviewResp> overview(
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
-            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        HydResultCouponAmount source = couponAmountService.findLatestCouponAmount(year);
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year,
+            @RequestParam String type, @RequestParam String activityName, @RequestParam String groupName) {
+        HydResultCouponAmount source = couponAmountService.findCouponAmount(year, type, activityName, groupName);
         CouponAmountOverviewResp target = new CouponAmountOverviewResp();
         if (source != null) {
             BeanUtils.copyProperties(source, target);
@@ -69,24 +100,14 @@ public class HydCouponController {
         }
     }
 
-    @ApiOperation("卷名列表")
-    @AnonymousGetMapping("/allGroupName")
-    public Response<List<String>> allGroupName(
-            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
-            @NotBlank(message = "年份不能为空")
-            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        return Response.ok(stockService.allGroupName(year));
-    }
-
     @ApiOperation("消费卷领卷用卷统计")
     @AnonymousGetMapping("/stockGetAndUseStat")
     public Response<List<StockGetAndUseStatResp>> stockGetAndUseStat(
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year,
-            @ApiParam(value = "卷名", required = true)
-            @NotBlank(message = "卷名不能为空") @RequestParam String groupName) {
-        List<HydResultStock> stocks = stockService.queryAll(year, groupName);
+            @RequestParam String type, @RequestParam String activityName, @RequestParam String groupName) {
+        List<HydResultStock> stocks = stockService.queryAll(year, type, activityName, groupName);
         List<StockGetAndUseStatResp> result = stocks.stream().map(source -> {
             StockGetAndUseStatResp target = new StockGetAndUseStatResp();
             if (source != null) {
@@ -105,9 +126,8 @@ public class HydCouponController {
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
             @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year,
-            @ApiParam(value = "卷名", required = true)
-            @NotBlank(message = "卷名不能为空") @RequestParam String groupName) {
-        List<HydResultStock> stocks = stockService.queryAll(year, groupName);
+            @RequestParam String type, @RequestParam String activityName, @RequestParam String groupName) {
+        List<HydResultStock> stocks = stockService.queryAll(year, type, activityName, groupName);
         List<StockUseOrderStatResp> result = stocks.stream().map(source -> {
             StockUseOrderStatResp target = new StockUseOrderStatResp();
             if (source != null) {
@@ -120,6 +140,7 @@ public class HydCouponController {
         return Response.ok(result);
     }
 
+    @Deprecated
     @ApiOperation("项目消费卷订单金额TOP5")
     @AnonymousGetMapping("/orderStadiumStat")
     public Response<List<OrderSportResp>> orderStadiumStat(
@@ -137,6 +158,7 @@ public class HydCouponController {
         return Response.ok(result);
     }
 
+    @Deprecated
     @ApiOperation("场馆消费卷订单金额TOP5")
     @AnonymousGetMapping("/orderSportStat")
     public Response<List<OrderStadiumResp>> orderSportStat(
@@ -154,6 +176,7 @@ public class HydCouponController {
         return Response.ok(result);
     }
 
+    @Deprecated
     @ApiOperation("订单总数统计")
     @AnonymousGetMapping("/orderOverview")
     public Response<OrderOverviewResp> orderOverview(
@@ -168,6 +191,7 @@ public class HydCouponController {
         return Response.ok(resp);
     }
 
+    @Deprecated
     @ApiOperation("订单趋势统计")
     @AnonymousGetMapping("/orderTrend")
     public Response<List<OrderMonthTrendResp>> orderTrend(
@@ -192,8 +216,9 @@ public class HydCouponController {
     public Response<CouponUserSexStatResp> userSex(
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
-            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        Map<String, Object> map = couponUserService.latestCouponUser(year);
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year,
+            @RequestParam String type, @RequestParam String activityName, @RequestParam String groupName) {
+        Map<String, Object> map = couponUserService.couponUser(year, type, activityName, groupName);
         CouponUserSexStatResp resp = new CouponUserSexStatResp();
         resp.setMaleNum(MapUtils.getString(map, "maleNum"));
         resp.setFemaleNum(MapUtils.getString(map, "femaleNum"));
@@ -205,8 +230,9 @@ public class HydCouponController {
     public Response<CouponGetAndUseStatResp> useCouponGetAndUseStat(
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
-            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        Map<String, Object> map = couponUserService.latestCouponUser(year);
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year,
+            @RequestParam String type, @RequestParam String activityName, @RequestParam String groupName) {
+        Map<String, Object> map = couponUserService.couponUser(year, type, activityName, groupName);
         CouponGetAndUseStatResp resp = new CouponGetAndUseStatResp();
         resp.setReceiveCouponNum(MapUtils.getString(map, "receiveCouponNum"));
         resp.setUseCouponNum(MapUtils.getString(map, "useCouponNum"));
@@ -218,8 +244,9 @@ public class HydCouponController {
     public Response<CouponUserAgeStatResp> userAge(
             @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
             @NotBlank(message = "年份不能为空")
-            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year) {
-        HydResultCouponUserAge source = couponUserAgeService.latestCouponUserAge(year);
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year,
+            @RequestParam String type, @RequestParam String activityName, @RequestParam String groupName) {
+        HydResultCouponUserAge source = couponUserAgeService.couponUserAge(year, type, activityName, groupName);
         CouponUserAgeStatResp target = new CouponUserAgeStatResp();
         if (source != null) {
             BeanUtils.copyProperties(source, target);
@@ -227,6 +254,16 @@ public class HydCouponController {
         } else {
             return Response.fail("未找到对应年份的数据");
         }
+    }
+
+    @ApiOperation("场馆预定TOP10")
+    @AnonymousGetMapping("/stadiumTop10")
+    public Response<List<Map<String, Object>>> stadiumTop10(
+            @ApiParam(value = "年份，格式为4位数字（如2025）", required = true)
+            @NotBlank(message = "年份不能为空")
+            @Pattern(regexp = "^\\d{4}$", message = "年份格式错误，必须为4位数字（如2025）") @RequestParam String year,
+            @RequestParam String type, @RequestParam String activityName, @RequestParam String groupName) {
+        return Response.ok(couponStadiumTopService.stadiumTop10(year, type, activityName, groupName));
     }
 
 }

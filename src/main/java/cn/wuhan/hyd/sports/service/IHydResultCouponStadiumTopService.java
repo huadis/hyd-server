@@ -64,5 +64,7 @@ public interface IHydResultCouponStadiumTopService {
 
     List<Map<String, Object>> stadiumTop5(String statisticalYear);
 
+    List<Map<String, Object>> stadiumTop10(String statisticalYear, String type, String activityName, String groupName);
+
     int batchSave(List<HydResultCouponStadiumTopReq> couponStadiumTops);
 }

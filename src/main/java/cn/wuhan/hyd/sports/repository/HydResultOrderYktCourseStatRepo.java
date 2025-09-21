@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface HydResultOrderYktCourseStatRepo extends JpaRepository<HydResultOrderYktCourseStat, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_order_ykt_course_stat WHERE statisticalYear ORDER BY num DESC LIMIT 5", nativeQuery = true)
+    @Query(value = "SELECT * FROM hyd_result_order_ykt_course_stat WHERE statisticalYear = ?1 ORDER BY num DESC LIMIT 5", nativeQuery = true)
     List<HydResultOrderYktCourseStat> courseTop5(String year);
 
     @Modifying

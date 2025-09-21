@@ -16,6 +16,9 @@ public class FacilityOverviewResp implements Serializable {
     @ApiModelProperty(value = "设施类型名称")
     private String facilityTypeName;
 
+    @ApiModelProperty(value = "设施数量")
+    private String facilityNum;
+
     @ApiModelProperty(value = "设施占比（%）")
     private Double facilityPercentage;
 }

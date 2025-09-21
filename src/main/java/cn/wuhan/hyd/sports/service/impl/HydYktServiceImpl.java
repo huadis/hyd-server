@@ -299,8 +299,8 @@ public class HydYktServiceImpl implements IHydYktService {
     }
 
     @Override
-    public List<Map<String, Object>> stadiumsByOrder() {
-        return originOrderHistoryRepo.stadiumsByOrder();
+    public List<Map<String, Object>> stadiumsByOrder(String year) {
+        return originOrderHistoryRepo.stadiumsByOrder(year);
     }
 
     @Transactional(rollbackFor = Exception.class)

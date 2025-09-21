@@ -315,5 +315,5 @@ public interface IHydYktService {
 
     List<HydResultOrderYktUserAgeStat> listUserAge(String year);
 
-    List<Map<String, Object>> stadiumsByOrder();
+    List<Map<String, Object>> stadiumsByOrder(String year);
 }

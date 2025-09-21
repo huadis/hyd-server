@@ -107,7 +107,8 @@ public class HydResultCouponUserServiceImpl extends HydBaseServiceImpl implement
             boolean refresh = !configService.notRefresh("体育消费卷");
             // 是否冻结，不允许更新查询表
             if (refresh) {
-                List<HydResultCouponUser> queryList = computeQueryList(couponUsers, batchNo);
+                // List<HydResultCouponUser> queryList = computeQueryList(couponUsers, batchNo);
+                List<HydResultCouponUser> queryList = convert(logger, couponUsers, HydResultCouponUser.class, batchNo);
                 // 4. 清空查询表：日志记录操作意图，便于问题追溯
                 logger.info("【批量保存】开始清空HydResultCouponUser表，批次号：{}", batchNo);
                 couponUserRepo.deleteByNotBatchNo(batchNo, DateUtil.getPreviousDayYear());
@@ -177,7 +178,7 @@ public class HydResultCouponUserServiceImpl extends HydBaseServiceImpl implement
     }
 
     @Override
-    public Map<String, Object> latestCouponUser(String year) {
-        return couponUserRepo.latestCouponUser(year);
+    public Map<String, Object> couponUser(String year, String type, String activityName, String groupName) {
+        return couponUserRepo.couponUser(year, type, activityName, groupName);
     }
 }

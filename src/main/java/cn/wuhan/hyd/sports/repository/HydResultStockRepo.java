@@ -16,8 +16,8 @@ import java.util.List;
 @Repository
 public interface HydResultStockRepo extends JpaRepository<HydResultStock, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_stock WHERE statisticalYear = ?1 AND groupName = ?2 ORDER BY createdTime DESC", nativeQuery = true)
-    List<HydResultStock> list(String year, String groupName);
+    @Query(value = "SELECT * FROM hyd_result_stock WHERE statisticalYear = ?1 and type = ?2 and activityName = ?3 and groupName = ?4 ORDER BY createdTime DESC", nativeQuery = true)
+    List<HydResultStock> list(String year, String type, String activityName, String groupName);
 
     @Modifying
     @Query(value = "DELETE FROM hyd_result_stock WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)

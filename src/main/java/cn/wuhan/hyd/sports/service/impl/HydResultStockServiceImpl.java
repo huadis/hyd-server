@@ -61,8 +61,8 @@ public class HydResultStockServiceImpl extends HydBaseServiceImpl implements IHy
      * @return 实体对象列表
      */
     @Override
-    public List<HydResultStock> queryAll(String year, String groupName) {
-        return stockRepo.list(year, groupName);
+    public List<HydResultStock> queryAll(String year, String type, String activityName, String groupName) {
+        return stockRepo.list(year, type, activityName, groupName);
     }
 
     @Override

@@ -74,8 +74,12 @@ public interface HydOriginOrderHistoryRepo extends JpaRepository<HydOriginOrderH
     @Query(value = "select stadium, sum(orderAmount) as orderAmount from (SELECT a.orderAmount, b.stadiumName as stadium FROM hyd_origin_order_history AS a, hyd_origin_stadium_history b WHERE a.stadiumId = b.id and b.stadiumName is not null and b.stadiumName != '' AND a.createdTime >= DATE_FORMAT(CURDATE(), '%Y-01-01 00:00:00') AND a.createdTime < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 YEAR), '%Y-01-01 00:00:00') ) c GROUP BY c.stadium order by orderAmount desc", nativeQuery = true)
     List<Map<String, Object>> stadiumStatCount();
 
-    @Query(value = "select DISTINCT b.* from hyd_origin_order_history a, hyd_origin_stadium_history b WHERE a.stadiumId = b.id AND a.createdTime >= DATE_FORMAT(CURDATE(), '%Y-01-01 00:00:00') AND a.createdTime < DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 YEAR), '%Y-01-01 00:00:00') ", nativeQuery = true)
-    List<Map<String, Object>> stadiumsByOrder();
+    @Query(value = "SELECT DISTINCT b.* FROM hyd_origin_order_history a, hyd_origin_stadium_history b " +
+            "WHERE a.stadiumId = b.id " +
+            "AND a.createdTime >= STR_TO_DATE(CONCAT(:year, '-01-01 00:00:00'), '%Y-%m-%d %H:%i:%s') " +
+            "AND a.createdTime < STR_TO_DATE(CONCAT(:year + 1, '-01-01 00:00:00'), '%Y-%m-%d %H:%i:%s')",
+            nativeQuery = true)
+    List<Map<String, Object>> stadiumsByOrder(String year);
 
     @Query(value = "SELECT * FROM hyd_origin_order_history WHERE (:startTime IS NULL OR createdTime >= :startTime) " +
             "AND (:endTime IS NULL OR createdTime <= :endTime)",

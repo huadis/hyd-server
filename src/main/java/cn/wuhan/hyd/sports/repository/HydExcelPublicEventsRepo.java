@@ -19,7 +19,7 @@ public interface HydExcelPublicEventsRepo extends JpaRepository<HydExcelPublicEv
     /**
      * 总赛事场次
      */
-    @Query(value = "SELECT eventYear as statisticalYear, COUNT(id) AS total FROM hyd_excel_public_events WHERE eventYear is not null and eventYear != '' GROUP BY eventYear", nativeQuery = true)
+    @Query(value = "SELECT eventYear as statisticalYear, COUNT(id) AS total FROM hyd_excel_public_events WHERE eventYear is not null and eventYear != '' and district is not null AND district != '' GROUP BY eventYear", nativeQuery = true)
     List<Map<String, Object>> countAll();
 
     /**

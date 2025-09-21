@@ -57,6 +57,26 @@ public class HydResultCouponAmount implements Serializable {
     @ApiModelProperty(value = "拉动消费比")
     private String orderRatio;
 
+    @Column(name = "activityId")
+    @ApiModelProperty(value = "活动id")
+    private String activityId;
+
+    @Column(name = "activityName")
+    @ApiModelProperty(value = "活动名称")
+    private String activityName;
+
+    @Column(name = "groupId")
+    @ApiModelProperty(value = "分组id")
+    private String groupId;
+
+    @Column(name = "groupName")
+    @ApiModelProperty(value = "分组名称")
+    private String groupName;
+
+    @Column(name = "type")
+    @ApiModelProperty(value = "类型")
+    private String type;
+
     @JsonIgnore
     @Column(name = "batchNo")
     @ApiModelProperty(value = "批次号")

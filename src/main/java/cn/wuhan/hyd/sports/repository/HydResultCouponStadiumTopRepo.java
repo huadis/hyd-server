@@ -20,6 +20,9 @@ public interface HydResultCouponStadiumTopRepo extends JpaRepository<HydResultCo
     @Query(value = "SELECT stadiumName, couponAmount FROM hyd_result_coupon_stadium_top WHERE statisticalYear = ?1 ORDER BY couponAmount DESC ", nativeQuery = true)
     List<Map<String, Object>> stadiumTop5(String statisticalYear);
 
+    @Query(value = "SELECT stadiumName, couponAmount FROM hyd_result_coupon_stadium_top WHERE statisticalYear = ?1 and type = ?2 and activityName = ?3 and groupName = ?4 ORDER BY couponAmount DESC ", nativeQuery = true)
+    List<Map<String, Object>> stadiumTop10(String statisticalYear, String type, String activityName, String groupName);
+
     @Modifying
     @Query(value = "DELETE FROM hyd_result_coupon_stadium_top WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
     int deleteByNotBatchNo(String batchNo, Integer statisticalYear);

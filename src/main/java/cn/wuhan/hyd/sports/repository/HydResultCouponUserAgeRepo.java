@@ -14,8 +14,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HydResultCouponUserAgeRepo extends JpaRepository<HydResultCouponUserAge, Long> {
 
-    @Query(value = "SELECT * FROM hyd_result_coupon_user_age WHERE statisticalYear = ?1 ORDER BY createdTime DESC limit 1", nativeQuery = true)
-    HydResultCouponUserAge latestCouponUserAge(String year);
+    @Query(value = "SELECT * FROM hyd_result_coupon_user_age WHERE statisticalYear = ?1 and type = ?2 and activityName = ?3 and groupName = ?4 ORDER BY createdTime DESC limit 1", nativeQuery = true)
+    HydResultCouponUserAge couponUserAge(String year, String type, String activityName, String groupName);
 
     @Modifying
     @Query(value = "DELETE FROM hyd_result_coupon_user_age WHERE batchNo != ?1 AND statisticalYear = ?2", nativeQuery = true)
